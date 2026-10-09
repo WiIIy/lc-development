@@ -1,0 +1,1 @@
+export const INTERACTABLE_CHARACTERS = ["Galilei", "Jonathan", "Madam", "Will"];

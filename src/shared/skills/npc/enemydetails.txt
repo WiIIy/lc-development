@@ -1,0 +1,143 @@
+//NOTES
+//SET BREAKJOINTS UPON DEATH TO FALSE ON ALL ENEMIES
+
+
+//there will be a debug UI wher i can fire the remote event to requestSpawnEnemy
+// -> spawn enemy enitity + enemy type. with the enemy type alone the game is able to determine the rest of the enemy behavior from a central EnemySettings data container.
+
+//provided points in the map
+// WalkablePoints (random points in the map, use for patrol, walk behavior)
+// SitPoints (may be none at all, for sitting behaviors)
+
+// Enemy class variables:
+// target: Player/Character;
+// surrendered: boolean;
+// alertness: number;
+// morale: number;
+// debuffs (TBA);
+// onPhone : boolean;
+// radioConnected : boolean;
+// onRadio : boolean;
+// chatting with other enemy: boolean;
+// wcsCharacter: Character; //contains their skills and stuff
+// enemyType: string; //this will determine what skills are attached to their wcsCharacter and what accessories show on them physically
+
+// Enemy class methods:
+// setTargetTo(player: Player);
+// lookatTarget(player: Player);
+
+//Central AI controls these enemies and sometimes triggers behaviors
+// A. Group enemies
+// 1.find 2/3 enemies
+// 2. make them walk alongside each other to another point and chat.
+
+// B. Make enemies chat
+// 1. make sure they are within 10 studs of each other. find a center point between them. make them face that center point. play animations on each one, maybe one talking and another listening, etc.
+
+// AI Controller (perhaps an entity?) owns data on
+// a list of valid cover positions for enemies to pathfind to
+// knows where all enemies are situated at the moment and triggers certain behaviors
+// ai controller will spawn an AlertSoundObject component everytime player makes a sound. gunshots have 40 points, they cause higher alert. cans have 25 points
+
+//--- all enemy behaviors ---
+// look at player/players
+// look at a certain direction if they hear loud noises from it
+// perceive getting looked at by a player (print "i am being looked at by a player right now")
+// backtrack
+// have a single player target at a time (whether just to look at or to attack or chase)
+// flee (civilians will find the nearest exit point, )
+// run as far away as they can from the threat (finding furthest point in the walkablepoints )
+// sit on chair (Maps will have sitting spot attachments to indicate spots they can sit on)
+// sit on ground (Maps will have sitting spot attachments to indicate spots they can sit on)
+// walk around, randomly picking points in the map to traverse to  (Maps will have walk destination attachments to indicate spots they can go to)
+// be on their phone (distracted), enemy settings will have 1.a frequency of phone checking (once every minute - 3 times every minute) and 2. length of each check in (could be one long watching their screen, could be brief)
+// walk in groups of 2 or 3 (AI controller will sometimes grab 2 or 3 enemies within 10 studs of one another, either make them a. chat or b. sit while chatting if possible)
+// chat with another enemy (also distracted)
+// civilians can enter and leave vicinity through exit doors/points but armed enemies youre supposed to fight will not leave the vicinity
+
+// get alerted if player stares too much or is seen wielding a weapon, get even more alerted if more players stare at them. this will be controlled by an alertness status.
+// alertness starts at 0 and at 100 enemies will actively seek you if you hide or engage in combat if youre within line of sight.
+// alertness multipliers per enemy type also exists
+// if multiplier is high it's easier to get them to alert/get suspicious of you.
+// if multiplier is low, they'll be easier to pass by without getting suspicious
+// the inconspicuous skill makes it even lower
+// the tourist skill makes this null. enemies wont be suspicious of you at all even if you hold a weapon or yell. you're one of them until you randomly fire your weapon randomly or swing your melee at someone.
+// actions that trigger alertness include:
+//      wielding a weapon (i will add suspicion levels to items, 1 is normal (+0 alertness/second seen), 2 is moderate(+4 alertness/second seen), 3 is definitely hostile(+25 alertness/second seen))
+//      hearing gunshots through walls. (+40 alertness/shot)
+//      seeing you shoot a gun (+100 alertness)
+//      witnessing you kill someone (+100 alertness)
+//      be within 15 studs of a yelling player (+10 alertness)
+//      be stared at by 1 player (+4/second seen)
+//      finding a weapon on the ground (+20, will traverse to alert 1-3 other enemies closeby and increase their alertness too. if they have a radio they will use that to alert all other radio connected enemies instead)
+//      throwing an item that makes noise on the ground like a can (+25 alertness), if at 50 alertness for a few seconds, they will start to investigate the sound source.
+//      if alertness is below 60 they can still brush it off and return to 0 given enough time, anything beyond that they'll have 60 alertness minimum.
+
+// surrender if surrender chance is high and getting yelled at, some enemies cant be forced to surrender. other actions that influence surrender stat is having another enemy get killed by the player within a 30 stud radius of them, hearing gunshots. this stat will be called the Morale status, 100 means 100 chance of surrender, if enemy has no morale status they will never kneel and surrender. starting at 0 morale, they also have a morale multiplier.
+// if the multiplier is high, an enemy easy to get to surrender, (+10 morale on yell, +20 on hearing loud gunshots, +30 on watching others die).
+// if multiplier is medium they are more stubborn and it's harder to get them to surrender (+6 morale on yell, +10 on hearing loud gunshots, +18 on watching others die).
+// if multiplier is low they are really stubborn, like gerard scott (+3 morale on yell, +3 on hearing loud gunshots, +3 on watching others die).
+// they will essentially have a math.random(0,morale/100) chance to get the enemy to surrender.
+
+//some enemies
+// can parry, melee or not (if they can parry, they have A. parry length (if they parry for 3 seconds the player can bash them to stun them for 2 seconds, it's a bigger window, some enemies parry precisely, maybe 1 second when they predict the player will start attacking) B. backtrack amount (some stay still or backtrack a little bit while parrying)),
+// can shove (melee) or bash (gun) ()
+// can fake surrender (fake civilians only)
+// are connected by a radio network and sometimes check in with the radio while walking or standing still
+// patrol around a few set points around the map. they mostly roam freely
+// don't leave their assigned post
+
+//melee enemies
+// can heavy hit
+// can light hit
+// dodge your attack by dashing to either left or right side
+// do a lunge animation at you.
+
+//gun enemies
+//typically find cover once they're alerted.
+
+//melee enemy can wield:
+// golok
+// celurit
+// baseball bat
+// lobotomizer
+
+//details for current behaviors, keep in mind Debug NPCS have omniscience set to false so they're able to lose track of the player
+//Technical details of NPC losing track of a player
+//Once player goes out of sight (ex: turned a corner) enemy will save that last spot as the spot where the player is last seen
+//Enemy will approach that point trying to look for the player
+//They will pick a random walk point out of the 5 points closest to them (on the walkpoint container). this is to simulate investigating
+//If they lose sight they will return to default civilian behavior(wandering) until they regain sight of the player.
+
+// 1. The follower
+//
+// Follows closest player until LOS cant be maintained (unless omniscient, omniscient means the npc keeps following you no matter how you try to hide)
+// defaults to walktopoint (complex pathfinding) to navigate to player model
+// if close, to save compute time, uses stepTransformTowards (this function makes npcn simply walk directly to the player's spot.)
+
+// 2. The Distancer
+//
+// Maintains distance between itself and the player while keeping line of sight and maintaining distance
+// If player advances they will back up
+// If player backs up, they will advance
+// If player advances and they're limited by a wall behind them, use escape vector to find another direction to maintain distance
+// If vision to player is obscured by wall, they'll pathfind to the player
+// - If they are within distance AND have vision, they will stop walking towards the player
+// - If they are within distance and dont have vision, continue pathfinding to player
+// - If they are outside of distance and have vision, close the gap to maintain distance
+// - If they are outside of distance and don't have vision, pathfind until the conditions above are met
+// Defaults to civilian behaviors if no players in sight (unless omniscient)
+//
+// 3. The Stalker
+//
+// Slowly walks towards the player, trying to be discrete, maintains LOS, "watching you"
+// Falls back to normal civilian behavior once they've lost sight of player (unless omniscient = true)
+// More or less the same as the follower
+//
+// 4. Civilian
+// Stands around and walks to random points specified on the WalkablePoints
+// To avoid clumping, the numbers of npcs on a point is kept track so npcs would prefer to pathfind to empty walkable points. Also add a random offset on the walkpoint everytime a Civilian chooses them so it doesnt look like they're mechanically in one spot
+// To avoid duplicate npcs when possible, the outfits are counted and 2 of the same looking characters will only exist once theres 1 instance of every character in the outfits folder
+// On the creation of a stimulus (yelling/threats, weapons, gunshots) a civilian will get an increase in alertness depending on the stimulus type.
+// On certain alertness levels, civilians have a possibility of persistently pursuing until their alertness stat goes down to below 50 (suspicious), on this state they'll get the behaviors similar to the stalker but with full walkspeed
+// On the creation of a sound or visual stimulus, civilians will look at or walk to the source to check on it before getting an increase in alertness
