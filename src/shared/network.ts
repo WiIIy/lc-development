@@ -4,11 +4,8 @@ import Replecs from "@rbxts/replecs";
 import Net, { Route } from "@rbxts/yetanothernet";
 
 import world from "./world";
-import { DialogueParams } from "./types/dialogueProducer";
-import { Skill, SkillConstructor } from "@rbxts/wcs";
-import { ItemData } from "./data/InventoryState";
-import { DossierData } from "./data/ProfileData";
 import { StimulusChannel } from "./components/components";
+import { SkillConstructor } from "@rbxts/wcs";
 export const replicator = Replecs.create(world);
 
 // ---- flamework remotes ----//

@@ -1,7 +1,7 @@
 //honestly i think the range is useless im gonna keep all the range uniform at 14 for consistency
 export type DamageType = "Blunt" | "Bleed" | "Pierce" | "Fire" | "Poison" | "Chemical" | "Bullet"
 
-export const MELEE_WEAPON_STATS = {
+export const MELEE_SETTINGS = {
 	// Certain blunt weapons can inflict
 	Baseballbat: {
 		LightAttackDamage: 14,

@@ -1,6 +1,6 @@
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { isAiming } from "shared/atoms";
-import { enableDisableParticlesLights } from "shared/utils/enableDisableParticlesLights";
+import { isAiming } from "shared/sharedAtoms";
+import { enableDisableParticlesLights } from "shared/utils/visual/toggleParticlesNLights";
 
 @SkillDecorator
 export class Flashlight extends Skill {

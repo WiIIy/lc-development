@@ -1,8 +1,8 @@
 import { Players, ReplicatedStorage, Workspace } from "@rbxts/services";
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { mouseRaycast } from "shared/utils/clientutils/mouseRaycast";
 import { ServerContext } from "shared/ServerContext";
-import { deserializeColor3 } from "shared/data/ProfileData";
+import { mouseRaycast } from "shared/utils/input/mouseRaycast";
+import { deserializeColor3 } from "shared/utils/profile/colorSerdes";
 
 @SkillDecorator
 export class Mark extends Skill {

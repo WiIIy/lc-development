@@ -1,6 +1,4 @@
 import { ReplicatedStorage } from "@rbxts/services";
-import type { DamageRequest } from "server/services/DamageService";
-import { ProfileData } from "./data/ProfileData";
 import { Profile } from "@rbxts/profile-store";
 import { Entity } from "@rbxts/replecs/out/jecs";
 

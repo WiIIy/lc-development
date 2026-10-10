@@ -8,34 +8,24 @@
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
 import { Debris, HttpService, Players, ReplicatedStorage, RunService, TweenService, Workspace } from "@rbxts/services";
 import { ClientContext } from "shared/ClientContext";
-import { ref } from "@rbxts/jecs-utils";
 import { Entity, pair, Wildcard } from "@rbxts/jecs";
 import Components from "shared/components/components";
 import world from "shared/world";
-import {
-	ALL_FIREARM_SETTINGS,
-	BULLET_CONTAINER,
-	FirearmBehavior,
-	FirearmCaster,
-	RANDOM_CASING_DIRECTION,
-} from "shared/data/GunSettings";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { getPlayersCururentlyHeldItem } from "shared/utils/getPlayersCurrentlyHeldItemm";
-import { mouseRaycast } from "shared/utils/clientutils/mouseRaycast";
-import { isAiming } from "shared/atoms";
-import { ActiveCast } from "@rbxts/fastcast";
-import { applyKnockback } from "shared/utils/ragdollCharacter";
+import { ref } from "@willy/jecs-utils";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { FirearmCaster, FIREARM_SETTINGS, FirearmBehavior, BULLET_CONTAINER, RANDOM_CASING_DIRECTION } from "shared/data/items/stats/gunStats";
 import { ServerContext } from "shared/ServerContext";
-import { breakLocalGlass } from "shared/utils/clientutils/breakLocalGlass";
-// import { shakePlayerScreen } from "shared/utils/skillclientutils";
-import { leftRightInst } from "shared/utils/cameraShakes";
+import { isAiming } from "shared/sharedAtoms";
+import { getPlayersCururentlyHeldItem } from "shared/utils/ecs/getHeldItem";
+import { mouseRaycast } from "shared/utils/input/mouseRaycast";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { breakLocalGlass } from "shared/utils/visual/breakLocalGlass";
 import CameraShaker from "@rbxts/camera-shaker";
 
 FirearmCaster.RayHit.Connect((cast, result, velocity) => {
 	const data = cast.UserData as {
 		firearmName: string;
-		settings: typeof ALL_FIREARM_SETTINGS.M10;
+		settings: typeof FIREARM_SETTINGS.M10;
 		char: Model;
 		origin: Vector3;
 	};
@@ -98,7 +88,7 @@ export class BaseFirearmSkill extends Skill {
 	// --- State ---
 	magOut = false;
 	protected isAiming = false;
-	protected firearmSettings: typeof ALL_FIREARM_SETTINGS[keyof typeof ALL_FIREARM_SETTINGS] | undefined;
+	protected firearmSettings: typeof FIREARM_SETTINGS[keyof typeof FIREARM_SETTINGS] | undefined;
 	protected muzzleAttachment: Attachment | undefined;
 	protected ejectAttachment: Attachment | undefined;
 	protected firearmName: string | undefined;
@@ -193,7 +183,7 @@ export class BaseFirearmSkill extends Skill {
 				// I am the shooter. If a casing name was sent, find it and hide it.
 				if (casingName !== undefined) {
 					// Use WaitForChild with a short timeout (e.g., 1 second) to handle the replication lag
-					const serverCasing = Workspace.BulletContainer.WaitForChild(casingName, 1) as BasePart | undefined;
+					const serverCasing = Workspace.Containers.BulletContainer.WaitForChild(casingName, 1) as BasePart | undefined;
 
 					if (serverCasing) {
 						serverCasing.Transparency = 1;
@@ -212,7 +202,7 @@ export class BaseFirearmSkill extends Skill {
 			return;
 		}
 
-		this.firearmSettings = ALL_FIREARM_SETTINGS[item as keyof typeof ALL_FIREARM_SETTINGS];
+		this.firearmSettings = FIREARM_SETTINGS[item as keyof typeof FIREARM_SETTINGS];
 		// print(item);
 		// print(this.firearmSettings);
 
@@ -764,7 +754,7 @@ export class BaseFirearmSkill extends Skill {
 		if (RunService.IsServer()) {
 			const casing = casingTemplate.Clone() as MeshPart;
 			casing.CFrame = originCFrame;
-			casing.Parent = Workspace.BulletContainer;
+			casing.Parent = Workspace.Containers.BulletContainer;
 			casing.CanCollide = true;
 			casing.Anchored = false;
 
@@ -780,7 +770,7 @@ export class BaseFirearmSkill extends Skill {
 		if (RunService.IsClient()) {
 			const casing = casingTemplate.Clone() as MeshPart;
 			casing.CFrame = originCFrame;
-			casing.Parent = Workspace.BulletContainer;
+			casing.Parent = Workspace.Containers.BulletContainer;
 			casing.CanCollide = true;
 			casing.Anchored = false;
 

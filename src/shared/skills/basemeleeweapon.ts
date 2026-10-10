@@ -2,14 +2,14 @@ import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
 import { t } from "@rbxts/t";
 import { ReplicatedStorage, Workspace } from "@rbxts/services";
 import world from "shared/world";
-import { ref } from "@rbxts/jecs-utils";
-import Components from "shared/components/components";
-import { Entity, pair, Wildcard } from "@rbxts/jecs";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { MELEE_WEAPON_STATS } from "shared/data/MeleeWeaponSettings";
-import { mouseRaycast } from "shared/utils/clientutils/mouseRaycast";
-import { breakLocalGlass } from "shared/utils/clientutils/breakLocalGlass";
+import { Components } from "../components/components";
+import { pair, Wildcard } from "@rbxts/replecs/out/jecs";
+import { ref } from "@willy/jecs-utils";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { MELEE_SETTINGS } from "shared/data/items/stats/meleeStats";
+import { mouseRaycast } from "shared/utils/input/mouseRaycast";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { breakLocalGlass } from "shared/utils/visual/breakLocalGlass";
 
 //TODO, add lhit and hhit Sounds to handle of template model
 
@@ -17,7 +17,7 @@ import { breakLocalGlass } from "shared/utils/clientutils/breakLocalGlass";
 export class MeleeWeapon extends Skill {
 	viewmodel: Model | undefined;
 	meleeWeaponString: string | undefined;
-	stats: typeof MELEE_WEAPON_STATS[keyof typeof MELEE_WEAPON_STATS] | undefined;
+	stats: typeof MELEE_SETTINGS[keyof typeof MELEE_SETTINGS] | undefined;
 
 	vmAnimationSet: typeof ANIMATION_IDS.viewmodel[keyof typeof ANIMATION_IDS.viewmodel] | undefined;
 	charAnimationSet: typeof ANIMATION_IDS.item[keyof typeof ANIMATION_IDS.item] | undefined;
@@ -79,9 +79,9 @@ export class MeleeWeapon extends Skill {
 			const playerEntity = ref.find(player);
 			const name = world.get(playerEntity!, pair(Components.CurrentlyEquipped, Wildcard)) ?? "None";
 			this.meleeWeaponString = name;
-			this.stats = MELEE_WEAPON_STATS[this.meleeWeaponString as keyof typeof MELEE_WEAPON_STATS];
+			this.stats = MELEE_SETTINGS[this.meleeWeaponString as keyof typeof MELEE_SETTINGS];
 			if (!this.stats) {
-				print("no stats in MELEE_WEAPON_STATS check again");
+				print("no stats in MELEE_SETTINGS check again");
 			}
 		}
 
@@ -109,7 +109,7 @@ export class MeleeWeapon extends Skill {
 
 			this.meleeWeaponString = name;
 			const animationSet = ANIMATION_IDS.item[this.meleeWeaponString as keyof typeof ANIMATION_IDS.item];
-			this.stats = MELEE_WEAPON_STATS[this.meleeWeaponString as keyof typeof MELEE_WEAPON_STATS];
+			this.stats = MELEE_SETTINGS[this.meleeWeaponString as keyof typeof MELEE_SETTINGS];
 
 			if (animationSet) {
 				this.charAnimationSet = animationSet;
@@ -152,7 +152,7 @@ export class MeleeWeapon extends Skill {
 				const name = world.get(playerEntity, pair(Components.CurrentlyEquipped, Wildcard));
 				if (name !== undefined) {
 					this.meleeWeaponString = name;
-					this.stats = MELEE_WEAPON_STATS[this.meleeWeaponString as keyof typeof MELEE_WEAPON_STATS];
+					this.stats = MELEE_SETTINGS[this.meleeWeaponString as keyof typeof MELEE_SETTINGS];
 
 					// Also refresh animation set
 					const animationSet =

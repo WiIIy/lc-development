@@ -1,8 +1,6 @@
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
 import { ContextActionService, Debris, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
 import { BaseFirearmSkill } from "./basefirearmskill";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
 
 @SkillDecorator
 export class Smg extends BaseFirearmSkill {

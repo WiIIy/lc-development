@@ -1,4 +1,4 @@
-type EnemyType = typeof import("../data/InventoryState").ENEMY_TYPES[number];
+type EnemyType = typeof import("../../data/npcs/enemyTypes").ENEMY_TYPES[number];
 
 type WorldEntityData = {
 	WorldEntityCount: number;

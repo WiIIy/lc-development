@@ -23,6 +23,9 @@
 					},
 					"@flamework": {
 						"$path": "node_modules/@flamework"
+					},
+					"@willy": {
+						"$path": "node_modules/@willy"
 					}
 				}
 			},

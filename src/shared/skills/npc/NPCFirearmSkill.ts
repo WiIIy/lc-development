@@ -1,17 +1,17 @@
 import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { Debris, RunService, Workspace } from "@rbxts/services";
-import { ref } from "@rbxts/jecs-utils";
+import { ref } from "@willy/jecs-utils";
 import world from "shared/world";
 import Components from "shared/components/components";
-import { ALL_FIREARM_SETTINGS, FirearmBehavior, FirearmCaster } from "shared/data/GunSettings";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { getNPCCururentlyHeldItem } from "shared/utils/getPlayersCurrentlyHeldItemm";
 import { BaseEnemySkill } from "./baseEnemySkill";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { FIREARM_SETTINGS, FirearmBehavior, FirearmCaster } from "shared/data/items/stats/gunStats";
+import { getNPCCururentlyHeldItem } from "shared/utils/ecs/getHeldItem";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
 @SkillDecorator
 export class NPCFirearmSkill extends Skill {
-	protected firearmSettings: typeof ALL_FIREARM_SETTINGS[keyof typeof ALL_FIREARM_SETTINGS] | undefined;
+	protected firearmSettings: typeof FIREARM_SETTINGS[keyof typeof FIREARM_SETTINGS] | undefined;
 	protected muzzleAttachment: Attachment | undefined;
 	protected firearmName: string | undefined;
 	protected serverHandle: BasePart | undefined;
@@ -40,7 +40,7 @@ export class NPCFirearmSkill extends Skill {
 			const handle = modelComponent?.baseModel?.FindFirstChild("handle") as BasePart;
 
 			this.firearmName = getNPCCururentlyHeldItem(this.Character.Instance as Model);
-			this.firearmSettings = ALL_FIREARM_SETTINGS[this.firearmName as keyof typeof ALL_FIREARM_SETTINGS];
+			this.firearmSettings = FIREARM_SETTINGS[this.firearmName as keyof typeof FIREARM_SETTINGS];
 			this.serverHandle = handle;
 			// print(handle)
 			this.muzzleAttachment = handle?.FindFirstChild("Muzzle") as Attachment;
@@ -166,7 +166,7 @@ export class NPCFirearmSkill extends Skill {
 		return true;
 	}
 
-	public reload(gunSettings: typeof ALL_FIREARM_SETTINGS[keyof typeof ALL_FIREARM_SETTINGS]): boolean {
+	public reload(gunSettings: typeof FIREARM_SETTINGS[keyof typeof FIREARM_SETTINGS]): boolean {
 		const enemyEntity = ref.get(this.Character.Instance as Model);
 		if (enemyEntity === undefined) return false;
 

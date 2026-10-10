@@ -1,11 +1,12 @@
-import { ref } from "@rbxts/jecs-utils";
+import { ref } from "@willy/jecs-utils";
 import { Workspace, ReplicatedStorage } from "@rbxts/services";
 import { HoldableSkill, Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtils } from "shared/utils/animationUtil";
+
 import { Entity, pair, Wildcard } from "@rbxts/jecs";
 import Components from "shared/components/components";
 import world from "shared/world";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
 @SkillDecorator
 export class Parry extends Skill {

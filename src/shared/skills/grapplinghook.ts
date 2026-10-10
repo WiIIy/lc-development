@@ -1,9 +1,10 @@
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
 import { Players, ReplicatedStorage, Workspace } from "@rbxts/services";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { mouseRaycast } from "shared/utils/clientutils/mouseRaycast";
-import { ALL_ITEMS } from "shared/data/InventoryState";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { ALL_ITEMS } from "shared/data/items/all";
+import { mouseRaycast } from "shared/utils/input/mouseRaycast";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+
 
 @SkillDecorator
 export class GrapplingHook extends Skill {

@@ -5,7 +5,6 @@ import { Name, Archetype, Entity, pair } from "@rbxts/jecs";
 import world from "../world";
 import { Character } from "@rbxts/wcs";
 import { HttpService } from "@rbxts/services";
-import { ItemData } from "../data/InventoryState";
 
 export type MeleeAnimationData = {
 	lightAttack: string;
@@ -17,16 +16,6 @@ export type ItemContainerObject = {
 	model: Model;
 	attachmentFolder: Folder;
 };
-export type BodyPart = "Head" | "Torso" | "Left Arm" | "Right Arm" | "Left Leg" | "Right Leg";
-
-export interface StatusEffect {
-	id: string; // "Bleeding", "Fracture", "Blindness"
-	bodyPart?: BodyPart | "Left Eye" | "Right Eye"; // Optional location
-	startTime?: number; // For timers
-	durationLeft?: number; //seconds
-	type: "debuff" | "buff"; //controls whether theyre displayed on the first row of status displays or the 2nd
-	//if durationleft variable exists it will display with a ui corner radius (circular status icons indicate that it's timed)
-}
 
 export class Components {
 	static Transform = world.component<CFrame>(); //this is replicated
@@ -171,7 +160,6 @@ export class Components {
 	static SetToSearch = world.entity();
 	static SittingTimer = world.component<number>();
 
-
 	// Looking behaviors
 	static LookAtTarget = world.component<Entity>();
 	static LookAtPosition = world.component<Vector3>();
@@ -180,7 +168,6 @@ export class Components {
 
 	static ShowPathfinding = world.entity();
 	static Highlighted = world.entity();
-	
 
 	static Merchant = world.component<{ merchantName: string; wares: [] }>();
 
@@ -263,7 +250,7 @@ export const EnemyTypeArray = [
 	"Futile",
 ] as const;
 
-export const enemyList: readonly EnemyType[] = EnemyTypeArray; // Use it as a string array (readonly)
+// export const enemyList: readonly EnemyType[] = EnemyTypeArray; // Use it as a string array (readonly)
 export type Faction = "Faction1" | "Faction2";
 
 //names every component

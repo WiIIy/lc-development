@@ -24,7 +24,7 @@ type GameMap = Folder & {
 };
 type SlotType = "Hotbar" | "Backpack";
 
-interface ReplicatedStorage extends CAAssets {
+interface ReplicatedStorage {
 	bullet: Part;
 	Grenade: MeshPart;
 	CAAssets: CAAssets;
@@ -45,16 +45,19 @@ interface Workspace {
 	// 		Animator: Animator;
 	// 	};
 	// };
-	TestMap: GameMap;
-	shelf: ItemContainer;
-	ThrowableContainer: Folder;
-	BulletContainer: Folder;
-	EnemyContainer: Folder;
+	// TestMap: GameMap;
+	// shelf: ItemContainer;
 
-	Mirror: Model & {
-		Mirror: BasePart;
-		RenderPart: BasePart;
+	Containers: Folder & {
+		ThrowableContainer: Folder;
+		BulletContainer: Folder;
+		EnemyContainer: Folder;
 	};
+
+	// Mirror: Model & {
+	// 	Mirror: BasePart;
+	// 	RenderPart: BasePart;
+	// };
 }
 
 interface ReplicatedStorage {

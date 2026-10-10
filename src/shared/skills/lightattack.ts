@@ -11,15 +11,15 @@
 //
 //
 //
-import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import world from "shared/world";
-import { ref } from "@rbxts/jecs-utils";
-import Components from "shared/components/components";
-import { MELEE_WEAPON_STATS } from "shared/data/MeleeWeaponSettings";
-import { mouseRaycast } from "shared/utils/clientutils/mouseRaycast";
+import { Components } from "../components/components";
 import { Workspace } from "@rbxts/services";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
+import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
+import { ref } from "@willy/jecs-utils";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { MELEE_SETTINGS } from "shared/data/items/stats/meleeStats";
+import { mouseRaycast } from "shared/utils/input/mouseRaycast";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import world from "shared/world";
 
 @SkillDecorator
 export class LightAttack extends Skill {
@@ -61,7 +61,7 @@ export class LightAttack extends Skill {
 
 			this.SyncWeaponClient(name);
 
-			const stats = MELEE_WEAPON_STATS[name as keyof typeof MELEE_WEAPON_STATS];
+			const stats = MELEE_SETTINGS[name as keyof typeof MELEE_SETTINGS];
 			if (stats) {
 				this.doRaycast(stats.range, stats.LightAttackDamage);
 			}

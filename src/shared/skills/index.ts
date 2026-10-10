@@ -1,5 +1,5 @@
 export * from "./dash";
-export * from "./grenade";
+// export * from "./grenade";
 export * from "./pistol";
 export * from "./smg";
 export * from "./throw";

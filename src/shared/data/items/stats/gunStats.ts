@@ -190,14 +190,14 @@ export const SNIPER_SETTINGS = {
 	},
 };
 
-export const ALL_FIREARM_SETTINGS = {
+export const FIREARM_SETTINGS = {
 	...PISTOL_SETTINGS,
 	...SMG_SETTINGS,
 	...RIFLE_SETTINGS,
 	...SNIPER_SETTINGS,
 };
 
-export const BULLET_CONTAINER = Workspace.BulletContainer;
+export const BULLET_CONTAINER = Workspace.Containers.BulletContainer;
 
 export type tracer = Model & {
 	Beam: Beam;

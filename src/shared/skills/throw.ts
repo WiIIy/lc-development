@@ -2,23 +2,17 @@
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
 import world from "shared/world";
 import { Debris, Players, ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
-import { ref } from "@rbxts/jecs-utils";
 import { Entity, pair, Wildcard } from "@rbxts/jecs";
 import Components from "shared/components/components";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import {
-	ThrowablCaster,
-	THROWABLE_CONTAINER,
-	THROWABLE_SETTINGS,
-	ThrowableBehavior,
-} from "shared/data/ThrowableSettings";
-import { setDescendantCollisionGroup } from "shared/utils/setBasepartCollisionGroup";
 import Make from "@rbxts/make";
-import { getPlayersCururentlyHeldItem } from "shared/utils/getPlayersCurrentlyHeldItemm";
-import { ItemAssets } from "shared/data/InventoryState";
 import { ActiveCast } from "@rbxts/fastcast";
 import { ServerContext } from "shared/ServerContext";
+import { ref } from "@willy/jecs-utils";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { ItemAssets } from "shared/data/items/modelassets";
+import { ThrowablCaster, THROWABLE_SETTINGS, THROWABLE_CONTAINER, ThrowableBehavior } from "shared/data/items/stats/throwableStats";
+import { getPlayersCururentlyHeldItem } from "shared/utils/ecs/getHeldItem";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
 //caster is OUTSIDE of the skill because we dont want to create multiple instances
 //this also allows the trajectory continue whether the skill is deleted or not.

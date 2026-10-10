@@ -1,17 +1,15 @@
 // here we go
-import { ref } from "@rbxts/jecs-utils";
 import Make from "@rbxts/make";
 import { Entity } from "@rbxts/jecs";
 import { PathfindingService, Players, RunService, TweenService, Workspace } from "@rbxts/services";
 import { Character, Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { enemyList } from "shared/atoms";
 import { Components } from "shared/components/components";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtil, AnimationUtils } from "shared/utils/animationUtil";
-import { getCoverSpotsInRadius } from "shared/utils/getValidCoverSpots";
 import world from "shared/world";
-import { debugDrawWaypoints } from "shared/utils/drawWaypoints";
-import { setDescendantsNetworkOwner } from "shared/utils/setDescendantNetworkOwner";
+import { ref } from "@willy/jecs-utils";
+import { getCoverSpotsInRadius } from "shared/utils/npc/pathfinding/getCoverSpotInRadius";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { setDescendantsNetworkOwner } from "shared/utils/world/setDescendant";
+import { enemyList } from "shared/sharedAtoms";
 
 //essentially a behavior container. ecs systems will call them
 //no client code, enemies are serverside

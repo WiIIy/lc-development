@@ -1,19 +1,16 @@
 import { Players, ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { hotbarLocked } from "shared/atoms";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { ItemAssets, ItemContainer } from "shared/data/InventoryState";
-import {
-	THROWABLE_SETTINGS,
-	ThrowableBehavior,
-	ThrowablCaster,
-	THROWABLE_CONTAINER,
-} from "shared/data/ThrowableSettings";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { ItemAssets } from "shared/data/items/modelassets";
+import { THROWABLE_SETTINGS, ThrowableBehavior, ThrowablCaster, THROWABLE_CONTAINER } from "shared/data/items/stats/throwableStats";
+import { ItemContainer } from "shared/data/paths";
+
 import { ServerContext } from "shared/ServerContext";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { enableDisableParticlesLights } from "shared/utils/enableDisableParticlesLights";
-import { getPlayersCururentlyHeldItem } from "shared/utils/getPlayersCurrentlyHeldItemm";
-import { sayMonologue } from "shared/utils/sayMonologue";
+import { hotbarLocked } from "shared/sharedAtoms";
+import { sayMonologue } from "shared/utils/ui/sayMonologue";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { enableDisableParticlesLights } from "shared/utils/visual/toggleParticlesNLights";
+
 
 @SkillDecorator
 export class Molotov extends Skill {

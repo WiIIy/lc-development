@@ -9,13 +9,11 @@ import Components from "shared/components/components";
 import { Entity, Id, Name, pair, TagDiscriminator, Wildcard } from "@rbxts/jecs";
 import {
 	Dash,
-	Grenade,
 	Pistol,
 	Smg,
 	Throw,
 	MeleeWeapon,
 	Parry,
-	Rifle,
 	Sniper,
 	GrapplingHook,
 	Chainsaw,
@@ -24,7 +22,6 @@ import {
 	Lighter,
 	Walkman,
 	Flashlight,
-	Drone,
 } from "shared/skills";
 import none from "shared/movesets/none";
 import { Character, Skill } from "@rbxts/wcs";
@@ -64,7 +61,7 @@ import {
 	AccessoryAddingCallBack,
 	ItemAccessoryContainer,
 } from "shared/data/items/accessories/accessoryCode";
-import { ALL_FIREARM_SETTINGS } from "shared/data/items/stats/gunStats";
+import { FIREARM_SETTINGS } from "shared/data/items/stats/gunStats";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { giveCharacterAccessory } from "shared/utils/visual/giveCharacterAccessory";
 import { createEmptyItem } from "shared/utils/profile/createEmptyItem";
@@ -86,7 +83,7 @@ const SKILL_REGISTRY = [
 	{ items: ALL_PISTOLS, skill: Pistol },
 	{ items: ALL_SMGS, skill: Smg },
 	{ items: ALL_MELEE_WEAPONS, skill: MeleeWeapon },
-	{ items: ALL_RIFLES, skill: Rifle },
+	// { items: ALL_RIFLES, skill: Rifle },
 	{ items: ALL_SNIPERS, skill: Sniper },
 	{ items: CHAINSAW, skill: Chainsaw },
 	{ items: MOLOTOV, skill: Molotov },
@@ -94,7 +91,7 @@ const SKILL_REGISTRY = [
 	{ items: JERRYCAN, skill: Jerrycan },
 	{ items: LIGHTER, skill: Lighter },
 	{ items: WALKMAN, skill: Walkman },
-	{ items: DRONE, skill: Drone },
+	// { items: DRONE, skill: Drone },
 	{ items: ANTLER, skill: Antler },
 ];
 
@@ -470,7 +467,7 @@ export class InventoryService implements OnStart {
 
 			if (!existingEntity) {
 				if (ALL_FIREARMS.includes(itemName)) {
-					const capacity = ALL_FIREARM_SETTINGS[itemName as keyof typeof ALL_FIREARM_SETTINGS].CAPACITY;
+					const capacity = FIREARM_SETTINGS[itemName as keyof typeof FIREARM_SETTINGS].CAPACITY;
 					newItem.currentAmmo = capacity;
 					newItem.maxAmmo = capacity;
 				}
@@ -519,11 +516,11 @@ export class InventoryService implements OnStart {
 			return false;
 		}
 
-		const droneSkill = wcsChar?.GetSkillFromConstructor(Drone);
-		if (droneSkill?.isViewingFeed) {
-			print("drone is viewing feed cant switch slots");
-			return false;
-		}
+		// const droneSkill = wcsChar?.GetSkillFromConstructor(Drone);
+		// if (droneSkill?.isViewingFeed) {
+		// 	print("drone is viewing feed cant switch slots");
+		// 	return false;
+		// }
 
 		if (!VALID_HOTBAR_SLOTS.includes(slotNumber)) {
 			warn(`[SetCurrentSlot] Player ${player.Name} attempted to set invalid slot: ${slotNumber}`);
@@ -840,7 +837,7 @@ export class InventoryService implements OnStart {
 			}
 
 			if (ALL_FIREARMS.includes(item.name)) {
-				const capacity = ALL_FIREARM_SETTINGS[item.name as keyof typeof ALL_FIREARM_SETTINGS].CAPACITY;
+				const capacity = FIREARM_SETTINGS[item.name as keyof typeof FIREARM_SETTINGS].CAPACITY;
 				world.set(itemEntity, Components.ChamberedAmmo, capacity);
 				item.currentAmmo = item.currentAmmo ?? capacity;
 				item.maxAmmo = item.maxAmmo ?? capacity;
@@ -881,7 +878,7 @@ export class InventoryService implements OnStart {
 
 			if (ALL_FIREARMS.includes(item.name)) {
 				const ammo = world.get(entity, Components.ChamberedAmmo);
-				const capacity = ALL_FIREARM_SETTINGS[item.name as keyof typeof ALL_FIREARM_SETTINGS].CAPACITY;
+				const capacity = FIREARM_SETTINGS[item.name as keyof typeof FIREARM_SETTINGS].CAPACITY;
 				if (ammo !== undefined) item.currentAmmo = ammo;
 				item.maxAmmo = capacity;
 			}

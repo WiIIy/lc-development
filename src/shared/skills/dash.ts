@@ -1,13 +1,11 @@
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
 import { CollectionService, ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
-import { ASSET_ID_PREFIX, AUDIO_PATH } from "shared/data/ImageIDs";
-import CameraShaker from "@rbxts/camera-shaker";
-import { leftRightInst } from "shared/utils/cameraShakes";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtil, AnimationUtils } from "shared/utils/animationUtil";
-import { ref } from "@rbxts/jecs-utils";
-import Components from "shared/components/components";
 import world from "shared/world";
+import { Components } from "../components/components";
+import { ref } from "@willy/jecs-utils";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { AUDIO_PATH } from "shared/data/paths";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
 @SkillDecorator
 export class Dash extends Skill {

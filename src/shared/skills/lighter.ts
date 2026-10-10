@@ -1,9 +1,9 @@
 import { CollectionService, ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { enableDisableParticlesLights } from "shared/utils/enableDisableParticlesLights";
 import { createFirePool } from "./throw";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { enableDisableParticlesLights } from "shared/utils/visual/toggleParticlesNLights";
 
 @SkillDecorator
 export class Lighter extends Skill {

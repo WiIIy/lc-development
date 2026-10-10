@@ -1,10 +1,10 @@
-import { ref } from "@rbxts/jecs-utils";
-import { Workspace, ReplicatedStorage, RunService, TweenService } from "@rbxts/services";
-import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { AUDIO_PATH } from "shared/data/ImageIDs";
-import { AnimationUtils } from "shared/utils/animationUtil";
-import { sayMonologue } from "shared/utils/sayMonologue";
+import { Workspace, ReplicatedStorage, TweenService } from "@rbxts/services";
+import { SkillDecorator, Skill, Message } from "@rbxts/wcs";
+import { ref } from "@willy/jecs-utils";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { AUDIO_PATH } from "shared/data/paths";
+import { sayMonologue } from "shared/utils/ui/sayMonologue";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
 @SkillDecorator
 export class Chainsaw extends Skill {

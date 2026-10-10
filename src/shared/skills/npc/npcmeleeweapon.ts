@@ -1,16 +1,16 @@
 import { Character, Skill, SkillDecorator } from "@rbxts/wcs";
 import { Workspace } from "@rbxts/services";
-import { ANIMATION_IDS } from "shared/data/AnimationIDs";
-import { NPC_SETTINGS } from "shared/data/NPCSettings";
 import { Parry } from "../parry";
-import { AnimationUtils } from "shared/utils/animationUtil";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { NPC_SETTINGS } from "shared/data/npcs/enemyTypes";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
 @SkillDecorator
 export class NPCMeleeWeapon extends Skill {
 	activeTarget: Model | undefined;
 	npcSettings: typeof NPC_SETTINGS[keyof typeof NPC_SETTINGS] | undefined;
 	characterName: string = "baseballBat"; // Default
-    characterModel: Model | undefined;
+	characterModel: Model | undefined;
 
 	private isAttacking = false;
 	private currentTrack: AnimationTrack | undefined;
