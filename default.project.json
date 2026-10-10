@@ -26,6 +26,9 @@
 					},
 					"@willy": {
 						"$path": "node_modules/@willy"
+					},
+					"@rbxts-js": {
+						"$path": "node_modules/@rbxts-js"
 					}
 				}
 			},

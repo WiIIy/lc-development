@@ -348,7 +348,7 @@ export function mountDossierMenu() {
 
 	if (!getDossierGenerated()) {
 		setDossierGenerated(true);
-		generateDossier(dossierCabinet);
+		// generateDossier(dossierCabinet);
 	}
 
 	if (!dossierMenuOpen()) {

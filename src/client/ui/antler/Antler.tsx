@@ -327,7 +327,7 @@ function NpcMenu(props: { OnBack: () => void }): Element {
 
 	type ExplicitOutfitsMap = { [folderName: string]: string[] };
  
-	const outfitFolders = ReplicatedStorage.CAAssets.outfits.GetChildren().filter((child) => child.IsA("Folder"));
+	// const outfitFolders = ReplicatedStorage.CAAssets.outfits.GetChildren().filter((child) => child.IsA("Folder"));
 	const explicitOutfits: ExplicitOutfitsMap = {};
 
 	const entityCount = useAtom(entityCountData);
@@ -345,15 +345,15 @@ function NpcMenu(props: { OnBack: () => void }): Element {
 		PlayerEntities: 67,
 	};
 
-	outfitFolders.forEach((folder) => {
-		if (folder.IsA("Folder")) {
-			const modelNames = folder
-				.GetChildren()
-				.filter((child): child is Model => child.IsA("Model"))
-				.map((model) => model.Name);
-			explicitOutfits[folder.Name] = modelNames;
-		}
-	});
+	// outfitFolders.forEach((folder) => {
+	// 	if (folder.IsA("Folder")) {
+	// 		const modelNames = folder
+	// 			.GetChildren()
+	// 			.filter((child): child is Model => child.IsA("Model"))
+	// 			.map((model) => model.Name);
+	// 		explicitOutfits[folder.Name] = modelNames;
+	// 	}
+	// });
 
 	useEffect(() => {
 		RemoteFunctions.getEntityCounts
@@ -366,9 +366,9 @@ function NpcMenu(props: { OnBack: () => void }): Element {
 			});
 	}, []);
 
-	const folderNames = outfitFolders
-		.filter((folder): folder is Folder => folder.IsA("Folder"))
-		.map((folder) => folder.Name);
+	// const folderNames = outfitFolders
+	// 	.filter((folder): folder is Folder => folder.IsA("Folder"))
+	// 	.map((folder) => folder.Name);
 
 	const [selectedOutfit, setSelectedOutfit] = useState<string>("Office");
 
@@ -542,7 +542,7 @@ function NpcMenu(props: { OnBack: () => void }): Element {
 							>
 								<uilistlayout FillDirection={"Vertical"} SortOrder={"Name"} />
 
-								{folderNames.map((folderName) => {
+								{/* {folderNames.map((folderName) => {
 									return (
 										<textbutton
 											Text={"<b>  " + folderName + " &gt; </b>"}
@@ -570,7 +570,7 @@ function NpcMenu(props: { OnBack: () => void }): Element {
 											}}
 										></textbutton>
 									);
-								})}
+								})} */}
 							</scrollingframe>
 						</frame>
 					)}

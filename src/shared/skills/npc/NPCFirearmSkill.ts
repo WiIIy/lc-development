@@ -126,7 +126,7 @@ export class NPCFirearmSkill extends Skill {
 		}
 
 		// 2. Play Sound
-		this.playSound(this.firearmSettings.FIRE_SOUND);
+		// this.playSound(this.firearmSettings.FIRE_SOUND);
 
 		// 3. FastCast Raycast execution
 		const castParams = new RaycastParams();

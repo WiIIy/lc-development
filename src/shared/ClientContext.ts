@@ -5,7 +5,7 @@ import CameraShaker, { CameraShakeInstance } from "@rbxts/camera-shaker";
 export interface IViewmodelController {
 	aimDistance: CFrame; //distance between aimpart and camera
 	aimOffset: CFrame; //offset to humanoidrootpart to bring AimPart to camera
-	viewmodel: typeof ReplicatedStorage.CAAssets.viewmodels.BaseViewmodel;
+	// viewmodel: typeof ReplicatedStorage.CAAssets.viewmodels.BaseViewmodel;
 	rootPart: Part;
 	camera: Camera;
 	item: Model | undefined;

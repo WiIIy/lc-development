@@ -9,7 +9,6 @@ import {
 } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
 import { Crouch } from "shared/skills/crouch";
-import { Antler } from "shared/skills/antler";
 import { ClientContext } from "shared/ClientContext";
 import { dossierMenuOpen, gameMenuOpen, dossierBuildingOpen, dossierEditingOpen, pointedItem, isDragging, pointedInstance, isThirdPerson, hideViewmodel } from "client/clientAtoms";
 import { RemoteEvents } from "client/network";
@@ -20,7 +19,7 @@ import { HIGHLIGHTABLE_ITEMS } from "shared/data/items/highlightable";
 import { KEYBINDS, inputIsKey, Action } from "shared/data/profile/defaultKeybinds";
 import { INTERACTABLE_CHARACTERS } from "shared/data/world/npcs";
 import { antlerDebuggerDisplaying, isAiming } from "shared/sharedAtoms";
-import { Throw, MeleeWeapon, Parry, Dash, GrapplingHook, Chainsaw, Molotov, Jerrycan, Lighter, Pistol, Sniper, Smg } from "shared/skills";
+import { MeleeWeapon, Dash } from "shared/skills";
 import { Mark } from "shared/skills/mark";
 import { mouseRaycast } from "shared/utils/input/mouseRaycast";
 import { getCoverSpotsInRadius } from "shared/utils/npc/pathfinding/getCoverSpotInRadius";
@@ -33,7 +32,7 @@ import { hideUnhideParts } from "client/clientutils/hideUnhideParts";
 
 let dossierGenerated: boolean;
 let camConn: RBXScriptConnection;
-let clone: typeof ReplicatedStorage.CAAssets.misc.dossierTemplate.DossierUIBackground;
+// let clone: typeof ReplicatedStorage.CAAssets.misc.dossierTemplate.DossierUIBackground;
 dossierGenerated = false;
 let carryingRagdoll: boolean = false;
 let draggingRagdoll: boolean = false;
@@ -236,13 +235,13 @@ function handleVentInteraction(target: Instance) {
 // ----------------- Logic Handlers -----------------
 const ActionHandlers: Record<Action, (char: Character, input: InputObject, active: boolean) => void> = {
 	[Action.LightAttack]: (char, input, active) => {
-		if (!active) return;
+		// if (!active) return;
 
-		// dont attack if throw mode active
-		const throwSkill = char.GetSkillFromConstructor(Throw);
-		if (throwSkill?.active) return;
+		// // dont attack if throw mode active
+		// const throwSkill = char.GetSkillFromConstructor(Throw);
+		// if (throwSkill?.active) return;
 
-		char.GetSkillFromConstructor(MeleeWeapon)?.lightAttack();
+		// char.GetSkillFromConstructor(MeleeWeapon)?.lightAttack();
 	},
 	[Action.Crouch]: (char, input, active) => {
 		if (!active) return;
@@ -265,15 +264,15 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 	},
 
 	[Action.ThrowItem]: (char, input, active) => {
-		if (!active) return;
+		// if (!active) return;
 
-		char.GetSkillFromConstructor(Throw)?.Throw();
+		// char.GetSkillFromConstructor(Throw)?.Throw();
 	},
 
 	[Action.ThrowMode]: (char, input, active) => {
-		if (!active) return;
+		// if (!active) return;
 
-		char.GetSkillFromConstructor(Throw)?.toggleThrowMode();
+		// char.GetSkillFromConstructor(Throw)?.toggleThrowMode();
 	},
 
 	[Action.Grenade]: (char, input, active) => {
@@ -287,50 +286,50 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 
 	[Action.HeavyAttack]: (char, input, active) => active && char.GetSkillFromConstructor(MeleeWeapon)?.heavyAttack(),
 	[Action.Parry]: (char, input, active) => {
-		if (isAiming()) {
-			print("cant parry while aiming");
-			return;
-		}
+		// if (isAiming()) {
+		// 	print("cant parry while aiming");
+		// 	return;
+		// }
 
-		active ? char.GetSkillFromConstructor(Parry)?.startParry() : char.GetSkillFromConstructor(Parry)?.stopParry();
+		// active ? char.GetSkillFromConstructor(Parry)?.startParry() : char.GetSkillFromConstructor(Parry)?.stopParry();
 	},
 	[Action.Dash]: (char, input, active) => active && char.GetSkillFromConstructor(Dash)?.Dash(),
 	[Action.GrapplingHook]: (char, input, active) => {
-		if (!active) return;
-		const grappleSkill = char.GetSkillFromConstructor(GrapplingHook);
-		grappleSkill?.Hook();
+		// if (!active) return;
+		// const grappleSkill = char.GetSkillFromConstructor(GrapplingHook);
+		// grappleSkill?.Hook();
 	},
 	[Action.Chainsaw]: (char, input, active) => {
-		if (!active) return;
-		const chainsawSkill = char.GetSkillFromConstructor(Chainsaw);
-		if (!chainsawSkill) return;
+		// if (!active) return;
+		// const chainsawSkill = char.GetSkillFromConstructor(Chainsaw);
+		// if (!chainsawSkill) return;
 
-		// chainsawSkill.dbg();
-		// return;
+		// // chainsawSkill.dbg();
+		// // return;
 
-		if (chainsawSkill.running) {
-			chainsawSkill.stop();
-		} else if (chainsawSkill.revCount < chainsawSkill.revRequired) {
-			chainsawSkill.rev();
-		}
+		// if (chainsawSkill.running) {
+		// 	chainsawSkill.stop();
+		// } else if (chainsawSkill.revCount < chainsawSkill.revRequired) {
+		// 	chainsawSkill.rev();
+		// }
 	},
 	[Action.LightMolotov]: (char, input, active) => {
-		if (!active) return;
-		const skill = char.GetSkillFromConstructor(Molotov);
-		skill?.light();
+		// if (!active) return;
+		// const skill = char.GetSkillFromConstructor(Molotov);
+		// skill?.light();
 	},
 	[Action.ThrowMolotov]: (char, input, active) => {
-		const skill = char.GetSkillFromConstructor(Molotov);
-		if (!skill?.molotovIsLit) {
-			return;
-		}
-		if (active) {
-			skill?.wind();
-		} else {
-			if (skill?.beingWind) {
-				skill.throw();
-			}
-		}
+		// const skill = char.GetSkillFromConstructor(Molotov);
+		// if (!skill?.molotovIsLit) {
+		// 	return;
+		// }
+		// if (active) {
+		// 	skill?.wind();
+		// } else {
+		// 	if (skill?.beingWind) {
+		// 		skill.throw();
+		// 	}
+		// }
 	},
 
 	[Action.Mark]: (char, input, active) => {
@@ -433,15 +432,15 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 		}
 	},
 	[Action.PourOil]: (char, input, active) => {
-		if (!active) return;
-		const oilSkill = char.GetSkillFromConstructor(Jerrycan);
-		if (!oilSkill) return;
-		oilSkill.pour();
+		// if (!active) return;
+		// const oilSkill = char.GetSkillFromConstructor(Jerrycan);
+		// if (!oilSkill) return;
+		// oilSkill.pour();
 	},
 	[Action.LightLighter]: (char, input, active) => {
-		if (!active) return;
-		const lighterSkill = char.GetSkillFromConstructor(Lighter);
-		lighterSkill?.light();
+		// if (!active) return;
+		// const lighterSkill = char.GetSkillFromConstructor(Lighter);
+		// lighterSkill?.light();
 	},
 
 	[Action.EnvironmentInteract]: (char, input, active) => {
@@ -519,7 +518,7 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 
 		if (!dossierGenerated) {
 			dossierGenerated = true;
-			generateDossier(dossierCabinet);
+			// generateDossier(dossierCabinet);
 		}
 
 		if (!dossierMenuOpen()) {
@@ -597,72 +596,72 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 	[Action.DossierMenuNew]: (char, input, active) => {},
 
 	[Action.FireGun]: (char, input, active) => {
-		// print("fire gun runs");
-		const parrySkill = char.GetSkillFromConstructor(Parry);
+		// // print("fire gun runs");
+		// const parrySkill = char.GetSkillFromConstructor(Parry);
 
-		if (parrySkill?.parrying) {
-			print("cant aim while parrying");
-			return;
-		}
+		// if (parrySkill?.parrying) {
+		// 	print("cant aim while parrying");
+		// 	return;
+		// }
 
-		//usually only one is active
-		const pistolSkill = char.GetSkillFromConstructor(Pistol);
-		// const rifleSkill = char.GetSkillFromConstructor(Rifle);
-		const sniperSkill = char.GetSkillFromConstructor(Sniper);
-		const smgSkill = char.GetSkillFromConstructor(Smg);
+		// //usually only one is active
+		// const pistolSkill = char.GetSkillFromConstructor(Pistol);
+		// // const rifleSkill = char.GetSkillFromConstructor(Rifle);
+		// const sniperSkill = char.GetSkillFromConstructor(Sniper);
+		// const smgSkill = char.GetSkillFromConstructor(Smg);
 
-		if (active) {
-			//only on inputbegan not inputended
-			pistolSkill?.Fire();
-			sniperSkill?.Fire();
-			smgSkill?.startShooting();
-			// rifleSkill?.startShooting();
-		} else {
-			smgSkill?.stopShooting();
-			// rifleSkill?.stopShooting();
-		}
+		// if (active) {
+		// 	//only on inputbegan not inputended
+		// 	pistolSkill?.Fire();
+		// 	sniperSkill?.Fire();
+		// 	smgSkill?.startShooting();
+		// 	// rifleSkill?.startShooting();
+		// } else {
+		// 	smgSkill?.stopShooting();
+		// 	// rifleSkill?.stopShooting();
+		// }
 	},
 	[Action.AimGun]: (char, input, active) => {
-		const parrySkill = char.GetSkillFromConstructor(Parry);
+		// const parrySkill = char.GetSkillFromConstructor(Parry);
 
-		if (parrySkill?.parrying) {
-			print("cant aim while parrying");
-			return;
-		}
+		// if (parrySkill?.parrying) {
+		// 	print("cant aim while parrying");
+		// 	return;
+		// }
 
-		const pistolSkill = char.GetSkillFromConstructor(Pistol);
-		const smgSkill = char.GetSkillFromConstructor(Smg);
-		// const rifleSkill = char.GetSkillFromConstructor(Rifle);
-		const sniperSkill = char.GetSkillFromConstructor(Sniper);
+		// const pistolSkill = char.GetSkillFromConstructor(Pistol);
+		// const smgSkill = char.GetSkillFromConstructor(Smg);
+		// // const rifleSkill = char.GetSkillFromConstructor(Rifle);
+		// const sniperSkill = char.GetSkillFromConstructor(Sniper);
 
-		pistolSkill?.Aim(active);
-		smgSkill?.Aim(active);
-		// rifleSkill?.Aim(active);
-		sniperSkill?.Aim(active);
+		// pistolSkill?.Aim(active);
+		// smgSkill?.Aim(active);
+		// // rifleSkill?.Aim(active);
+		// sniperSkill?.Aim(active);
 	},
 	[Action.QuickReload]: (char, input, active) => {
-		if (!active) return;
-		const pistolSkill = char.GetSkillFromConstructor(Pistol);
-		const smgSkill = char.GetSkillFromConstructor(Smg);
+		// if (!active) return;
+		// const pistolSkill = char.GetSkillFromConstructor(Pistol);
+		// const smgSkill = char.GetSkillFromConstructor(Smg);
 
-		if (smgSkill?.magOut) {
-			smgSkill.Reload();
-		}
+		// if (smgSkill?.magOut) {
+		// 	smgSkill.Reload();
+		// }
 	},
 	[Action.CockGun]: (char, input, active) => {
 		//auto pistols dont need cocking
 	},
 	[Action.TakeoutMagezine]: (char, input, active) => {
-		if (!active) return;
-		const pistolSkill = char.GetSkillFromConstructor(Pistol);
-		const smgSkill = char.GetSkillFromConstructor(Smg);
-		// const rifleSkill = char.GetSkillFromConstructor(Rifle);
-		const sniperSkill = char.GetSkillFromConstructor(Sniper);
+		// if (!active) return;
+		// const pistolSkill = char.GetSkillFromConstructor(Pistol);
+		// const smgSkill = char.GetSkillFromConstructor(Smg);
+		// // const rifleSkill = char.GetSkillFromConstructor(Rifle);
+		// const sniperSkill = char.GetSkillFromConstructor(Sniper);
 
-		pistolSkill?.takeoutInsertMag();
-		smgSkill?.takeoutInsertMag();
-		// rifleSkill?.takeoutInsertMag();
-		sniperSkill?.takeoutInsertMag();
+		// pistolSkill?.takeoutInsertMag();
+		// smgSkill?.takeoutInsertMag();
+		// // rifleSkill?.takeoutInsertMag();
+		// sniperSkill?.takeoutInsertMag();
 	},
 
 	[Action.DebugTracks]: (char, input, active) => {
@@ -757,16 +756,16 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 	[Action.AntlerOpen]: (char, input, active) => {
 		if (!active) return;
 
-		//this context action only turns it on. it's turned off on the UI
-		const antlerSkill = char.GetSkillFromConstructor(Antler);
-		if (antlerSkill) {
-			if (antlerDebuggerDisplaying() === false) {
-				UserInputService.MouseIconEnabled = true || getMouseIconEnabled();
-				antlerDebuggerDisplaying(true);
-				antlerSkill.toggleDebugger(antlerDebuggerDisplaying());
-				print("Antler Opened");
-			}
-		}
+		// //this context action only turns it on. it's turned off on the UI
+		// const antlerSkill = char.GetSkillFromConstructor(Antler);
+		// if (antlerSkill) {
+		// 	if (antlerDebuggerDisplaying() === false) {
+		// 		UserInputService.MouseIconEnabled = true || getMouseIconEnabled();
+		// 		antlerDebuggerDisplaying(true);
+		// 		antlerSkill.toggleDebugger(antlerDebuggerDisplaying());
+		// 		print("Antler Opened");
+		// 	}
+		// }
 	},
 	[Action.AntlerSpawnNpc]: (char, input, active) => {},
 	[Action.AntlerDuplicateNpc]: (char, input, active) => {},

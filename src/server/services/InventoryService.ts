@@ -7,26 +7,9 @@ import { ref } from "@willy/jecs-utils";
 import world from "shared/world";
 import Components from "shared/components/components";
 import { Entity, Id, Name, pair, TagDiscriminator, Wildcard } from "@rbxts/jecs";
-import {
-	Dash,
-	Pistol,
-	Smg,
-	Throw,
-	MeleeWeapon,
-	Parry,
-	Sniper,
-	GrapplingHook,
-	Chainsaw,
-	Molotov,
-	Jerrycan,
-	Lighter,
-	Walkman,
-	Flashlight,
-} from "shared/skills";
 import none from "shared/movesets/none";
 import { Character, Skill } from "@rbxts/wcs";
 import { ServerContext } from "shared/ServerContext";
-import { Antler } from "shared/skills/antler";
 import { AccessoryNames } from "shared/data/items/accessories/allaccessories";
 import {
 	ALL_THROWABLES,
@@ -56,17 +39,19 @@ import { ItemAssets } from "shared/data/items/modelassets";
 import { AUDIO_PATH } from "shared/data/paths";
 import { defaultProfileData } from "shared/data/profile/defaultProfileData";
 import { findItemBySlot, findFirstEmptySlotIndex } from "shared/utils/profile/findInventoryItem";
-import {
-	AccessoryAssets,
-	AccessoryAddingCallBack,
-	ItemAccessoryContainer,
-} from "shared/data/items/accessories/accessoryCode";
+// import {
+// 	AccessoryAssets,
+// 	AccessoryAddingCallBack,
+// 	ItemAccessoryContainer,
+// } from "shared/data/items/accessories/accessoryCode";
 import { FIREARM_SETTINGS } from "shared/data/items/stats/gunStats";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { giveCharacterAccessory } from "shared/utils/visual/giveCharacterAccessory";
 import { createEmptyItem } from "shared/utils/profile/createEmptyItem";
 import { setDescendantCollisionGroup } from "shared/utils/world/setDescendant";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { MeleeWeapon } from "shared/skills";
+import { Parry } from "shared/skills/parry";
 
 const PROFILE_STORE_NAME = "PlayerInventoryData";
 
@@ -79,20 +64,20 @@ const SessionStart = new Map<Player, number>();
 //throwable is a skill
 //melee is a moveset
 const SKILL_REGISTRY = [
-	{ items: ALL_THROWABLES, skill: Throw },
-	{ items: ALL_PISTOLS, skill: Pistol },
-	{ items: ALL_SMGS, skill: Smg },
+	// { items: ALL_THROWABLES, skill: Throw },
+	// { items: ALL_PISTOLS, skill: Pistol },
+	// { items: ALL_SMGS, skill: Smg },
 	{ items: ALL_MELEE_WEAPONS, skill: MeleeWeapon },
 	// { items: ALL_RIFLES, skill: Rifle },
-	{ items: ALL_SNIPERS, skill: Sniper },
-	{ items: CHAINSAW, skill: Chainsaw },
-	{ items: MOLOTOV, skill: Molotov },
-	{ items: FLASHLIGHT, skill: Flashlight },
-	{ items: JERRYCAN, skill: Jerrycan },
-	{ items: LIGHTER, skill: Lighter },
-	{ items: WALKMAN, skill: Walkman },
+	// { items: ALL_SNIPERS, skill: Sniper },
+	// { items: CHAINSAW, skill: Chainsaw },
+	// { items: MOLOTOV, skill: Molotov },
+	// { items: FLASHLIGHT, skill: Flashlight },
+	// { items: JERRYCAN, skill: Jerrycan },
+	// { items: LIGHTER, skill: Lighter },
+	// { items: WALKMAN, skill: Walkman },
 	// { items: DRONE, skill: Drone },
-	{ items: ANTLER, skill: Antler },
+	// { items: ANTLER, skill: Antler },
 ];
 
 @Service({})
@@ -250,7 +235,7 @@ export class InventoryService implements OnStart {
 			// profile.Data.dossiers = defaultDossierData.map((dossier) => ({ ...dossier }));
 			// profile.Data.equippedDossier = profile.Data.dossiers[0];
 
-			this.equipAccessories(player, profile.Data.equippedDossier.build.skills);
+			// this.equipAccessories(player, profile.Data.equippedDossier.build.skills);
 
 			if (player.Parent === Players) {
 				Profiles.set(player, profile);
@@ -336,8 +321,7 @@ export class InventoryService implements OnStart {
 		if (itemEntity === undefined) return;
 
 		//set new item before registering skill
-		const soundFolder = (AUDIO_PATH.items.FindFirstChild(currentSlotItem.name.lower()) ??
-			AUDIO_PATH.items.placeholder) as ItemSounds;
+		const soundFolder = (AUDIO_PATH.ItemSounds.Melee.Fists) as ItemSounds;
 
 		world.set(itemEntity, Components.ItemModel, {
 			baseModel: assetModel, //the template is passed, not a clone, cloning is handled within observers
@@ -509,12 +493,12 @@ export class InventoryService implements OnStart {
 		//insert conditions where you cant switch items here
 		const char = player.Character;
 		const wcsChar = Character.GetCharacterFromInstance(char!);
-		const molotovSkill = wcsChar?.GetSkillFromConstructor(Molotov);
-		// print(char, wcsChar)
-		if (molotovSkill?.molotovIsLit) {
-			print("molotov is lit cant switch slots");
-			return false;
-		}
+		// const molotovSkill = wcsChar?.GetSkillFromConstructor(Molotov);
+		// // print(char, wcsChar)
+		// if (molotovSkill?.molotovIsLit) {
+		// 	print("molotov is lit cant switch slots");
+		// 	return false;
+		// }
 
 		// const droneSkill = wcsChar?.GetSkillFromConstructor(Drone);
 		// if (droneSkill?.isViewingFeed) {
@@ -659,7 +643,7 @@ export class InventoryService implements OnStart {
 		profile.Data.equippedDossier = newDossier;
 
 		this.clearPlayerInventory(profile); // Clear current inventory and game-specific accessories
-		this.clearGameAccessories(player);
+		// this.clearGameAccessories(player);
 		RemoteEvents.deleteAccessoriesFromPlayerViewmodel(player);
 
 		// const itemsToEquip = [newDossier.item1, newDossier.item2, newDossier.item3, newDossier.item4]; //Grant new loadout items
@@ -669,7 +653,7 @@ export class InventoryService implements OnStart {
 		// this.equipItem(player, itemsToEquip[2]);
 		// this.equipItem(player, itemsToEquip[3]);
 
-		this.equipAccessories(player, newDossier.build.skills); // Equip new accessories based on the new skills
+		// this.equipAccessories(player, newDossier.build.skills); // Equip new accessories based on the new skills
 
 		this.syncClientInventory(player); // Push updates to the client
 		print(`Successfully equipped loadout [${dossierName}] for ${player.Name}`);
@@ -721,42 +705,42 @@ export class InventoryService implements OnStart {
 	}
 
 	// Destroys game-assigned accessories without touching base Roblox avatar accessories
-	private clearGameAccessories(player: Player) {
-		const character = player.Character;
-		if (!character) return;
+	// private clearGameAccessories(player: Player) {
+	// 	const character = player.Character;
+	// 	if (!character) return;
 
-		const gameAccessoryNames = new Set<string>(); // Collect the exact names of all custom assets
-		// eslint-disable-next-line roblox-ts/no-array-pairs
-		for (const [_, asset] of pairs(AccessoryAssets)) {
-			if (asset) gameAccessoryNames.add((asset as { Name: string }).Name);
-		}
+	// 	const gameAccessoryNames = new Set<string>(); // Collect the exact names of all custom assets
+	// 	// eslint-disable-next-line roblox-ts/no-array-pairs
+	// 	for (const [_, asset] of pairs(AccessoryAssets)) {
+	// 		if (asset) gameAccessoryNames.add((asset as { Name: string }).Name);
+	// 	}
 
-		character.GetChildren().forEach((child) => {
-			// Iterate through the character and destroy matching accessories
-			if (child.IsA("Accessory") && gameAccessoryNames.has(child.Name)) {
-				child.Destroy();
-			}
-		});
-	}
+	// 	character.GetChildren().forEach((child) => {
+	// 		// Iterate through the character and destroy matching accessories
+	// 		if (child.IsA("Accessory") && gameAccessoryNames.has(child.Name)) {
+	// 			child.Destroy();
+	// 		}
+	// 	});
+	// }
 
 	// Takes skill array and calls skill equipping callbacks
-	public equipAccessories(player: Player, SkillList: string[]) {
-		const character = player.Character;
-		if (!character) return;
+	// public equipAccessories(player: Player, SkillList: string[]) {
+	// 	const character = player.Character;
+	// 	if (!character) return;
 
-		SkillList.forEach((skillName) => {
-			const internalName = AccessoryNames[skillName];
-			// print(skillName, internalName);
-			if (!internalName) return; // If the skill isn't mapped to an accessory, safely skip it.
+	// 	SkillList.forEach((skillName) => {
+	// 		const internalName = AccessoryNames[skillName];
+	// 		// print(skillName, internalName);
+	// 		if (!internalName) return; // If the skill isn't mapped to an accessory, safely skip it.
 
-			// Resolve the exact key using the internal name mapped above
-			const callback = AccessoryAddingCallBack[internalName];
+	// 		// Resolve the exact key using the internal name mapped above
+	// 		const callback = AccessoryAddingCallBack[internalName];
 
-			if (callback) {
-				task.spawn(() => callback(player)); // Run in separate thread
-			}
-		});
-	}
+	// 		if (callback) {
+	// 			task.spawn(() => callback(player)); // Run in separate thread
+	// 		}
+	// 	});
+	// }
 
 	private reconcileSkill(
 		wcsCharacter: Character,
@@ -924,24 +908,24 @@ export class InventoryService implements OnStart {
 		}
 
 		// 3. Evaluate and apply/remove accessories dynamically
-		for (const acc of ItemAccessoryContainer.GetChildren()) {
-			if (!acc.IsA("Accessory")) continue;
+		// for (const acc of ItemAccessoryContainer.GetChildren()) {
+		// 	if (!acc.IsA("Accessory")) continue;
 
-			const itemName = acc.Name;
-			const shouldHaveAccessory = (itemCounts.get(itemName) ?? 0) > 0;
+		// 	const itemName = acc.Name;
+		// 	const shouldHaveAccessory = (itemCounts.get(itemName) ?? 0) > 0;
 
-			// Strictly search for an Accessory to ignore lingering weapon models
-			const existingAccessory = character
-				.GetChildren()
-				.find((child) => child.Name === itemName && child.IsA("Accessory")) as Accessory | undefined;
+		// 	// Strictly search for an Accessory to ignore lingering weapon models
+		// 	const existingAccessory = character
+		// 		.GetChildren()
+		// 		.find((child) => child.Name === itemName && child.IsA("Accessory")) as Accessory | undefined;
 
-			if (shouldHaveAccessory && !existingAccessory) {
-				// Always clone the accessory so the original stays in ReplicatedStorage
-				giveCharacterAccessory(character, acc.Clone() as Accessory);
-			} else if (!shouldHaveAccessory && existingAccessory) {
-				existingAccessory.Destroy();
-			}
-		}
+		// 	if (shouldHaveAccessory && !existingAccessory) {
+		// 		// Always clone the accessory so the original stays in ReplicatedStorage
+		// 		giveCharacterAccessory(character, acc.Clone() as Accessory);
+		// 	} else if (!shouldHaveAccessory && existingAccessory) {
+		// 		existingAccessory.Destroy();
+		// 	}
+		// }
 	}
 
 	private equipProp(player: Player, playerEntity: Entity, propName: string) {
@@ -962,8 +946,7 @@ export class InventoryService implements OnStart {
 		// 4. Assign model and equip (similar to regular items)
 		const assetModel = ItemAssets[propName];
 		if (assetModel) {
-			const soundFolder = (AUDIO_PATH.items.FindFirstChild(propName.lower()) ??
-				AUDIO_PATH.items.placeholder) as ItemSounds;
+			const soundFolder = (AUDIO_PATH.ItemSounds.Melee.Fists) as ItemSounds;
 
 			world.set(propEntity, Components.ItemModel, {
 				baseModel: assetModel,

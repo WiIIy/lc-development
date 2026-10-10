@@ -5,7 +5,7 @@ import { UserInputService, TweenService, Players, Workspace } from "@rbxts/servi
 import { pointedItem } from "client/clientAtoms";
 import { DialogueController } from "client/controllers/ui/DialogueController";
 import { IMAGE_IDS } from "shared/data/assetid/ImageIDs";
-import { AUDIO_PATH, DIALOGUE_TREE_PATH, ASSET_ID_PREFIX } from "shared/data/paths";
+import { AUDIO_PATH, ASSET_ID_PREFIX } from "shared/data/paths";
 import { KEYBINDS, inputIsKey } from "shared/data/profile/defaultKeybinds";
 
 // Define the shape of your character data
@@ -109,9 +109,9 @@ export function DialogueOverlay(): Element {
 		}
 
 		task.wait(delayWhoosh);
-		AUDIO_PATH.ui.whoosh.Volume = volumeWhoosh;
-		AUDIO_PATH.ui.whoosh.PlaybackSpeed = AUDIO_PATH.ui.whoosh.TimeLength / 0.3;
-		AUDIO_PATH.ui.whoosh.Play();
+		// AUDIO_PATH.ui.whoosh.Volume = volumeWhoosh;
+		// AUDIO_PATH.ui.whoosh.PlaybackSpeed = AUDIO_PATH.ui.whoosh.TimeLength / 0.3;
+		// AUDIO_PATH.ui.whoosh.Play();
 	};
 
 	useEffect(() => {
@@ -145,18 +145,18 @@ export function DialogueOverlay(): Element {
 						const dialogueID = characterModel?.GetAttribute("dialogue");
 
 						if (characterModel && typeIs(dialogueID, "string")) {
-							const charFolder = DIALOGUE_TREE_PATH.FindFirstChild(charName);
-							const dialogueConfig = charFolder?.FindFirstChild(dialogueID);
+							// const charFolder = DIALOGUE_TREE_PATH.FindFirstChild(charName);
+							// const dialogueConfig = charFolder?.FindFirstChild(dialogueID);
 
-							if (dialogueConfig && dialogueConfig.IsA("Configuration")) {
-								dialogueController.onDialogueEvent(dialogueConfig, {
-									Speaker: charName,
-									Range: 50000,
-									Position: new Vector3(0, 5, 0),
-								});
-							} else {
-								warn(`Dialogue Config not found for: ${charName} -> ${dialogueID}`);
-							}
+							// if (dialogueConfig && dialogueConfig.IsA("Configuration")) {
+							// 	dialogueController.onDialogueEvent(dialogueConfig, {
+							// 		Speaker: charName,
+							// 		Range: 50000,
+							// 		Position: new Vector3(0, 5, 0),
+							// 	});
+							// } else {
+							// 	warn(`Dialogue Config not found for: ${charName} -> ${dialogueID}`);
+							// }
 						}
 					} else {
 						if (dialogueController.producer.getState().active) {

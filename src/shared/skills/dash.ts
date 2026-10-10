@@ -76,9 +76,9 @@ export class Dash extends Skill {
 	protected serverDash() {
 		this.ApplyCooldown(1);
 		const dashSounds = [
-			AUDIO_PATH.character.dash.dash1,
-			AUDIO_PATH.character.dash.dash2,
-			AUDIO_PATH.character.dash.dash3,
+			AUDIO_PATH.ActionSounds.Dash.dash1,
+			AUDIO_PATH.ActionSounds.Dash.dash2,
+			AUDIO_PATH.ActionSounds.Dash.dash3,
 		];
 		const randomSound = dashSounds[math.random(0, dashSounds.size() - 1)];
 		const randomSoundClone = randomSound.Clone();
@@ -86,17 +86,17 @@ export class Dash extends Skill {
 		randomSoundClone.Parent = torso;
 		randomSoundClone.Play();
 
-		const dashTrail = ReplicatedStorage.CAAssets.effects.DashTrail;
-		const trailClone = dashTrail.Clone();
-		trailClone.Parent = torso;
-		trailClone.Attachment0 = torso.FindFirstChild("WaistFrontAttachment") as Attachment;
-		trailClone.Attachment1 = torso.FindFirstChild("NeckAttachment") as Attachment;
+		// const dashTrail = ReplicatedStorage.CAAssets.effects.DashTrail;
+		// const trailClone = dashTrail.Clone();
+		// trailClone.Parent = torso;
+		// trailClone.Attachment0 = torso.FindFirstChild("WaistFrontAttachment") as Attachment;
+		// trailClone.Attachment1 = torso.FindFirstChild("NeckAttachment") as Attachment;
 
-		const conn = randomSoundClone.Ended.Connect(() => {
-			randomSoundClone.Destroy();
-			trailClone.Destroy();
-			conn.Disconnect();
-		});
+		// const conn = randomSoundClone.Ended.Connect(() => {
+		// 	randomSoundClone.Destroy();
+		// 	trailClone.Destroy();
+		// 	conn.Disconnect();
+		// });
 
 		const root = this.Character.Instance.FindFirstChild("HumanoidRootPart") as BasePart;
 		if (!root) return;

@@ -16,11 +16,11 @@ if (RunService.IsServer()) {
 export type BulletType = "7.62" | ".45 ACP" | "Fuel";
 export type FireMode = "SEMI" | "AUTO";
 
-export const tracerFolder = ReplicatedStorage.CAAssets.tracers;
-export const casingFolder = ReplicatedStorage.CAAssets.casings;
+// export const tracerFolder = ReplicatedStorage.CAAssets.tracers;
+// export const casingFolder = ReplicatedStorage.CAAssets.casings;
 export const RANDOM_CASING_DIRECTION = new Vector3(math.random(10, 20), math.random(10, 20), math.random(10, 20));
 
-const firearmSoundFolder = ReplicatedStorage.CAAssets.audio.firearm;
+// const firearmSoundFolder = ReplicatedStorage.CAAssets.audio.firearm;
 
 export const PISTOL_SETTINGS = {
 	Vag73: {
@@ -42,12 +42,12 @@ export const PISTOL_SETTINGS = {
 		RECOIL_HORIZONTAL_MAX: 5, // Random range for X axis
 		RECOIL_DAMPING: 8,
 
-		FLASH: tracerFolder.Flash,
-		TRACER: tracerFolder.Beam1,
-		FIRE_SOUND: firearmSoundFolder.Vag73.fire.fire1,
-		FIRE_SOUND_RADIUS: 30,
+		// FLASH: tracerFolder.Flash,
+		// TRACER: tracerFolder.Beam1,
+		// FIRE_SOUND: firearmSoundFolder.Vag73.fire.fire1,
+		// FIRE_SOUND_RADIUS: 30,
 
-		CASING: casingFolder[762],
+		// CASING: casingFolder[762],
 		DELAY_BETWEEN_SHOTS: 0,
 		NPC_DELAY_BETWEEN_SHOTS: 0.3,
 		NPC_RELOAD_TIME: 2,
@@ -72,12 +72,12 @@ export const PISTOL_SETTINGS = {
 		RECOIL_HORIZONTAL_MAX: 5, // Random range for X axis
 		RECOIL_DAMPING: 8,
 
-		FLASH: tracerFolder.Flash,
-		TRACER: tracerFolder.Beam1,
-		FIRE_SOUND: firearmSoundFolder.Vag73.fire.fire1,
+		// FLASH: tracerFolder.Flash,
+		// TRACER: tracerFolder.Beam1,
+		// FIRE_SOUND: firearmSoundFolder.Vag73.fire.fire1,
 		FIRE_SOUND_RADIUS: 30,
 
-		CASING: casingFolder[762],
+		// CASING: casingFolder[762],
 		DELAY_BETWEEN_SHOTS: 0.1,
 		NPC_DELAY_BETWEEN_SHOTS: 0.3,
 		NPC_RELOAD_TIME: 2,
@@ -105,10 +105,10 @@ export const SMG_SETTINGS = {
 		RECOIL_HORIZONTAL_MAX: 15, // Random range for X axis
 		RECOIL_DAMPING: 8,
 
-		FLASH: tracerFolder.Flash,
-		TRACER: tracerFolder.Beam1,
-		CASING: casingFolder[45],
-		FIRE_SOUND: firearmSoundFolder.M10.fire.fire1,
+		// FLASH: tracerFolder.Flash,
+		// TRACER: tracerFolder.Beam1,
+		// CASING: casingFolder[45],
+		// FIRE_SOUND: firearmSoundFolder.M10.fire.fire1,
 		FIRE_SOUND_RADIUS: 30,
 
 		DELAY_BETWEEN_SHOTS: 0.1,
@@ -139,10 +139,10 @@ export const RIFLE_SETTINGS = {
 		RECOIL_HORIZONTAL_MAX: 15, // Random range for X axis
 		RECOIL_DAMPING: 8,
 
-		FLASH: tracerFolder.Flash,
-		TRACER: tracerFolder.Beam1,
-		CASING: casingFolder[762],
-		FIRE_SOUND: firearmSoundFolder.Serpent.fire.fire1,
+		// FLASH: tracerFolder.Flash,
+		// TRACER: tracerFolder.Beam1,
+		// CASING: casingFolder[762],
+		// FIRE_SOUND: firearmSoundFolder.Serpent.fire.fire1,
 		FIRE_SOUND_RADIUS: 30,
 
 		DELAY_BETWEEN_SHOTS: 0.1,
@@ -177,10 +177,10 @@ export const SNIPER_SETTINGS = {
 		RECOIL_HORIZONTAL_MAX: 15, // Random range for X axis
 		RECOIL_DAMPING: 8,
 
-		FLASH: tracerFolder.Flash,
-		TRACER: tracerFolder.Beam1,
-		CASING: casingFolder[762],
-		FIRE_SOUND: firearmSoundFolder.R50.fire.fire1,
+		// FLASH: tracerFolder.Flash,
+		// TRACER: tracerFolder.Beam1,
+		// CASING: casingFolder[762],
+		// FIRE_SOUND: firearmSoundFolder.R50.fire.fire1,
 		FIRE_SOUND_RADIUS: 30,
 
 		DELAY_BETWEEN_SHOTS: 0.1,

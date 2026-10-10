@@ -84,29 +84,29 @@ export class UIController implements OnStart {
 		ReactRoblox.createRoot(this.metaOverlay).render(
 			<ReflexProvider producer={GameRouter.gameProducer}>
 				<DevApp />
-			</ReflexProvider>,
+			</ReflexProvider>, //this one is fine
 		);
 
 		ReactRoblox.createRoot(this.gameRoot).render(
 			<ReflexProvider producer={GameRouter.gameProducer}>
 				<GameApp />
-			</ReflexProvider>,
+			</ReflexProvider>, //this one is not fine
 		);
 
-		ReactRoblox.createRoot(this.dialogueRoot).render(
-			<ReflexProvider producer={dialogueProducer}>
-				<DialogueHandler />
-			</ReflexProvider>,
-		);
+		// ReactRoblox.createRoot(this.dialogueRoot).render(
+		// 	<ReflexProvider producer={dialogueProducer}>
+		// 		<DialogueHandler />
+		// 	</ReflexProvider>,
+		// );
 
-		ReactRoblox.createRoot(this.gameMenu).render(<GameMenu />);
+		// ReactRoblox.createRoot(this.gameMenu).render(<GameMenu />);
 
-		ReactRoblox.createRoot(this.entityDetailsRoot).render(<NpcDetail />);
+		// ReactRoblox.createRoot(this.entityDetailsRoot).render(<NpcDetail />);
 
-		ReactRoblox.createRoot(this.dossierMenuReturnIcon).render(<DossierMenuReturnIcons />);
+		// ReactRoblox.createRoot(this.dossierMenuReturnIcon).render(<DossierMenuReturnIcons />);
 
-		const root = ReactRoblox.createRoot(new Instance("Folder")); // npcData container
-		root.render(<DossierMenu />);
+		// const root = ReactRoblox.createRoot(new Instance("Folder")); // npcData container
+		// root.render(<DossierMenu />);
 
 		// For Testing drag n drop
 		// UserInputService.InputBegan.Connect((inp) => {

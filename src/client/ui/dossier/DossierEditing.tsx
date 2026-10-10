@@ -9,7 +9,7 @@ import { ASSET_ID_PREFIX } from "shared/data/paths";
 import { deserializeColor3, serializeColor3 } from "shared/utils/profile/colorSerdes";
 import { DossierStore } from "../stores/DossierStore";
 
-const template = ReplicatedStorage.CAAssets.outfits.base;
+const template = ReplicatedStorage.LCAssets.characters.base;
 const r6rig = template.Clone();
 const head = r6rig.FindFirstChild("Head") as BasePart;
 const bodyColors = r6rig.FindFirstChild("Body Colors") as BodyColors;

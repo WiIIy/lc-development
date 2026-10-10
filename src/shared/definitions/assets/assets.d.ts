@@ -25,9 +25,10 @@ type GameMap = Folder & {
 type SlotType = "Hotbar" | "Backpack";
 
 interface ReplicatedStorage {
-	bullet: Part;
-	Grenade: MeshPart;
-	CAAssets: CAAssets;
+	// bullet: Part;
+	// Grenade: MeshPart;
+	// CAAssets: CAAssets;
+	LCAssets: LCAssets;
 	TS: Folder & {
 		movesets: Folder & {};
 		skills: Folder & {};
@@ -96,9 +97,6 @@ interface ReplicatedStorage {
 	};
 }
 
-type ItemSounds = Folder & {
-	equip: Sound;
-};
 
 type ItemContainer = Model & {
 	attach_points: Folder;

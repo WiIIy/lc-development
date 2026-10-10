@@ -1,10 +1,9 @@
-import { ref } from "@willy/jecs-utils";
 import { Workspace, ReplicatedStorage } from "@rbxts/services";
 import { HoldableSkill, Message, Skill, SkillDecorator } from "@rbxts/wcs";
-
 import { Entity, pair, Wildcard } from "@rbxts/jecs";
 import Components from "shared/components/components";
 import world from "shared/world";
+import { ref } from "@willy/jecs-utils";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
@@ -26,15 +25,6 @@ export class Parry extends Skill {
 		this.currentitem = world.get(playerEntity!, pair(Components.CurrentlyEquipped, Wildcard));
 
 		this.itemViewmodelTracks = ANIMATION_IDS.viewmodel[this.currentitem as keyof typeof ANIMATION_IDS.viewmodel];
-		if (!this.viewmodel) {
-			this.viewmodel = Workspace.CurrentCamera?.WaitForChild(
-				"BaseViewmodel",
-			) as typeof ReplicatedStorage.CAAssets.viewmodels.BaseViewmodel;
-		}
-
-		if (this.itemViewmodelTracks && "parrying" in this.itemViewmodelTracks) {
-			AnimationUtils.preloadAnimations(this.viewmodel, [this.itemViewmodelTracks.parrying]);
-		}
 	}
 
 	protected OnStartServer(): void {

@@ -68,11 +68,11 @@ export class MeleeWeapon extends Skill {
 	// start methods fire automatically upon the skill being added to the player
 	// they are reserved for skill setup like preloading animations and stats
 	protected OnStartClient(): void {
-		if (!this.viewmodel) {
-			this.viewmodel = Workspace.CurrentCamera?.WaitForChild(
-				"BaseViewmodel",
-			) as typeof ReplicatedStorage.CAAssets.viewmodels.BaseViewmodel;
-		}
+		// if (!this.viewmodel) {
+		// 	this.viewmodel = Workspace.CurrentCamera?.WaitForChild(
+		// 		"BaseViewmodel",
+		// 	) as typeof ReplicatedStorage.CAAssets.viewmodels.BaseViewmodel;
+		// }
 
 		const player = this.Character.Player;
 		if (player) {
@@ -93,12 +93,12 @@ export class MeleeWeapon extends Skill {
 			return;
 		}
 
-		if ("lightattack" in animationSet) {
-			AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.lightattack]);
-		}
-		if ("heavyattack" in animationSet) {
-			AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.heavyattack]);
-		}
+		// if ("lightattack" in animationSet) {
+		// 	AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.lightattack]);
+		// }
+		// if ("heavyattack" in animationSet) {
+		// 	AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.heavyattack]);
+		// }
 	}
 
 	protected OnStartServer(): void {
@@ -138,11 +138,11 @@ export class MeleeWeapon extends Skill {
 		if (!player) return false;
 
 		// 2. Try to find Viewmodel again if missing
-		if (!this.viewmodel) {
-			this.viewmodel = Workspace.CurrentCamera?.FindFirstChild(
-				"BaseViewmodel",
-			) as typeof ReplicatedStorage.CAAssets.viewmodels.BaseViewmodel;
-		}
+		// if (!this.viewmodel) {
+		// 	this.viewmodel = Workspace.CurrentCamera?.FindFirstChild(
+		// 		"BaseViewmodel",
+		// 	) as typeof ReplicatedStorage.CAAssets.viewmodels.BaseViewmodel;
+		// }
 
 		// 3. Try to find Stats again if missing
 		// This handles the case where Jecs replication arrived AFTER OnStartClient
@@ -165,12 +165,12 @@ export class MeleeWeapon extends Skill {
 						return false;
 					}
 
-					if ("lightattack" in animationSet) {
-						AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.lightattack]);
-					}
-					if ("heavyattack" in animationSet) {
-						AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.heavyattack]);
-					}
+					// if ("lightattack" in animationSet) {
+					// 	AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.lightattack]);
+					// }
+					// if ("heavyattack" in animationSet) {
+					// 	AnimationUtils.preloadAnimations(this.viewmodel, [animationSet.heavyattack]);
+					// }
 				}
 			}
 		}

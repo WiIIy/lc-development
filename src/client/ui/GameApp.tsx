@@ -20,10 +20,10 @@ export function GameApp({ previewMode = false }: GameAppProps): Element {
 			Position={UDim2.fromScale(0.5, 0.5)}
 			AnchorPoint={new Vector2(0.5, 0.5)}
 		>
-			<Inventory previewMode={previewMode} />
+			{/* <Inventory previewMode={previewMode} /> */}
 			{/* <ItemStatDisplay /> */}
 			{/* <DialogueOverlay /> */}
-			<Antler />
+			{/* <Antler /> */}
 			<PlayerStats previewMode={previewMode} />
 			<Monologue />
 			<Crosshair />
