@@ -1,6 +1,7 @@
 export enum Action {
 	//player gamme actions
 	LightAttack = "LightAttack", //LMB
+	ShiftClick = "ShiftClick", //shiftclick
 	HeavyAttack = "HeavyAttack", //RMB
 	Dash = "Dash", //shift
 	Parry = "Parry", //R
@@ -82,6 +83,7 @@ export function inputIsKey(inp: InputObject, keycode: Enum.KeyCode | Enum.UserIn
 // ----------------- Binds Config -----------------
 export const KEYBINDS: Record<Action, (Enum.KeyCode | Enum.UserInputType)[]> = {
 	[Action.LightAttack]: [Enum.UserInputType.MouseButton1],
+	[Action.ShiftClick]: [Enum.UserInputType.MouseButton1, Enum.KeyCode.LeftShift],
 	[Action.HeavyAttack]: [Enum.UserInputType.MouseButton2],
 	[Action.Dash]: [Enum.KeyCode.LeftShift],
 	[Action.Parry]: [Enum.KeyCode.R],

@@ -51,6 +51,7 @@ export function Inventory({ previewMode = false }: InventoryProps): Element {
 	const [modalTrue, setModalTrue] = useState(false);
 
 	const actualStore = useInventoryItems() ?? [];
+	// print("inve -", actualStore, backPackVisible, inventoryRef, hotbarSlotsRef);
 
 	const savedItems = [
 		{ amount: 1, icon: "rbxassetid://92013585204915", slot: "H1", name: "Claw", slotType: "Hotbar" as SlotType },
@@ -191,6 +192,7 @@ export function Inventory({ previewMode = false }: InventoryProps): Element {
 	useEffect(() => {
 		const slotsContainer = hotbarSlotsRef.current;
 		const inventoryContainer = inventoryRef.current;
+		print(slotsContainer, inventoryContainer)
 		if (!slotsContainer || !inventoryContainer) return;
 
 		const calculateLayouts = () => {

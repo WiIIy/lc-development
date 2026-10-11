@@ -8,7 +8,7 @@ import {
 	Workspace,
 } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
-import { Crouch } from "shared/skills/crouch";
+// import { Crouch } from "shared/skills/crouch";
 import { ClientContext } from "shared/ClientContext";
 import { dossierMenuOpen, gameMenuOpen, dossierBuildingOpen, dossierEditingOpen, pointedItem, isDragging, pointedInstance, isThirdPerson, hideViewmodel } from "client/clientAtoms";
 import { RemoteEvents } from "client/network";
@@ -235,6 +235,7 @@ function handleVentInteraction(target: Instance) {
 // ----------------- Logic Handlers -----------------
 const ActionHandlers: Record<Action, (char: Character, input: InputObject, active: boolean) => void> = {
 	[Action.LightAttack]: (char, input, active) => {
+		print("d")
 		// if (!active) return;
 
 		// // dont attack if throw mode active
@@ -243,24 +244,27 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 
 		// char.GetSkillFromConstructor(MeleeWeapon)?.lightAttack();
 	},
+	[Action.ShiftClick]: (char, input, active) => {
+		print("shiftclick")
+	},
 	[Action.Crouch]: (char, input, active) => {
-		if (!active) return;
+		// if (!active) return;
 
-		const humanoid =
-			(Players.LocalPlayer.Character?.FindFirstChild("Humanoid") as Humanoid) ||
-			(Players.LocalPlayer.CharacterAdded.Wait()[0].FindFirstChild("Humanoid") as Humanoid);
+		// const humanoid =
+		// 	(Players.LocalPlayer.Character?.FindFirstChild("Humanoid") as Humanoid) ||
+		// 	(Players.LocalPlayer.CharacterAdded.Wait()[0].FindFirstChild("Humanoid") as Humanoid);
 
-		if (humanoid.Sit) {
-			return;
-		}
-		const crouchSkill = char.GetSkillFromConstructor(Crouch);
-		if (!crouchSkill) return;
-		const isCrouching = crouchSkill.crouching;
-		if (!isCrouching) {
-			crouchSkill.StartCrouch();
-		} else {
-			crouchSkill.StopCrouch();
-		}
+		// if (humanoid.Sit) {
+		// 	return;
+		// }
+		// const crouchSkill = char.GetSkillFromConstructor(Crouch);
+		// if (!crouchSkill) return;
+		// const isCrouching = crouchSkill.crouching;
+		// if (!isCrouching) {
+		// 	crouchSkill.StartCrouch();
+		// } else {
+		// 	crouchSkill.StopCrouch();
+		// }
 	},
 
 	[Action.ThrowItem]: (char, input, active) => {
@@ -798,7 +802,9 @@ const ActionHandlers: Record<Action, (char: Character, input: InputObject, activ
 
 // ----------------- Input Listener -----------------
 function handleInput(input: InputObject, gameProcessed: boolean, isInputBegan: boolean) {
+	// print(input.KeyCode, input.UserInputState, input.UserInputType)
 	if (gameProcessed) return;
+	// print("no proc")
 
 	const character = getCurrentWCS_Character();
 	if (!character) return;
@@ -811,6 +817,7 @@ function handleInput(input: InputObject, gameProcessed: boolean, isInputBegan: b
 			matchedActions.push(action);
 		}
 	}
+	// print("matched", matchedActions)
 
 	if (matchedActions.size() === 0) return;
 

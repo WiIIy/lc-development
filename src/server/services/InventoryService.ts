@@ -52,6 +52,7 @@ import { setDescendantCollisionGroup } from "shared/utils/world/setDescendant";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { MeleeWeapon } from "shared/skills";
 import { Parry } from "shared/skills/parry";
+import { defaultDossierData } from "shared/data/profile/defaultDossierData";
 
 const PROFILE_STORE_NAME = "PlayerInventoryData";
 
@@ -91,22 +92,22 @@ export class InventoryService implements OnStart {
 			this.playerAdded(player);
 		});
 
-		// Players.PlayerAdded.Connect((player) => {
-		// 	player.CharacterAdded.Connect((character) => {
-		// 		const profile = this.getProfile(player);
+		Players.PlayerAdded.Connect((player) => {
+			player.CharacterAdded.Connect((character) => {
+				const profile = this.getProfile(player);
 
-		// 		if (!profile) return;
-		// 		this.equipAccessories(player, profile.Data.equippedDossier.skills);
-		// 		if (player.Parent === Players) {
-		// 			this.createInventoryEntities(player, profile.Data.Items);
-		// 		}
-		// 		print("Profile loaded for player ", player.Name);
-		// 		this.syncClientInventory(player);
+				if (!profile) return;
+				// this.equipAccessories(player, profile.Data.equippedDossier.skills);
+				if (player.Parent === Players) {
+					this.createInventoryEntities(player, profile.Data.Items);
+				}
+				print("Profile loaded for player ", player.Name);
+				this.syncClientInventory(player);
 
-		// 		//TODO: consider which stats are given to player etc.
-		// 		RemoteEvents.statisticsSync.fire(player, profile.Data.TotalPlaytime);
-		// 	});
-		// });
+				//TODO: consider which stats are given to player etc.
+				RemoteEvents.statisticsSync.fire(player, profile.Data.TotalPlaytime);
+			});
+		});
 
 		Players.GetPlayers().forEach((player) => this.playerAdded(player));
 
@@ -228,7 +229,7 @@ export class InventoryService implements OnStart {
 
 			//these lines reset your items
 			// profile.Data.Items = defaultProfileData.Items.map((item) => ({ ...item }));
-			// print(profile.Data.Items);
+			print(profile.Data);
 
 			// print("CLEAR!")
 			// profile.Data.dossiers.clear();

@@ -39,7 +39,7 @@ export function SpareItems(props: { previewMode: boolean; spareItems: SpareItem[
 
 				{/*Ammo*/}
 				{ammoItems.size() > 0 && (
-					<>
+					<frame AutomaticSize={"Y"} Size={UDim2.fromScale(1, 0)} BackgroundTransparency={1}>
 						<CategorySection text={"Ammo"} />
 						<frame
 							AutomaticSize={"Y"}
@@ -55,6 +55,7 @@ export function SpareItems(props: { previewMode: boolean; spareItems: SpareItem[
 							/>
 							{ammoItems.map((item) => (
 								<SpareItemRow
+									key={`Ammo_${item.name}`}
 									category={item.category}
 									icon={item.icon}
 									owned={item.owned}
@@ -63,12 +64,12 @@ export function SpareItems(props: { previewMode: boolean; spareItems: SpareItem[
 								/>
 							))}
 						</frame>
-					</>
+					</frame>
 				)}
 
 				{/*Material*/}
 				{materialItems.size() > 0 && (
-					<>
+					<frame AutomaticSize={"Y"} Size={UDim2.fromScale(1, 0)} BackgroundTransparency={1}>
 						<CategorySection text={"Material"} />
 						<frame
 							AutomaticSize={"Y"}
@@ -84,6 +85,7 @@ export function SpareItems(props: { previewMode: boolean; spareItems: SpareItem[
 							/>
 							{materialItems.map((item) => (
 								<SpareItemRow
+									key={`Material_${item.name}`}
 									category={item.category}
 									icon={item.icon}
 									owned={item.owned}
@@ -92,7 +94,7 @@ export function SpareItems(props: { previewMode: boolean; spareItems: SpareItem[
 								/>
 							))}
 						</frame>
-					</>
+					</frame>
 				)}
 			</scrollingframe>
 		</frame>
@@ -114,9 +116,10 @@ function CategorySection(props: { text: string }): Element {
 }
 
 function SpareItemRow(props: SpareItem): Element {
+	const scaleX = props.owned > 0 ? props.selectedDropAmount / props.owned : 0; //probably needs to be in useeffect
+
 	return (
 		<frame
-			key="SpareItemRow"
 			Size={new UDim2(1, 0, 0, 40)}
 			Position={UDim2.fromScale(0.5)}
 			AnchorPoint={new Vector2(0.5)}
@@ -165,7 +168,7 @@ function SpareItemRow(props: SpareItem): Element {
 				{/*slider */}
 				<frame
 					Size={new UDim2(0, 5, 2, 0)}
-					Position={UDim2.fromScale(props.selectedDropAmount / props.owned, 0.5)}
+					Position={UDim2.fromScale(scaleX, 0.5)}
 					AnchorPoint={new Vector2(0, 0.56)}
 					BackgroundColor3={UICONSTS.color.custom_color_dark}
 					BorderSizePixel={0}

@@ -6,7 +6,10 @@ import Net, { Route } from "@rbxts/yetanothernet";
 import world from "./world";
 import { StimulusChannel } from "./components/components";
 import { SkillConstructor } from "@rbxts/wcs";
+
 export const replicator = Replecs.create(world);
+export const server = replicator.server;
+export const client = replicator.client;
 
 // ---- flamework remotes ----//
 interface ClientToServerEvents {

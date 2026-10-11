@@ -93,11 +93,11 @@ export class UIController implements OnStart {
 			</ReflexProvider>, //this one is not fine
 		);
 
-		// ReactRoblox.createRoot(this.dialogueRoot).render(
-		// 	<ReflexProvider producer={dialogueProducer}>
-		// 		<DialogueHandler />
-		// 	</ReflexProvider>,
-		// );
+		ReactRoblox.createRoot(this.dialogueRoot).render(
+			<ReflexProvider producer={dialogueProducer}>
+				<DialogueHandler />
+			</ReflexProvider>,
+		);
 
 		// ReactRoblox.createRoot(this.gameMenu).render(<GameMenu />);
 
