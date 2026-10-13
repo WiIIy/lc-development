@@ -9,9 +9,9 @@ import { HIGHLIGHTABLE_ITEMS } from "shared/data/items/highlightable";
 import { Action } from "shared/data/profile/defaultKeybinds";
 import { isAiming, isDroneFocusing, droneDeployed, isHoldingThrow } from "shared/sharedAtoms";
 import { getDisplayStringForAction } from "shared/utils/input/getDisplayStringFromAction";
-import { getCurrentWCS_Character } from "shared/data/status/getCurrentWcsCharacter";
 import { getItemActions } from "shared/utils/input/getItemActions";
 import { ref } from "@willy/jecs-utils";
+import { getCurrentWCS_Character } from "shared/utils/ecs/getCurrentWcsCharacter";
 
 interface ActionDisplayData {
 	key: string;

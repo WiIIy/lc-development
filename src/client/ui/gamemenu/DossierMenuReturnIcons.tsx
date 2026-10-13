@@ -1,15 +1,6 @@
 import React, { Element, useEffect, useRef, useState } from "@rbxts/react";
 
-import {
-	clientPing,
-	dossierBuildingOpen,
-	dossierEditingOpen,
-	dossierMenuOpen,
-	gameMenuOpen,
-	hideServerInfo,
-	isThirdPerson,
-	regionAtom,
-} from "client/clientAtoms";
+import { clientPing, hideServerInfo, isThirdPerson, regionAtom } from "client/clientAtoms";
 import { useAtom } from "@rbxts/react-charm";
 import { server } from "@rbxts/yetanothernet";
 
@@ -18,6 +9,7 @@ import { DossierEditing } from "../dossier/DossierEditing";
 
 import { GameMenu, mountDossierMenu } from "./GameMenu";
 import { UICONSTS } from "../Uistyle";
+import { dossierEditingOpen, dossierMenuOpen, dossierBuildingOpen, gameMenuOpen } from "shared/sharedAtoms";
 
 const FADE_DURATION = 0.2;
 

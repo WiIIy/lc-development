@@ -2,12 +2,13 @@
 import React, { Element, useEffect, useState } from "@rbxts/react";
 import { useDossier } from "../hooks/useDossier";
 import { useAtom } from "@rbxts/react-charm";
-import { dossierMenuOpen, gameMenuOpen, selectedPreviewDossier } from "client/clientAtoms";
+import { selectedPreviewDossier } from "client/clientAtoms";
 import { Players, UserInputService } from "@rbxts/services";
 import ReactRoblox from "@rbxts/react-roblox";
 import { UICONSTS } from "../Uistyle";
 import { ASSET_ID_PREFIX } from "shared/data/paths";
 import { DossierStore } from "../stores/DossierStore";
+import { dossierMenuOpen } from "shared/sharedAtoms";
 
 export function DossierMenu(): Element {
 	// 1. Grab the data using the hook

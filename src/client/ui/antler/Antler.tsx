@@ -4,9 +4,9 @@ import { ReplicatedStorage, UserInputService } from "@rbxts/services";
 import { useAtom } from "@rbxts/react-charm";
 import { entityCountData } from "client/clientAtoms";
 import { RemoteEvents, RemoteFunctions } from "client/network";
-import { getMouseIconEnabled } from "client/controllers/InputController";
 import { ENEMY_TYPES } from "shared/data/npcs/enemyTypes";
 import { antlerDebuggerDisplaying, GAME_VERSION } from "shared/sharedAtoms";
+import { getMouseIconEnabled } from "shared/utils/ui/getMouseIconEnabled";
 
 //keep in mind GameApp zindex is global instead of sibling so UILabs might look different in zindex ordering
 

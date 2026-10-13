@@ -1,5 +1,4 @@
 import React, { Element, useEffect, useRef, useState } from "@rbxts/react";
-import { dossierEditingOpen } from "client/clientAtoms";
 import { Players, ReplicatedStorage } from "@rbxts/services";
 import { UICONSTS } from "../Uistyle";
 import Make from "@rbxts/make";
@@ -8,6 +7,7 @@ import { useAtom } from "@rbxts/react-charm";
 import { ASSET_ID_PREFIX } from "shared/data/paths";
 import { deserializeColor3, serializeColor3 } from "shared/utils/profile/colorSerdes";
 import { DossierStore } from "../stores/DossierStore";
+import { dossierEditingOpen } from "shared/sharedAtoms";
 
 const template = ReplicatedStorage.LCAssets.characters.base;
 const r6rig = template.Clone();

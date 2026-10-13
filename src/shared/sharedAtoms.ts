@@ -13,5 +13,11 @@ export const droneDeployed = atom(false);
 export const isHoldingThrow = atom(false);
 export const antlerDebuggerDisplaying = atom(false);
 
+export const gameMenuOpen = atom<boolean>(false);
+export const dossierMenuOpen = atom<boolean>(false);
+export const dossierEditingOpen = atom<boolean>(false);
+export const dossierBuildingOpen = atom<boolean>(false);
+export const debugMenuDisplaying = atom<boolean>(false);
+
 //server
 export const enemyList = atom<Model[]>([]); //

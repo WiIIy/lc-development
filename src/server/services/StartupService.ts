@@ -19,6 +19,8 @@ import { dragRagdolledCharacter } from "shared/utils/npc/interaction/dragRagdoll
 import { dropCarriedCharacter } from "shared/utils/npc/interaction/dropRagdollCharacter";
 import { ragdollCharacter } from "shared/utils/npc/interaction/ragdollCharacter";
 import { server } from "shared/network";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 
 interface AnimationValue extends StringValue {
 	WalkAnim: Animation;
@@ -280,6 +282,8 @@ class StartUpService implements OnStart {
 				}
 			},
 		);
+
+
 
 		//ragdoll test
 		// const l = Workspace.FindFirstChild("ragdoll1") as Model;

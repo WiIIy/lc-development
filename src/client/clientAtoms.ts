@@ -8,11 +8,6 @@ export const isHoldingPistol = atom<boolean>(false);
 export const isThirdPerson = atom<boolean>(false);
 export const isDragging = atom<boolean>(false);
 
-export const gameMenuOpen = atom<boolean>(false);
-export const dossierMenuOpen = atom<boolean>(false);
-export const dossierEditingOpen = atom<boolean>(false);
-export const dossierBuildingOpen = atom<boolean>(false);
-
 //purely visual. if you modify it from the client itd change the display but not the real stat on the server lol
 export const maxHealthAtom = atom<number>(100);
 export const maxBloodAtom = atom<number>(100);

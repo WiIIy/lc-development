@@ -46,6 +46,11 @@ export const ANIMATION_IDS = {
 		crouching_legs: "120629369867341", //property set to idle so it overrides core walk anim that makes it a bit taller than intended
 		crouching_arms: "103395074527546", //priority set to core so it doesnt override arm and toolanimations
 	},
+	actions: {
+		squared_up: "125336861445915", //idle
+		punch: "139221136470370", //movement
+		block: "125419177069460", //action
+	},
 	death: {},
 	noitem: {
 		viewmodelidle: "106429706607179",

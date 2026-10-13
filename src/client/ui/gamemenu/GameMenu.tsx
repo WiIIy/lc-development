@@ -7,10 +7,6 @@ import { StatisticsPanel } from "./StatisticsPanel";
 import { SettingsPanel } from "./SettingsPanel";
 import {
 	clientPing,
-	dossierBuildingOpen,
-	dossierEditingOpen,
-	dossierMenuOpen,
-	gameMenuOpen,
 	hideServerInfo,
 	isThirdPerson,
 	regionAtom,
@@ -20,10 +16,11 @@ import { server } from "@rbxts/yetanothernet";
 import { DossierBuilding } from "../dossier/DossierBuilding";
 import { DossierEditing } from "../dossier/DossierEditing";
 import { generateDossier } from "client/clientutils/generateDossier";
-import { getMouseIconEnabled, getDossierGenerated, setDossierGenerated } from "client/controllers/InputController";
 import { IMAGE_IDS } from "shared/data/assetid/ImageIDs";
-import { GAME_VERSION } from "shared/sharedAtoms";
+import { dossierBuildingOpen, dossierEditingOpen, dossierMenuOpen, GAME_VERSION, gameMenuOpen } from "shared/sharedAtoms";
 import { DossierStore } from "../stores/DossierStore";
+import { getDossierGenerated, setDossierGenerated } from "client/inputhandlers/ui/DossierHandler";
+import { getMouseIconEnabled } from "shared/utils/ui/getMouseIconEnabled";
 
 const FADE_DURATION = 0.2;
 

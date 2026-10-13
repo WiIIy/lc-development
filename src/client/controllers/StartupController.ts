@@ -15,6 +15,7 @@ import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { ASSET_ID_PREFIX } from "shared/data/paths";
 import { DialogueController } from "./ui/DialogueController";
 import { showWorldDamageNumber } from "shared/utils/visual/showWorldDamageNumber";
+import { AnimationUtils } from "shared/utils/visual/animationUtil";
 
 @Controller({})
 export class StartUpController implements OnStart {
@@ -39,6 +40,7 @@ export class StartUpController implements OnStart {
 			humanoid.SetStateEnabled(Enum.HumanoidStateType.Flying, false);
 			humanoid.SetStateEnabled(Enum.HumanoidStateType.Jumping, false);
 			humanoid.JumpPower = 0;
+			humanoid.AutoRotate = true;
 
 			// Get descendants and set collision group
 			charR6.GetDescendants().forEach((descendant) => {
@@ -46,6 +48,8 @@ export class StartUpController implements OnStart {
 					descendant.CollisionGroup = "character";
 				}
 			});
+
+			AnimationUtils.loadAnim(charR6, "squaredup", ANIMATION_IDS.actions.squared_up, 0, true);
 
 			const wcsChar = Character.GetCharacterFromInstance(character);
 
@@ -123,7 +127,7 @@ export class StartUpController implements OnStart {
 			lastMoveTime: number;
 		};
 
-		const controllers = new Map<Model, EnemyAnimController>();
+		// const controllers = new Map<Model, EnemyAnimController>();
 
 		// Makes enemy walk, animamtions play on client for optimization
 		// CollectionService.GetInstanceAddedSignal("Enemy").Connect((enemy) => {
