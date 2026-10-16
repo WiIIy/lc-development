@@ -53,8 +53,8 @@ export class ViewmodelController implements OnStart, OnRender {
 	}
 
 	onRender(dt: number): void {
-        if (!this.head) return;
-         this.head.LocalTransparencyModifier = 1
+        this.head.LocalTransparencyModifier = 1
+        this.torso.LocalTransparencyModifier = 1
 		const mouseDelta = UserInputService.GetMouseDelta();
         this.yaw -= mouseDelta.X * 0.003; // Adjust sensitivity here
         this.pitch = math.clamp(this.pitch - mouseDelta.Y * 0.003, math.rad(-85), math.rad(85));

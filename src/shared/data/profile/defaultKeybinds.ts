@@ -3,6 +3,7 @@ export enum Action {
 	LightAttack = "LightAttack", //LMB
 	ShiftClick = "ShiftClick", //shiftclick
 	HeavyAttack = "HeavyAttack", //RMB
+	Shove = "Shove",
 	Dash = "Dash", //shift
 	Parry = "Parry", //R
 	Yell = "Yell", //V
@@ -85,6 +86,7 @@ export const KEYBINDS: Record<Action, (Enum.KeyCode | Enum.UserInputType)[]> = {
 	[Action.LightAttack]: [Enum.UserInputType.MouseButton1],
 	[Action.ShiftClick]: [Enum.UserInputType.MouseButton1, Enum.KeyCode.LeftShift],
 	[Action.HeavyAttack]: [Enum.UserInputType.MouseButton2],
+	[Action.Shove] : [Enum.KeyCode.Q],
 	[Action.Dash]: [Enum.KeyCode.LeftShift],
 	[Action.Parry]: [Enum.KeyCode.R],
 	[Action.Yell]: [Enum.KeyCode.V],

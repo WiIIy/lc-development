@@ -21,6 +21,11 @@ import { ragdollCharacter } from "shared/utils/npc/interaction/ragdollCharacter"
 import { server } from "shared/network";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
+import { MeleeLight } from "shared/skills/base/light";
+import { MeleeHeavy } from "shared/skills/base/heavy";
+import { MeleeBlock } from "shared/skills/base/block";
+import { MeleeShove } from "shared/skills/base/shove";
+import { setupEvilWilly } from "shared/skills/npc/evilWilly";
 
 interface AnimationValue extends StringValue {
 	WalkAnim: Animation;
@@ -38,7 +43,7 @@ interface AnimateScript extends LocalScript {
 
 @Service({})
 class StartUpService implements OnStart {
-	constructor(private readonly inventoryService: InventoryService) {}
+	constructor(private readonly inventoryService: InventoryService) { }
 
 	onStart() {
 		//this is all it takes to put it in character's hand
@@ -148,6 +153,11 @@ class StartUpService implements OnStart {
 
 				new Dash(wcsCharacter);
 				new Mark(wcsCharacter);
+				new MeleeLight(wcsCharacter);
+				new MeleeHeavy(wcsCharacter);
+				new MeleeBlock(wcsCharacter);
+				new MeleeShove(wcsCharacter);
+
 				// new Crouch(wcsCharacter);
 
 				const humanoid = charR6.Humanoid;
@@ -245,6 +255,8 @@ class StartUpService implements OnStart {
 			}
 		});
 
+		setupEvilWilly();
+
 		RemoteEvents.equipAccessoryOnHumanoid.connect((plr, humanoid: Humanoid, accessory: Accessory) => {
 			humanoid.AddAccessory(accessory);
 		});
@@ -283,8 +295,6 @@ class StartUpService implements OnStart {
 			},
 		);
 
-
-
 		//ragdoll test
 		// const l = Workspace.FindFirstChild("ragdoll1") as Model;
 		// ragdollCharacter(l);
@@ -320,6 +330,7 @@ class StartUpService implements OnStart {
 		// print("adding curr equipped");
 		// world.set(testNPC, pair(Components.CurrentlyEquipped, batEntity) as Id, "Baseballbat");
 	}
+
 }
 
 export = StartUpService;

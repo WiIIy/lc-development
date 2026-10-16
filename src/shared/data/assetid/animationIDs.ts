@@ -1,4 +1,5 @@
 // import { GrapplingHook } from "shared/skills/grapplinghook";
+//todo separate so not monolith
 
 export const ANIMATION_IDS = {
 	npc: {
@@ -47,9 +48,11 @@ export const ANIMATION_IDS = {
 		crouching_arms: "103395074527546", //priority set to core so it doesnt override arm and toolanimations
 	},
 	actions: {
-		squared_up: "125336861445915", //idle
-		punch: "139221136470370", //movement
-		block: "125419177069460", //action
+		squared_up: "125336861445915", //idle, looped
+		light: "139221136470370", //movement
+		block: "125419177069460", //action, looped
+		heavy: "112824014974371", //movement
+		shove: "74686438374732", //movement
 	},
 	death: {},
 	noitem: {
