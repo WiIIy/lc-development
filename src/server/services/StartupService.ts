@@ -26,6 +26,7 @@ import { MeleeHeavy } from "shared/skills/base/heavy";
 import { MeleeBlock } from "shared/skills/base/block";
 import { MeleeShove } from "shared/skills/base/shove";
 import { setupEvilWilly } from "shared/skills/npc/evilWilly";
+import { scheduler } from "shared/scheduler";
 
 interface AnimationValue extends StringValue {
 	WalkAnim: Animation;
@@ -49,6 +50,7 @@ class StartUpService implements OnStart {
 		//this is all it takes to put it in character's hand
 		// world.set(character, pair(Components.CurrentlyEquipped, batEntity) as Id, "Baseballbat");
 
+		// setupJabby()
 		Players.PlayerAdded.Connect((plr) => {
 			const playerEntity = ref(plr); //creates entity with reference to player instance, returns the entity, not a component ig? (components are entities but entities arent always components)
 			world.set(playerEntity, Name, plr.Name);
@@ -65,7 +67,7 @@ class StartUpService implements OnStart {
 				// print("new new new");
 				const charR6 = await promiseR6(character);
 				// world.set(playerEntity, Components.Character, charR6); //i feel like ths is a ton of data to save and be iterated
-				world.set(playerEntity, Components.Model, charR6);
+				// world.set(playerEntity, Components.Model, charR6); //to fix
 				// world.set(playerEntity, Components.Transform, charR6.HumanoidRootPart.CFrame);
 				world.set(playerEntity, Components.Player, plr); //doesnt need serdes. i dont think
 				charR6.PrimaryPart = charR6.HumanoidRootPart;
@@ -96,26 +98,30 @@ class StartUpService implements OnStart {
 				world.set(playerEntity, Components.AnimationQueue, []);
 				world.set(playerEntity, Components.WCSCharacter, wcsCharacter);
 				world.set(playerEntity, Components.Humanoid, charR6.Humanoid);
-				world.set(playerEntity, Components.Basepart, charR6.HumanoidRootPart);
+				// world.set(playerEntity, Components.Basepart, charR6.HumanoidRootPart);
 
 				if (!world.has(playerEntity, Components.Inventory)) {
 					world.set(playerEntity, Components.Inventory, []); //not replicated, purely server side
 				}
 
-				world.set(playerEntity, Components.Health, {
-					current: charR6.Humanoid.Health,
-					max: charR6.Humanoid.MaxHealth,
-				});
+				// world.set(playerEntity, Components.Health, {
+				// 	current: charR6.Humanoid.Health,
+				// 	max: charR6.Humanoid.MaxHealth,
+				// });
 
-				world.set(playerEntity, Components.Stamina, {
-					current: 100,
-					max: 100,
-				});
+				// world.set(playerEntity, Components.Stamina, {
+				// 	current: 100,
+				// 	max: 100,
+				// });
 
-				world.set(playerEntity, Components.Blood, {
-					current: 80,
-					max: 100,
-				});
+				// world.set(playerEntity, Components.Blood, {
+				// 	current: 80,
+				// 	max: 100,
+				// });
+
+				// world.set(playerEntity, Components.Test, "test");
+				// print("test comp ", world.get(playerEntity, Components.Test));
+				// print("scheduler", scheduler);
 
 				const defaultDebuffs: StatusEffect[] = [
 					{
@@ -195,13 +201,13 @@ class StartUpService implements OnStart {
 				// 	playerEntity,
 				// 	pair(Replecs.reliable, Components.ActiveStatusEffects) as unknown as Id<TagDiscriminator>,
 				// );
-				server.set_pair(playerEntity, pair(Replecs.Relation, Components.CurrentlyEquipped));
+				// server.set_pair(playerEntity, pair(Replecs.Relation, Components.CurrentlyEquipped));
 
-				server.set_reliable(playerEntity, Components.Health);
-				server.set_reliable(playerEntity, Components.Stamina);
-				server.set_reliable(playerEntity, Components.Blood);
-				server.set_reliable(playerEntity, Components.Player);
-				server.set_reliable(playerEntity, Components.ActiveStatusEffects);
+				// server.set_reliable(playerEntity, Components.Health);
+				// server.set_reliable(playerEntity, Components.Stamina);
+				// server.set_reliable(playerEntity, Components.Blood);
+				// server.set_reliable(playerEntity, Components.Player);
+				// server.set_reliable(playerEntity, Components.ActiveStatusEffects);
 
 				const animateScript = character.WaitForChild("Animate", 10) as AnimateScript | undefined;
 

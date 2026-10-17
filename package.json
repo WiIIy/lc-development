@@ -31,7 +31,7 @@
     "@rbxts-js/react": "^17.3.7-ts.1",
     "@rbxts/camera-shaker": "^1.0.8",
     "@rbxts/fastcast": "^13.2.0-ts.2",
-    "@rbxts/jabby": "^0.5.1",
+    "@rbxts/jabby": "^0.3.1",
     "@rbxts/log": "^0.6.3",
     "@rbxts/make": "^1.0.6",
     "@rbxts/planck": "^1.0.0",

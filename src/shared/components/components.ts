@@ -289,4 +289,20 @@ world.set(Components.ActiveStatusEffects, Replecs.serdes, {
 	},
 });
 
+// world.set(Components.Blood, Replecs.serdes, {
+// 	bytespan: 8,
+// 	serialize: (blood: { current: number; max: number }) => {
+// 		const buff = buffer.create(8);
+// 		buffer.writef32(buff, 0, blood.current);
+// 		buffer.writef32(buff, 4, blood.max);
+// 		return buff;
+// 	},
+// 	deserialize: (buff: buffer) => {
+// 		return {
+// 			current: buffer.readf32(buff, 0),
+// 			max: buffer.readf32(buff, 4),
+// 		};
+// 	},
+// });
+
 export default Components;

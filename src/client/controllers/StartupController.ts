@@ -30,6 +30,7 @@ export class StartUpController implements OnStart {
 		// 2. Define Character Setup logic
 
 		UserInputService.MouseIconEnabled = false;
+		// setupJabby()
 
 		const setupCharacter = async (character: Model) => {
 			const charR6 = await promiseR6(character);

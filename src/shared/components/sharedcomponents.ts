@@ -10,6 +10,7 @@ const shared_components = {
 	// test: Components.Test,
 	// transform: Components.Transform,
 	// animator: Components.Animator, //not replicated due to different animator instances for viewmodel and character
+
 	// animationqueue: Components.AnimationQueue,
 	player: Components.Player,
 	currentlyEquipped: Components.CurrentlyEquipped,
