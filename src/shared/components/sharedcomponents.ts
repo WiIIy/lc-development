@@ -14,7 +14,7 @@ const shared_components = {
 	// animationqueue: Components.AnimationQueue,
 	player: Components.Player,
 	currentlyEquipped: Components.CurrentlyEquipped,
-	blood: Components.Blood,
+	// blood: Components.Blood,
 	health: Components.Health,
 	stamina: Components.Stamina,
 	activeStatusEffects: Components.ActiveStatusEffects,

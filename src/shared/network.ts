@@ -1,9 +1,9 @@
+import world from "./world";
 import { Networking } from "@flamework/networking";
 import Log from "@rbxts/log";
 import Replecs from "@rbxts/replecs";
 import Net, { Route } from "@rbxts/yetanothernet";
 
-import world from "./world";
 import { StimulusChannel } from "./components/components";
 import { SkillConstructor } from "@rbxts/wcs";
 

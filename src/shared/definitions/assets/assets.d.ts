@@ -134,3 +134,14 @@ type Drone = Model & {
 	viewmodelweld: Motor6D;
 	characterweld: Motor6D;
 };
+
+type MeleeAnimationData = {
+	lightAttack: string;
+	heavyAttack: string;
+	parry: string;
+	dodge: string;
+};
+type ItemContainerObject = {
+	model: Model;
+	attachmentFolder: Folder;
+};

@@ -18,7 +18,7 @@ import { carryRagdolledCharacter } from "shared/utils/npc/interaction/carryRagdo
 import { dragRagdolledCharacter } from "shared/utils/npc/interaction/dragRagdollCharacter";
 import { dropCarriedCharacter } from "shared/utils/npc/interaction/dropRagdollCharacter";
 import { ragdollCharacter } from "shared/utils/npc/interaction/ragdollCharacter";
-import { server } from "shared/network";
+import { replicator, server } from "shared/network";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { MeleeLight } from "shared/skills/base/light";
@@ -44,7 +44,7 @@ interface AnimateScript extends LocalScript {
 
 @Service({})
 class StartUpService implements OnStart {
-	constructor(private readonly inventoryService: InventoryService) { }
+	constructor(private readonly inventoryService: InventoryService) {}
 
 	onStart() {
 		//this is all it takes to put it in character's hand
@@ -68,7 +68,7 @@ class StartUpService implements OnStart {
 				const charR6 = await promiseR6(character);
 				// world.set(playerEntity, Components.Character, charR6); //i feel like ths is a ton of data to save and be iterated
 				// world.set(playerEntity, Components.Model, charR6); //to fix
-				// world.set(playerEntity, Components.Transform, charR6.HumanoidRootPart.CFrame);
+				world.set(playerEntity, Components.Transform, charR6.HumanoidRootPart.CFrame);
 				world.set(playerEntity, Components.Player, plr); //doesnt need serdes. i dont think
 				charR6.PrimaryPart = charR6.HumanoidRootPart;
 
@@ -98,26 +98,76 @@ class StartUpService implements OnStart {
 				world.set(playerEntity, Components.AnimationQueue, []);
 				world.set(playerEntity, Components.WCSCharacter, wcsCharacter);
 				world.set(playerEntity, Components.Humanoid, charR6.Humanoid);
-				// world.set(playerEntity, Components.Basepart, charR6.HumanoidRootPart);
+				world.set(playerEntity, Components.Basepart, charR6.HumanoidRootPart);
 
 				if (!world.has(playerEntity, Components.Inventory)) {
 					world.set(playerEntity, Components.Inventory, []); //not replicated, purely server side
 				}
 
-				// world.set(playerEntity, Components.Health, {
-				// 	current: charR6.Humanoid.Health,
-				// 	max: charR6.Humanoid.MaxHealth,
-				// });
+				const healthComp = world.set(playerEntity, Components.Health, {
+					current: charR6.Humanoid.Health,
+					max: charR6.Humanoid.MaxHealth,
+				});
 
-				// world.set(playerEntity, Components.Stamina, {
+				//doesnt error
+				const stamComp = world.set(playerEntity, Components.Stamina, {
+					current: 100,
+					max: 100,
+				});
+
+				// const c = replicator.server.
+				// print("world same?", replicator.server.world === world);
+				// print("replecs in YOUR world:", c.global, c.serdes, c.networked, c.shared);
+				// print("mine:", Components.Blood, Components.Stamina, Components.Health);
+
+				// print(
+				// 	"replecs:",
+				// 	Replecs.Global,
+				// 	Replecs.Shared,
+				// 	Replecs.Networked,
+				// 	Replecs.Serdes,
+				// 	Replecs.Reliable,
+				// 	Replecs.Unreliable,
+				// );
+				// print(
+				// 	"mine:",
+				// 	Components.Player,
+				// 	Components.CurrentlyEquipped,
+				// 	Components.Blood,
+				// 	Components.Health,
+				// 	Components.Stamina,
+				// 	Components.ActiveStatusEffects,
+				// );
+
+				// const test = world.entity();
+				// world.set(test, Components.Blood, { current: 1, max: 1 });
+				// print(world.get(test, Components.Blood));
+
+				//if uncommented errors even though theyre.. identical
+				// const bloodComp = world.set(playerEntity, Components.Blood, {
 				// 	current: 100,
 				// 	max: 100,
 				// });
+				// const [ok, err] = xpcall(() => {
+				// 	world.set(playerEntity, Components.Blood, { current: 100, max: 100 });
+				// }, debug.traceback);
+				// if (!ok) warn(err);
 
-				// world.set(playerEntity, Components.Blood, {
-				// 	current: 80,
-				// 	max: 100,
-				// });
+				// try {
+				// 	// Code that might throw an error
+				// 	world.set(playerEntity, Components.Blood, { current: 100, max: 100 });
+				// } catch (err) {
+				// 	// This acts exactly like your xpcall error handler
+				// 	warn(`An error occurred: ${err}`);
+				// 	return undefined;
+				// }
+				print(world.get(playerEntity, Components.Blood));
+
+				//Unhandled Promise rejection:
+				// ReplicatedStorage.rbxts_include.node_modules.@rbxts.replecs.out.replecs.server:2040: attempt to compare number < table
+				// ReplicatedStorage.rbxts_include.RuntimeLib:146
+
+				// server.set_reliable(playerEntity, Components.Blood);
 
 				// world.set(playerEntity, Components.Test, "test");
 				// print("test comp ", world.get(playerEntity, Components.Test));
@@ -205,7 +255,7 @@ class StartUpService implements OnStart {
 
 				// server.set_reliable(playerEntity, Components.Health);
 				// server.set_reliable(playerEntity, Components.Stamina);
-				// server.set_reliable(playerEntity, Components.Blood);
+
 				// server.set_reliable(playerEntity, Components.Player);
 				// server.set_reliable(playerEntity, Components.ActiveStatusEffects);
 
@@ -336,7 +386,6 @@ class StartUpService implements OnStart {
 		// print("adding curr equipped");
 		// world.set(testNPC, pair(Components.CurrentlyEquipped, batEntity) as Id, "Baseballbat");
 	}
-
 }
 
 export = StartUpService;

@@ -1,79 +1,81 @@
 import { CharacterRigR6 } from "@rbxts/promise-character";
 import Replecs from "@rbxts/replecs";
 
-import { Name, Archetype, Entity, pair } from "@rbxts/jecs";
+import { Name, Archetype, Entity, pair, Component } from "@rbxts/jecs";
 import world from "../world";
 import { Character } from "@rbxts/wcs";
 import { HttpService } from "@rbxts/services";
+import { replicator } from "shared/network";
 
-export type MeleeAnimationData = {
-	lightAttack: string;
-	heavyAttack: string;
-	parry: string;
-	dodge: string;
-};
-export type ItemContainerObject = {
-	model: Model;
-	attachmentFolder: Folder;
+type LooseLib = { set_serdes(component: unknown, serdes: unknown): void };
+
+export function setSerdes<T>(component: Entity<T>, serdes: Replecs.SerdesTable<T>): void {
+	(replicator as unknown as LooseLib).set_serdes(component, serdes);
+}
+
+const component = <T>() => {
+	const e = world.entity();
+	world.add(e, Component);
+	return e as unknown as Entity<T>;
 };
 
 export class Components {
-	static Transform = world.component<CFrame>(); //this is replicated
-	static Model = world.component<Model>();
-	static Basepart = world.component<BasePart>(); //primary part of a model, used for pivots, if not humanoid, everything else is welded on
-	static SystemsAtWork = world.component<string[]>();
+	static Transform = component<CFrame>(); //this is replicated
+	static Model = component<Model>();
+	static Basepart = component<BasePart>(); //primary part of a model, used for pivots, if not humanoid, everything else is welded on
+	static SystemsAtWork = component<string[]>();
 	// also to store humanoid root part for calculations
 
 	//player stuff
-	static Health = world.component<{ current: number; max: number }>();
-	static Stamina = world.component<{ current: number; max: number }>();
-	static Blood = world.component<{ current: number; max: number }>();
-	static ActiveStatusEffects = world.component<StatusEffect[]>();
+	static Health = component<{ current: number; max: number }>();
+	static Stamina = component<{ current: number; max: number }>();
+	static Blood = component<{ current: number; max: number }>();
+	static ActiveStatusEffects = component<StatusEffect[]>();
 	// static ActiveDebuffs = world.component<DebuffStatus[]>();
 
-	static Player = world.component<Player>(); //ERRR
-	static PlayerString = world.component<string>();
+	static Player = component<Player>(); //ERRR
+	static PlayerString = component<string>();
 	static JustJoined = world.entity();
-	static Character = world.component<CharacterRigR6>();
-	static Inventory = world.component<Entity[]>();
-	static Animator = world.component<Animator>(); //animations wont run if entity doesnt have this. client Animator is for viewmodel, sever Animator is for character
-	static WCSCharacter = world.component<Character>(); //reference to wcs character
-	static Humanoid = world.component<Humanoid>();
-	static CurrentlyEquipped = world.component<string>(); // note, if you want to world.set(e, pair(a,b), value), a should be a component with the type of value
+	static Character = component<CharacterRigR6>();
+	static Inventory = component<Entity[]>();
+	static Animator = component<Animator>(); //animations wont run if entity doesnt have this. client Animator is for viewmodel, sever Animator is for character
+	static WCSCharacter = component<Character>(); //reference to wcs character
+	static Humanoid = component<Humanoid>();
+	static CurrentlyEquipped = component<string>(); // note, if you want to world.set(e, pair(a,b), value), a should be a component with the type of value
 
 	static IsMelee = world.entity(); //assigns the melee wcs moveset when its currentlyequipped
-	static ItemModel = world.component<BaseItem>(); //replicatedstorage reference to the item. automatically gets put to workspace when added
+	static ItemModel = component<BaseItem>(); //replicatedstorage reference to the item. automatically gets put to workspace when added
 
-	static AnimationQueue = world.component<string[]>(); //playing animations one after another
-	static AnimationLayers = world.component<Record<string, string>>(); //playing animations simultaneously
+	static AnimationQueue = component<string[]>(); //playing animations one after another
+	static AnimationLayers = component<Record<string, string>>(); //playing animations simultaneously
 
-	static Test = world.component<string>();
+	static Test = component<string>();
 
 	//Item related
-	static Item = world.component<{ name: string }>();
+	static Item = component<{ name: string }>();
 
-	static ChamberedAmmo = world.component<number>();
-	static NpcOwnedAmmo = world.component<number>();
+	static ChamberedAmmo = component<number>();
+	static NpcOwnedAmmo = component<number>();
 
-	static Chainsaw = world.component<{
+	static Chainsaw = component<{
 		fuel: number;
 		temp: number;
 		overheated: boolean;
 	}>();
 
-	static Drone = world.component<{
+	static Drone = component<{
 		deployed: boolean;
 		instance: Model | undefined;
 		speed: number;
 		cframe: CFrame;
 	}>();
 
-	static Owner = world.component<Entity>();
+	static Owner = component<Entity>();
 	static WorldItem = world.entity(); // item exists in world
-	static InventoryItem = world.component<{ slot: string; slotType: SlotType }>(); // item inside inventory
+	static InventoryItem = component<{ slot: string; slotType: SlotType }>(); // item inside inventory
 
 	static Prop = world.entity(); // Tag to mark entities as props
-	static CarriedProp = world.component<Entity>(); // Stores the entity ID of the prop a player is carrying
+	static CarriedProp = component<Entity>(); // Stores the entity ID of the prop a player is carrying
 
 	//NPC Data
 	// static NPCName = world.component<string>(); //tag to mark npcs
@@ -84,44 +86,44 @@ export class Components {
 	//generic melee = CharacterMotor6D, MeleeAnimationData
 	// static MeleeAnimationData = world.component<MeleeAnimationData>();
 
-	static ItemContainerObject = world.component<ItemContainerObject>();
+	static ItemContainerObject = component<ItemContainerObject>();
 
 	//fffffFFFFF AAAAHHH
 
-	static EnemyState = world.component<EnemyState>();
-	static EnemyType = world.component<EnemyType>(); //most behavior and stats are determined by this
+	static EnemyState = component<EnemyState>();
+	static EnemyType = component<EnemyType>(); //most behavior and stats are determined by this
 
-	static Faction = world.component<Faction>();
-	static Target = world.component<Entity>(); //
-	static TargetBasepart = world.component<BasePart>();
-	static VisiblePlayerEntities = world.component<Entity[]>();
+	static Faction = component<Faction>();
+	static Target = component<Entity>(); //
+	static TargetBasepart = component<BasePart>();
+	static VisiblePlayerEntities = component<Entity[]>();
 
-	static Alertness = world.component<number>(); //chance of changing state to combat {0-20 idle/roaming, 20-50 looking at source, 50-80 investigating, 80-100 combat}
-	static AlertnessMultiplier = world.component<number>(); //alertness and morale are influenced by stimulus
+	static Alertness = component<number>(); //chance of changing state to combat {0-20 idle/roaming, 20-50 looking at source, 50-80 investigating, 80-100 combat}
+	static AlertnessMultiplier = component<number>(); //alertness and morale are influenced by stimulus
 
-	static Morale = world.component<number>(); //chance of surrender
-	static MoraleMultiplier = world.component<number>();
+	static Morale = component<number>(); //chance of surrender
+	static MoraleMultiplier = component<number>();
 
-	static VisionRange = world.component<number>(); //studs they can see you
-	static HearingRange = world.component<number>(); //studs they can process sound stimulus
+	static VisionRange = component<number>(); //studs they can see you
+	static HearingRange = component<number>(); //studs they can process sound stimulus
 
-	static MoveToTarget = world.component<Vector3>(); //if set enemies will go right to that position, component gets deleted
-	static AssignedWalkPoint = world.component<PointTarget>();
+	static MoveToTarget = component<Vector3>(); //if set enemies will go right to that position, component gets deleted
+	static AssignedWalkPoint = component<PointTarget>();
 	// static SearchDestination = world.component<Vector3>();
-	static ChangeEnemyState = world.component<EnemyState>(); //if set enemies will change state, component gets deleted
-	static FireCooldown = world.component<{ nextFireTime: number }>();
+	static ChangeEnemyState = component<EnemyState>(); //if set enemies will change state, component gets deleted
+	static FireCooldown = component<{ nextFireTime: number }>();
 
 	static CanParry = world.entity();
 	static CanShove = world.entity();
 	static RadioConnected = world.entity();
 	static CanSurrender = world.entity();
 	static FakeCivilian = world.entity();
-	static HoldsItem = world.component<Model>();
-	static HasAccessory = world.component<Accessory[]>();
-	static HasOutfit = world.component<{ shirtId: string; pantsId: string }>();
+	static HoldsItem = component<Model>();
+	static HasAccessory = component<Accessory[]>();
+	static HasOutfit = component<{ shirtId: string; pantsId: string }>();
 
 	//behavior tags
-	static Group = world.component<Entity[]>();
+	static Group = component<Entity[]>();
 	static Sitting = world.entity();
 	static Hiding = world.entity();
 	static Distancing = world.entity();
@@ -135,41 +137,41 @@ export class Components {
 
 	//stimulus and perception, World stuff
 	static GameObject = world.entity(); //things that arent part of the map/interactable, not players
-	static Stimulus = world.component<Stimulus>();
+	static Stimulus = component<Stimulus>();
 
 	//Pathing
-	static Path = world.component<PathWaypoint[]>();
-	static PathIndex = world.component<number>();
-	static NextPathTime = world.component<number>(); // Throttles Pathfinding Service
+	static Path = component<PathWaypoint[]>();
+	static PathIndex = component<number>();
+	static NextPathTime = component<number>(); // Throttles Pathfinding Service
 	static Omniscient = world.entity();
 
 	//Following
-	static TimeSightLost = world.component<number>();
+	static TimeSightLost = component<number>();
 	static Wandering = world.entity(); //indicates enemy that currently has wandering behaviors. actually its deprecated. delete this
 	static ArrivedAtTarget = world.entity();
 
 	//Wandering
-	static WanderDestination = world.component<{ name: string; position: Vector3 }>(); //if enemy has this it means theyre approaching the destination
-	static CurrentWanderPoint = world.component<string>();
-	static LastSeenPosition = world.component<Vector3>();
-	static LossOfSightData = world.component<{ lossTime: number; initialPos: Vector3; sampleCaptured: boolean }>();
-	static BlindPursuitDirection = world.component<Vector3>();
+	static WanderDestination = component<{ name: string; position: Vector3 }>(); //if enemy has this it means theyre approaching the destination
+	static CurrentWanderPoint = component<string>();
+	static LastSeenPosition = component<Vector3>();
+	static LossOfSightData = component<{ lossTime: number; initialPos: Vector3; sampleCaptured: boolean }>();
+	static BlindPursuitDirection = component<Vector3>();
 	// Add these to Components
-	static SearchDelayTimer = world.component<number>(); // Timestamp when search movement should start
-	static PostSearchWaitTimer = world.component<number>(); // Timestamp when waiting ends and NPC becomes fully idle
+	static SearchDelayTimer = component<number>(); // Timestamp when search movement should start
+	static PostSearchWaitTimer = component<number>(); // Timestamp when waiting ends and NPC becomes fully idle
 	static SetToSearch = world.entity();
-	static SittingTimer = world.component<number>();
+	static SittingTimer = component<number>();
 
 	// Looking behaviors
-	static LookAtTarget = world.component<Entity>();
-	static LookAtPosition = world.component<Vector3>();
-	static OriginalNeckC0 = world.component<CFrame>();
-	static NeckJoint = world.component<Motor6D>();
+	static LookAtTarget = component<Entity>();
+	static LookAtPosition = component<Vector3>();
+	static OriginalNeckC0 = component<CFrame>();
+	static NeckJoint = component<Motor6D>();
 
 	static ShowPathfinding = world.entity();
 	static Highlighted = world.entity();
 
-	static Merchant = world.component<{ merchantName: string; wares: [] }>();
+	static Merchant = component<{ merchantName: string; wares: [] }>();
 
 	//perception system will use the stimulus and determine how its processed by each enemy. can trigger distraction from throwing cans
 	//decisionsystem controls being distracted
@@ -191,12 +193,12 @@ export class Components {
 	//Status Effect Tags,
 	//Debuffs
 	//Applicable to Both Player and Enemy
-	static Bleeding = world.component<{ startTime: number; severity: number; limb: string }>();
-	static Shrapnel = world.component<{ startTime: number; severity: number; limb: string }>();
-	static Fracture = world.component<{ startTime: number; severity: number; limb: string }>();
-	static Burning = world.component<{ dps: number; endTime: number }>();
-	static Sepsis = world.component<{ dps: number; endTime: number }>();
-	static Stunned = world.component<{ startTime: number; endTime: number }>();
+	static Bleeding = component<{ startTime: number; severity: number; limb: string }>();
+	static Shrapnel = component<{ startTime: number; severity: number; limb: string }>();
+	static Fracture = component<{ startTime: number; severity: number; limb: string }>();
+	static Burning = component<{ dps: number; endTime: number }>();
+	static Sepsis = component<{ dps: number; endTime: number }>();
+	static Stunned = component<{ startTime: number; endTime: number }>();
 
 	//Stun tags
 	static Cough = world.entity();
@@ -205,14 +207,14 @@ export class Components {
 	static Fell = world.entity();
 
 	//Persistent Debuffs
-	static HasBlindness = world.component<{ eye: Eye }>();
+	static HasBlindness = component<{ eye: Eye }>();
 	static IsVegetable = world.entity();
 
 	// Perception timer state
-	static PerceptionTimer = world.component<{ firstSpottedTime?: number }>();
+	static PerceptionTimer = component<{ firstSpottedTime?: number }>();
 
 	// Reload state
-	static IsReloading = world.component<boolean>();
+	static IsReloading = component<boolean>();
 
 	// Behavior style tag components
 	static ConserverTag = world.entity();
@@ -261,21 +263,19 @@ for (const [key, value] of pairs(Components)) {
 	}
 }
 
-world.set(Components.Transform, Replecs.serdes, {
+setSerdes(Components.Transform, {
 	bytespan: 12,
-	serialize: (transform: CFrame) => {
+	serialize: (transform) => {
 		const buff = buffer.create(12);
 		buffer.writef32(buff, 0, transform.X);
 		buffer.writef32(buff, 4, transform.Y);
 		buffer.writef32(buff, 8, transform.Z);
 		return buff;
 	},
-	deserialize: (buff: buffer) => {
-		return new CFrame(buffer.readf32(buff, 0), buffer.readf32(buff, 4), buffer.readf32(buff, 8));
-	},
+	deserialize: (buff) => new CFrame(buffer.readf32(buff, 0), buffer.readf32(buff, 4), buffer.readf32(buff, 8)),
 });
 
-world.set(Components.ActiveStatusEffects, Replecs.serdes, {
+setSerdes(Components.ActiveStatusEffects, {
 	serialize: (debuffs: StatusEffect[]) => {
 		// Simple JSON serialization for complex arrays
 		const json = HttpService.JSONEncode(debuffs);

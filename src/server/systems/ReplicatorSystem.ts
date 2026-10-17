@@ -1,13 +1,10 @@
-import { GlobalEvents, GlobalFunctions, NetworkRoutes, replicator } from "shared/network";
-
 import type { World } from "@rbxts/jecs";
+import { NetworkRoutes, replicator } from "shared/network";
 import Log from "@rbxts/log";
 import { Phase, timePassed } from "@rbxts/planck";
 import { Phases } from "@rbxts/planck-runservice";
 
 import { scheduler } from "shared/scheduler";
-
-export const server_replicator = replicator.server;
 
 let replicatorReady = false;
 

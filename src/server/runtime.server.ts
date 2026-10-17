@@ -5,7 +5,7 @@ setupLogger();
 Flamework.addPaths("src/server/components");
 Flamework.addPaths("src/server/services");
 Flamework.addPaths("src/server/systems");
-Flamework.addPaths("src/shared/components");
-Flamework.addPaths("src/shared/systems");
+
+Flamework.addPaths("src/shared");
 
 Flamework.ignite();

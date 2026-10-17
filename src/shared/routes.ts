@@ -5,7 +5,7 @@ import Net, { Route } from "@rbxts/yetanothernet";
 
 import world from "./world";
 // import { ItemData } from "./types/InventoryState";
-export const replicator = Replecs.create(world);
+// export const replicator = Replecs.create(world);
 
 // ---- replecs shi ---- //
 
