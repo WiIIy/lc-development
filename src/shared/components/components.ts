@@ -2,10 +2,9 @@ import { CharacterRigR6 } from "@rbxts/promise-character";
 import Replecs from "@rbxts/replecs";
 
 import { Name, Archetype, Entity, pair, Component } from "@rbxts/jecs";
-import world from "../world";
+import world, { replicator } from "../world";
 import { Character } from "@rbxts/wcs";
 import { HttpService } from "@rbxts/services";
-import { replicator } from "shared/network";
 
 type LooseLib = { set_serdes(component: unknown, serdes: unknown): void };
 

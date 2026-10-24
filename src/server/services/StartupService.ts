@@ -18,7 +18,6 @@ import { carryRagdolledCharacter } from "shared/utils/npc/interaction/carryRagdo
 import { dragRagdolledCharacter } from "shared/utils/npc/interaction/dragRagdollCharacter";
 import { dropCarriedCharacter } from "shared/utils/npc/interaction/dropRagdollCharacter";
 import { ragdollCharacter } from "shared/utils/npc/interaction/ragdollCharacter";
-import { replicator, server } from "shared/network";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { MeleeLight } from "shared/skills/base/light";
@@ -27,6 +26,8 @@ import { MeleeBlock } from "shared/skills/base/block";
 import { MeleeShove } from "shared/skills/base/shove";
 import { setupEvilWilly } from "shared/skills/npc/evilWilly";
 import { scheduler } from "shared/scheduler";
+import { setupJabby } from "shared/systems/jabby";
+import { server } from "shared/network";
 
 interface AnimationValue extends StringValue {
 	WalkAnim: Animation;
@@ -47,10 +48,10 @@ class StartUpService implements OnStart {
 	constructor(private readonly inventoryService: InventoryService) {}
 
 	onStart() {
+		setupJabby()
 		//this is all it takes to put it in character's hand
 		// world.set(character, pair(Components.CurrentlyEquipped, batEntity) as Id, "Baseballbat");
 
-		// setupJabby()
 		Players.PlayerAdded.Connect((plr) => {
 			const playerEntity = ref(plr); //creates entity with reference to player instance, returns the entity, not a component ig? (components are entities but entities arent always components)
 			world.set(playerEntity, Name, plr.Name);
@@ -115,52 +116,11 @@ class StartUpService implements OnStart {
 					max: 100,
 				});
 
-				// const c = replicator.server.
-				// print("world same?", replicator.server.world === world);
-				// print("replecs in YOUR world:", c.global, c.serdes, c.networked, c.shared);
-				// print("mine:", Components.Blood, Components.Stamina, Components.Health);
+				const bloodComp = world.set(playerEntity, Components.Blood, {
+					current: 100,
+					max: 100,
+				});
 
-				// print(
-				// 	"replecs:",
-				// 	Replecs.Global,
-				// 	Replecs.Shared,
-				// 	Replecs.Networked,
-				// 	Replecs.Serdes,
-				// 	Replecs.Reliable,
-				// 	Replecs.Unreliable,
-				// );
-				// print(
-				// 	"mine:",
-				// 	Components.Player,
-				// 	Components.CurrentlyEquipped,
-				// 	Components.Blood,
-				// 	Components.Health,
-				// 	Components.Stamina,
-				// 	Components.ActiveStatusEffects,
-				// );
-
-				// const test = world.entity();
-				// world.set(test, Components.Blood, { current: 1, max: 1 });
-				// print(world.get(test, Components.Blood));
-
-				//if uncommented errors even though theyre.. identical
-				// const bloodComp = world.set(playerEntity, Components.Blood, {
-				// 	current: 100,
-				// 	max: 100,
-				// });
-				// const [ok, err] = xpcall(() => {
-				// 	world.set(playerEntity, Components.Blood, { current: 100, max: 100 });
-				// }, debug.traceback);
-				// if (!ok) warn(err);
-
-				// try {
-				// 	// Code that might throw an error
-				// 	world.set(playerEntity, Components.Blood, { current: 100, max: 100 });
-				// } catch (err) {
-				// 	// This acts exactly like your xpcall error handler
-				// 	warn(`An error occurred: ${err}`);
-				// 	return undefined;
-				// }
 				print(world.get(playerEntity, Components.Blood));
 
 				//Unhandled Promise rejection:
@@ -236,28 +196,32 @@ class StartUpService implements OnStart {
 				// const lol = pair(Components.CurrentlyEquipped, Wildcard) as Id;
 
 				// replicate components
-				// world.add(
-				// 	playerEntity,
-				// 	pair(Replecs.reliable, Components.Transform) as unknown as Id<TagDiscriminator>,
-				// );
+				server.set_pair(playerEntity, pair(Replecs.Relation, Components.CurrentlyEquipped));
 
-				// world.add(playerEntity, pair(Pair, Components.CurrentlyEquipped) as unknown as Id<TagDiscriminator>);
-				// world.add(playerEntity, pair(Replecs.reliable, Components.Health) as unknown as Id<TagDiscriminator>);
-				// world.add(playerEntity, pair(Replecs.reliable, Components.Stamina) as unknown as Id<TagDiscriminator>);
-				// world.add(playerEntity, pair(Replecs.reliable, Components.Blood) as unknown as Id<TagDiscriminator>);
+				server.set_reliable(playerEntity, Components.Health);
+				server.set_reliable(playerEntity, Components.Stamina);
 
-				// world.add(playerEntity, pair(Replecs.reliable, Components.Player) as unknown as Id<TagDiscriminator>);
-				// world.add(
-				// 	playerEntity,
-				// 	pair(Replecs.reliable, Components.ActiveStatusEffects) as unknown as Id<TagDiscriminator>,
-				// );
-				// server.set_pair(playerEntity, pair(Replecs.Relation, Components.CurrentlyEquipped));
+				server.set_reliable(playerEntity, Components.Player);
+				server.set_reliable(playerEntity, Components.ActiveStatusEffects);
 
-				// server.set_reliable(playerEntity, Components.Health);
-				// server.set_reliable(playerEntity, Components.Stamina);
-
-				// server.set_reliable(playerEntity, Components.Player);
-				// server.set_reliable(playerEntity, Components.ActiveStatusEffects);
+				print(
+					"replecs:",
+					Replecs.Global,
+					Replecs.Shared,
+					Replecs.Networked,
+					Replecs.Serdes,
+					Replecs.Reliable,
+					Replecs.Unreliable,
+				);
+				print(
+					"mine:",
+					Components.Player,
+					Components.CurrentlyEquipped,
+					Components.Blood,
+					Components.Health,
+					Components.Stamina,
+					Components.ActiveStatusEffects,
+				);
 
 				const animateScript = character.WaitForChild("Animate", 10) as AnimateScript | undefined;
 
@@ -269,14 +233,9 @@ class StartUpService implements OnStart {
 				this.inventoryService.refreshCurrentSlot(plr);
 				const profile = this.inventoryService.getProfile(plr);
 				if (profile) {
-					// print("nutjob");
 					// this.inventoryService.equipAccessories(plr, profile.Data.equippedDossier.build.skills);
 					this.inventoryService.syncClientInventory(plr);
 				}
-
-				// task.delay(1, () => {
-				// 	world.add(playerEntity, Components.JustJoined);
-				// });
 
 				//TODO: make custom walk anim for enemies
 				// const walkValue = animateScript.WaitForChild("walk") as AnimationValue;

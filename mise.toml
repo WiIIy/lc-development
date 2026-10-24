@@ -1,0 +1,5 @@
+[tools]
+"ubi:jacktabscode/asphalt" = "latest"
+
+[settings]
+env_file = ".env"

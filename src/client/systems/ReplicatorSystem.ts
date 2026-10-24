@@ -3,12 +3,12 @@ import { Phase } from "@rbxts/planck";
 import { Phases } from "@rbxts/planck-runservice";
 import {
 	NetworkRoutes,
-	replicator,
 } from "shared/network";
 
 import { scheduler } from "shared/scheduler";
 import Log from "@rbxts/log";
 import { ref } from "@willy/jecs-utils";
+import { replicator } from "shared/world";
 
 let initialSyncReceived = false;
 let lastRequestTime = 0;
@@ -111,5 +111,16 @@ function updateReplicator(_world: World): void {
 }
 
 scheduler
-	.addSystem(setupReplicator, Phases.PreUpdate)
-	.addSystem(updateReplicator, Phases.PreUpdate as unknown as Phase);
+	.addSystem(
+		{
+			name: "setupReplicator (client)",
+			system: setupReplicator
+		}, 
+		Phases.PreUpdate)
+
+	.addSystem(
+		{
+			name: "updateReplicator (client)",
+			system: updateReplicator
+		}, 
+		Phases.PreUpdate as unknown as Phase);

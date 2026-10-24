@@ -16,12 +16,14 @@ import { ASSET_ID_PREFIX } from "shared/data/paths";
 import { DialogueController } from "./ui/DialogueController";
 import { showWorldDamageNumber } from "shared/utils/visual/showWorldDamageNumber";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { setupJabby } from "shared/systems/jabby";
 
 @Controller({})
 export class StartUpController implements OnStart {
 	constructor(private readonly dialogueController: DialogueController) {}
 
 	onStart(): void {
+		setupJabby()
 		const anim = Make("Animation", { AnimationId: ASSET_ID_PREFIX + ANIMATION_IDS.npc.idle.galilei });
 		StarterGui.SetCoreGuiEnabled("Backpack", false);
 		StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.Health, false);
@@ -30,7 +32,6 @@ export class StartUpController implements OnStart {
 		// 2. Define Character Setup logic
 
 		UserInputService.MouseIconEnabled = false;
-		// setupJabby()
 
 		const setupCharacter = async (character: Model) => {
 			const charR6 = await promiseR6(character);

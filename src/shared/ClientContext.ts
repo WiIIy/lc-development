@@ -26,4 +26,5 @@ export const ClientContext = {
 	ViewmodelController: undefined as IViewmodelController | undefined,
 	MirrorController: undefined as IMirrorController | undefined,
 	UIController: undefined as IUIController | undefined,
+	// PlayerStateTrackerController: undefined as I
 };

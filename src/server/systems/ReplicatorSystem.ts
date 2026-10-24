@@ -1,10 +1,11 @@
 import type { World } from "@rbxts/jecs";
-import { NetworkRoutes, replicator } from "shared/network";
+import { NetworkRoutes } from "shared/network";
 import Log from "@rbxts/log";
 import { Phase, timePassed } from "@rbxts/planck";
 import { Phases } from "@rbxts/planck-runservice";
 
 import { scheduler } from "shared/scheduler";
+import { replicator } from "shared/world";
 
 let replicatorReady = false;
 
@@ -59,6 +60,7 @@ function updateUnreliableReplicator(_world: World): void {
 
 scheduler.addSystem(setupReplicator, Phases.PreUpdate).addSystem(
 	{
+		name: "updateReliableReplicator (server)",
 		runConditions: [timePassed(1 / 10)],
 		system: updateReliableReplicator,
 	},
@@ -67,6 +69,7 @@ scheduler.addSystem(setupReplicator, Phases.PreUpdate).addSystem(
 
 scheduler.addSystem(
 	{
+		name: "updateUneliableReplicator (server)",
 		runConditions: [timePassed(1 / 30)],
 		system: updateUnreliableReplicator,
 	},

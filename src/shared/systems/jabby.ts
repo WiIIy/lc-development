@@ -5,7 +5,7 @@ import { RunService, UserInputService } from "@rbxts/services";
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
 
-function setupJabby(): void {
+export function setupJabby(): void {
 	print("jab1");
 	const prefix = RunService.IsServer() ? "[Server]" : "[Client]";
 	jabby.register({
@@ -29,7 +29,6 @@ function setupJabby(): void {
 				return;
 			}
 
-			print("f4")
 			if (mounted) {
 				client.unmount_all();
 				mounted = false;
@@ -41,4 +40,4 @@ function setupJabby(): void {
 	}
 }
 
-scheduler.addSystem(setupJabby, Phase.Startup);
+// scheduler.addSystem(setupJabby, Phase.Startup);

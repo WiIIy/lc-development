@@ -8,7 +8,7 @@ const shared_components = {
 	// foo: world.component<unknown>(),
 	// baz: world.entity(),
 	// test: Components.Test,
-	// transform: Components.Transform,
+	transform: Components.Transform,
 	// animator: Components.Animator, //not replicated due to different animator instances for viewmodel and character
 
 	// animationqueue: Components.AnimationQueue,
@@ -17,6 +17,7 @@ const shared_components = {
 	// blood: Components.Blood,
 	health: Components.Health,
 	stamina: Components.Stamina,
+	relation: Replecs.Relation,
 	activeStatusEffects: Components.ActiveStatusEffects,
 };
 

@@ -34,22 +34,6 @@ export class ViewmodelController implements OnStart, OnRender {
         this.applyArmOffset(this.torso);
 
 		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
-        
-        const a = this.character.GetChildren()
-        print(a)
-        // a.forEach((child)=>{
-        //     if(child.IsA("Accessory")){
-        //         const handle = child.FindFirstChild("Handle")!;
-        //         if (handle?.FindFirstChild("HatAttachment") || handle.FindFirstChild("FaceFrontAttachment"))
-        //         {
-        //             print("lol")
-
-        //         }
-        //     } 
-        //     if (child.Name === "Head" &&  child.IsA("BasePart")){
-        //         child.LocalTransparencyModifier = 1
-        //     }
-        // })
 	}
 
 	onRender(dt: number): void {

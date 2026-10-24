@@ -6,7 +6,6 @@ import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 @SkillDecorator
 export class MeleeShove extends Skill {
 	protected OnStartClient(): void {
-		print("preloading");
 		AnimationUtils.preloadAnimations(this.Player!.Character!, [ANIMATION_IDS.actions.shove]);
 	}
 

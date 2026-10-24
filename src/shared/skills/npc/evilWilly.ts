@@ -1,11 +1,21 @@
 import { Workspace } from "@rbxts/services";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
+import { NpcMeleeBlock } from "./melee/npcBlock";
+import { Character } from "@rbxts/wcs";
+import { NpcMeleeLight } from "./melee/npcLight";
+import { NpcMeleeHeavy } from "./melee/npcHeavy";
+import { NpcMeleeShove } from "./melee/npcShove";
 
 export function setupEvilWilly() {
 	const evilWilly = Workspace.FindFirstChild("EvilWilly") as Model;
 	AnimationUtils.loadAnim(evilWilly, "stance", ANIMATION_IDS.actions.squared_up, 0, true);
 
+	const evilWillyWcs = new Character(evilWilly);
+	new NpcMeleeLight(evilWillyWcs);
+	new NpcMeleeHeavy(evilWillyWcs);
+	new NpcMeleeShove(evilWillyWcs);
+	new NpcMeleeBlock(evilWillyWcs);
 	//initialize loop here to start pathfinding and randomize/iterate between actions
 }
 
@@ -23,7 +33,7 @@ export function setupEvilWilly() {
 //
 //enemies will pick what to do depending on the state tracker to respond to what the player is doing
 
-//willy cana only block for 1-4 seconds
+//willy can only block for 1-4 seconds
 
 function evilWillyDetectPlayerAdvancingRetreating(){
 

@@ -1,4 +1,4 @@
-import world from "./world";
+import world, { replicator } from "./world";
 import { Networking } from "@flamework/networking";
 import Log from "@rbxts/log";
 import Replecs from "@rbxts/replecs";
@@ -7,7 +7,6 @@ import Net, { Route } from "@rbxts/yetanothernet";
 import { StimulusChannel } from "./components/components";
 import { SkillConstructor } from "@rbxts/wcs";
 
-export const replicator = Replecs.create(world);
 export const server = replicator.server;
 export const client = replicator.client;
 

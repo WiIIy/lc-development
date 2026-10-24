@@ -5,9 +5,21 @@ import { beginNetworkFrame, endNetworkFrame } from "shared/network";
 import { scheduler } from "shared/scheduler";
 
 scheduler
-	.addSystem(() => {
-		beginNetworkFrame();
-	}, Phases.First as unknown as Phase)
-	.addSystem(() => {
-		endNetworkFrame();
-	}, Phases.Last as unknown as Phase);
+	.addSystem(
+		{
+			name: "beginNetworkFrame",
+			system: () => {
+				beginNetworkFrame();
+			},
+		},
+		Phases.First as unknown as Phase,
+	)
+	.addSystem(
+		{
+			name: "endNetworkFrame",
+			system: () => {
+				endNetworkFrame();
+			},
+		},
+		Phases.Last as unknown as Phase,
+	);
