@@ -55,6 +55,19 @@ interface Workspace {
 		EnemyContainer: Folder;
 	};
 
+	EvilWilly: Model;
+
+	evilWillyButtons: Folder & {
+		["Pathfinding"]: Part & { ClickDetector: ClickDetector };
+		["Omniscient"]: Part & { ClickDetector: ClickDetector };
+		["Sight Tracking"]: Part & { ClickDetector: ClickDetector };
+		["Tracking"]: Part & { ClickDetector: ClickDetector };
+
+		["Light Attacks"]: Part & { ClickDetector: ClickDetector };
+		["Heavy Attacks"]: Part & { ClickDetector: ClickDetector };
+		["Parry Response"]: Part & { ClickDetector: ClickDetector };
+	};
+
 	// Mirror: Model & {
 	// 	Mirror: BasePart;
 	// 	RenderPart: BasePart;
@@ -96,7 +109,6 @@ interface ReplicatedStorage {
 		requestDropItem: RemoteEvent;
 	};
 }
-
 
 type ItemContainer = Model & {
 	attach_points: Folder;

@@ -17,13 +17,14 @@ import { DialogueController } from "./ui/DialogueController";
 import { showWorldDamageNumber } from "shared/utils/visual/showWorldDamageNumber";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { setupJabby } from "shared/systems/jabby";
+import { setupEvilWilly } from "client/clientutils/clientSetupEvilWilly";
 
 @Controller({})
 export class StartUpController implements OnStart {
 	constructor(private readonly dialogueController: DialogueController) {}
 
 	onStart(): void {
-		setupJabby()
+		setupJabby();
 		const anim = Make("Animation", { AnimationId: ASSET_ID_PREFIX + ANIMATION_IDS.npc.idle.galilei });
 		StarterGui.SetCoreGuiEnabled("Backpack", false);
 		StarterGui.SetCoreGuiEnabled(Enum.CoreGuiType.Health, false);
@@ -31,6 +32,7 @@ export class StartUpController implements OnStart {
 		// loop.Play();
 		// 2. Define Character Setup logic
 
+		setupEvilWilly();
 		UserInputService.MouseIconEnabled = false;
 
 		const setupCharacter = async (character: Model) => {

@@ -215,7 +215,7 @@ export class AnimationUtil {
 		}
 
 		const animation = Make("Animation", {
-			AnimationId: ASSET_ID_PREFIX + animId,
+			AnimationId: animId.sub(0, 1) === "r" ? animId : ASSET_ID_PREFIX + animId,
 		});
 
 		// print(animation, animation.AnimationId)
@@ -272,6 +272,26 @@ export class AnimationUtil {
 		}
 
 		return track;
+	}
+
+	/**
+	 * Randomly picks an animation from an array of IDs and plays it using loadAnim.
+	 */
+	public randomizeAnim(
+		model: Model,
+		typeName: string,
+		animIdList: string[],
+		fadeInTime?: number,
+		isLooped: boolean = false,
+		callbacks?: MarkerCallbacks,
+	): AnimationTrack | undefined {
+		if (!animIdList || animIdList.size() === 0) {
+			print("no anim id list provided");
+			return;
+		};
+		const randomIndex = math.random(0, animIdList.size() - 1);
+		const selectedAnimId = animIdList[randomIndex];
+		return this.loadAnim(model, typeName, selectedAnimId, fadeInTime, isLooped, callbacks);
 	}
 
 	public clearAllAnimations(model: Model, fadeTime: number = 0, excludedTypes?: string[]): void {

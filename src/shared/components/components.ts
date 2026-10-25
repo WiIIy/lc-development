@@ -12,6 +12,8 @@ export function setSerdes<T>(component: Entity<T>, serdes: Replecs.SerdesTable<T
 	(replicator as unknown as LooseLib).set_serdes(component, serdes);
 }
 
+//this is done because using world.component makes replecs entities overlap
+//world.entity starts at a higher count like 240 instead of 1 2 3, replecs component ids are 1 2 3
 const component = <T>() => {
 	const e = world.entity();
 	world.add(e, Component);
@@ -166,6 +168,13 @@ export class Components {
 	static LookAtPosition = component<Vector3>();
 	static OriginalNeckC0 = component<CFrame>();
 	static NeckJoint = component<Motor6D>();
+
+	static Tracking = world.entity(); //allows target setting behaviors
+	static TargetPlayer = component<Player>();
+
+	static SightTracking = component<Entity>(); //makes the head move
+	static Pathfinding = component<Entity>();
+	static TargetTransform = component<CFrame>();
 
 	static ShowPathfinding = world.entity();
 	static Highlighted = world.entity();

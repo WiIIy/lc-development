@@ -3,9 +3,10 @@ import { Networking } from "@flamework/networking";
 import Log from "@rbxts/log";
 import Replecs from "@rbxts/replecs";
 import Net, { Route } from "@rbxts/yetanothernet";
-
+import { t } from "t";
 import { StimulusChannel } from "./components/components";
 import { SkillConstructor } from "@rbxts/wcs";
+import { Entity, Id, TagDiscriminator } from "@rbxts/jecs";
 
 export const server = replicator.server;
 export const client = replicator.client;
@@ -64,6 +65,8 @@ interface ClientToServerEvents {
 	//antler debug
 	subscribeToEntity(entityRef: Instance): NpcData;
 	unsubscribeFromEntity(): void;
+
+	addComponentToEntityReference(enityRef: Instance, component: Id<TagDiscriminator>, add: boolean): void; //add true = add component, add false = remove component
 }
 
 interface ServerToClientEvents {

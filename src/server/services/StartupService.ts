@@ -24,10 +24,10 @@ import { MeleeLight } from "shared/skills/base/light";
 import { MeleeHeavy } from "shared/skills/base/heavy";
 import { MeleeBlock } from "shared/skills/base/block";
 import { MeleeShove } from "shared/skills/base/shove";
-import { setupEvilWilly } from "shared/skills/npc/evilWilly";
 import { scheduler } from "shared/scheduler";
 import { setupJabby } from "shared/systems/jabby";
 import { server } from "shared/network";
+import { setupEvilWilly } from "shared/utils/ecs/setupEvilWilly";
 
 interface AnimationValue extends StringValue {
 	WalkAnim: Animation;
@@ -48,7 +48,7 @@ class StartUpService implements OnStart {
 	constructor(private readonly inventoryService: InventoryService) {}
 
 	onStart() {
-		setupJabby()
+		setupJabby();
 		//this is all it takes to put it in character's hand
 		// world.set(character, pair(Components.CurrentlyEquipped, batEntity) as Id, "Baseballbat");
 
@@ -100,6 +100,11 @@ class StartUpService implements OnStart {
 				world.set(playerEntity, Components.WCSCharacter, wcsCharacter);
 				world.set(playerEntity, Components.Humanoid, charR6.Humanoid);
 				world.set(playerEntity, Components.Basepart, charR6.HumanoidRootPart);
+
+				// const eats = world.entity();
+				// const apple = world.entity();
+				// world.add(playerEntity, pair(eats, apple));
+				// print("wah", world.target(playerEntity, eats), world.has(playerEntity, pair(eats, Wildcard)));
 
 				if (!world.has(playerEntity, Components.Inventory)) {
 					world.set(playerEntity, Components.Inventory, []); //not replicated, purely server side

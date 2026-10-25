@@ -24,7 +24,6 @@ export const BaseInteractionHandlers: Partial<
 > = {
 	[Action.LightAttack]: (char, input, active) => {
 		if (active) {
-			print("lmb");
 			// AnimationUtils.loadAnim(char.Humanoid.Parent as Model, "light", ANIMATION_IDS.actions.light);
 			const lightSkill = char.GetSkillFromConstructor(MeleeLight);
 			lightSkill!.meleeLight();
