@@ -1,13 +1,12 @@
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
-import { Entity, Id, Name, pair, Tag, TagDiscriminator, w, Wildcard } from "@rbxts/jecs";
+import { Entity, Id, Name, OnRemove, pair, Tag, TagDiscriminator, w, Wildcard } from "@rbxts/jecs";
 import { Components } from "shared/components/components";
 import Make from "@rbxts/make";
 import { Players, Workspace } from "@rbxts/services";
 import { ref } from "@willy/jecs-utils";
 
 const trackerRemoved = world.query(pair(Components.Target, Wildcard)).without(Components.Tracking).cached();
-
 const targetRemoved = world.query(Components.TargetTransform).without(pair(Components.Target, Wildcard)).cached();
 
 export const TargetSettingSystem = {
@@ -52,3 +51,8 @@ export const TargetTransformCleanupSystem = {
 		}
 	},
 };
+
+world.set(Components.SightTracking, OnRemove, (e) => {
+	const neck = world.get(e, Components.NeckJoint) as Motor6D;
+	neck.C0 = new CFrame(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0);
+});

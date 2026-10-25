@@ -21,11 +21,19 @@ export class MeleeLight extends Skill {
 		AnimationUtils.loadAnim(this.Player!.Character! as Model, "light", ANIMATION_IDS.actions.light);
 		const hit = mouseRaycast(10);
 		if (hit !== undefined && hit.Instance !== undefined) {
-			if (hit.Instance.Parent !== undefined && hit.Instance.Parent.IsA("Model")) {
+			if (
+				hit.Instance.Parent !== undefined &&
+				hit.Instance.Parent.IsA("Model") &&
+				hit.Instance.Parent.FindFirstChild("Humanoid") //otherwise it tries to load anims every model even without animators
+			) {
 				AnimationUtils.randomizeAnim(hit.Instance.Parent, "ow1", this.enemyFlinchAnims, 0.15);
 			}
 
-			if (hit.Instance.Parent?.Parent !== undefined && hit.Instance.Parent.Parent.IsA("Model")) {
+			if (
+				hit.Instance.Parent?.Parent !== undefined &&
+				hit.Instance.Parent.Parent.IsA("Model") &&
+				hit.Instance.Parent.Parent.FindFirstChild("Humanoid")
+			) {
 				AnimationUtils.randomizeAnim(hit.Instance.Parent.Parent, "ow1", this.enemyFlinchAnims, 0.15);
 			}
 			// print(hit.Instance.Parent);

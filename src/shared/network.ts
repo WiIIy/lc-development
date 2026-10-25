@@ -66,7 +66,12 @@ interface ClientToServerEvents {
 	subscribeToEntity(entityRef: Instance): NpcData;
 	unsubscribeFromEntity(): void;
 
-	addComponentToEntityReference(enityRef: Instance, component: Id<TagDiscriminator>, add: boolean): void; //add true = add component, add false = remove component
+	addComponentToEntityReference(
+		enityRef: Instance,
+		component: Id<TagDiscriminator>,
+		add: boolean,
+		part: BasePart,
+	): void; //add true = add component, add false = remove component
 }
 
 interface ServerToClientEvents {

@@ -13,19 +13,19 @@ export class EcsService implements OnStart {
 
 	onStart(): void {
 		RemoteEvents.addComponentToEntityReference.connect(
-			(player, entityRef: Instance, component: Id<TagDiscriminator>, add: boolean) => {
+			(player, entityRef: Instance, component: Id<TagDiscriminator>, add: boolean, part:BasePart) => {
 				const e = ref.find(entityRef);
 				if (add){
 					if (e !== undefined) {
 						world.add(e, component);
 						print( "added component "+ component + " to entity "+ e + "| has:" + world.has(e, component))
-						Workspace.evilWillyButtons["Sight Tracking"].SetAttribute("On", true)
+						part.SetAttribute("On", true)
 					}
 				} else {
 					if (e !== undefined) {
 						world.remove(e, component);
 						print( "removed component "+ component + " to entity "+ e + "| has:" + world.has(e, component))
-						Workspace.evilWillyButtons["Sight Tracking"].SetAttribute("On", false)
+						part.SetAttribute("On", false)
 					}
 				}
 				

@@ -13,49 +13,15 @@ import { Id, TagDiscriminator } from "@rbxts/jecs";
 export function setupEvilWilly() {
 	const evilWilly = Workspace.EvilWilly;
 	AnimationUtils.loadAnim(evilWilly, "stance", ANIMATION_IDS.actions.squared_up, 0, true);
-	const sightTrackingButton = Workspace.evilWillyButtons["Sight Tracking"];
-	const trackingButton = Workspace.evilWillyButtons["Tracking"];
-	sightTrackingButton.SetAttribute("On", false);
 
-	sightTrackingButton.ClickDetector.MouseClick.Connect(() => {
-		"added sight tracking";
-		const attr = sightTrackingButton.GetAttribute("On") as boolean
-		const add = !attr; //if on, remove, if off, add
+	const buttons = Workspace.evilWillyButtons;
 
-		RemoteEvents.addComponentToEntityReference.fire(
-			evilWilly,
-			Components.SightTracking as unknown as Id<TagDiscriminator>,
-			add,
-		);
-	});
-	sightTrackingButton.AttributeChanged.Connect((name) => {
-		const state = sightTrackingButton.GetAttribute("On");
-		if (state === true) {
-			sightTrackingButton.Color = new Color3(0.02, 0.38, 0.14);
-		} else {
-			sightTrackingButton.Color = Color3.fromRGB(111, 36, 37);
-		}
-	});
-
-	sightTrackingButton.ClickDetector.MouseClick.Connect(() => {
-		"added sight tracking";
-		const attr = sightTrackingButton.GetAttribute("On") as boolean
-		const add = !attr; //if on, remove, if off, add
-
-		RemoteEvents.addComponentToEntityReference.fire(
-			evilWilly,
-			Components.SightTracking as unknown as Id<TagDiscriminator>,
-			add,
-		);
-	});
-	sightTrackingButton.AttributeChanged.Connect((name) => {
-		const state = sightTrackingButton.GetAttribute("On");
-		if (state === true) {
-			sightTrackingButton.Color = new Color3(0.02, 0.38, 0.14);
-		} else {
-			sightTrackingButton.Color = Color3.fromRGB(111, 36, 37);
-		}
-	});
+	setupComponentToggle(
+		buttons["Sight Tracking"],
+		Components.SightTracking as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
+	setupComponentToggle(buttons["Tracking"], Components.Tracking as unknown as Id<TagDiscriminator>, evilWilly);
 
 	// Workspace.evilWillyButtons.Pathfinding.ClickDetector.MouseClick.Connect(() => {
 	// 	RemoteEvents.addComponentToEntityReference.fire(evilWilly, Components.Path as unknown as Id<TagDiscriminator>);
@@ -72,13 +38,10 @@ function setupComponentToggle(
 	button.SetAttribute("On", false);
 
 	button.ClickDetector.MouseClick.Connect(() => {
+		print(button, component)
 		const isOn = button.GetAttribute("On") as boolean;
 
-		RemoteEvents.addComponentToEntityReference.fire(
-			entity,
-			component,
-			!isOn,
-		);
+		RemoteEvents.addComponentToEntityReference.fire(entity, component, !isOn, button);
 	});
 
 	button.AttributeChanged.Connect((attributeName) => {
@@ -86,10 +49,7 @@ function setupComponentToggle(
 
 		const isOn = button.GetAttribute("On");
 
-		button.Color =
-			isOn === true
-				? Color3.fromRGB(5, 97, 36)
-				: Color3.fromRGB(111, 36, 37);
+		button.Color = isOn === true ? Color3.fromRGB(5, 97, 36) : Color3.fromRGB(111, 36, 37);
 	});
 }
 

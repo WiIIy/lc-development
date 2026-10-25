@@ -20,7 +20,7 @@ export function setupEvilWilly() {
 	world.set(evilWillyEntity, Components.Transform, evilWillyHrp.CFrame);
 	world.set(evilWillyEntity, Components.Basepart, evilWillyHrp);
 	world.set(evilWillyEntity, Components.NeckJoint, evilWillyNeckJoint);
-	world.add(evilWillyEntity, Components.Tracking);
+	// world.add(evilWillyEntity, Components.Tracking);
 	print("setting ref evil willy, " + ref.get(Workspace.EvilWilly));
 
 	const evilWillyWcs = new Character(Workspace.EvilWilly);
