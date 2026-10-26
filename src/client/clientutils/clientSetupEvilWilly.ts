@@ -22,6 +22,11 @@ export function setupEvilWilly() {
 		evilWilly,
 	);
 	setupComponentToggle(buttons["Tracking"], Components.Tracking as unknown as Id<TagDiscriminator>, evilWilly);
+	setupComponentToggle(
+		buttons["Body Tracking"],
+		Components.BodyTracking as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
 
 	// Workspace.evilWillyButtons.Pathfinding.ClickDetector.MouseClick.Connect(() => {
 	// 	RemoteEvents.addComponentToEntityReference.fire(evilWilly, Components.Path as unknown as Id<TagDiscriminator>);

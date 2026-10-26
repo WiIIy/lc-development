@@ -60,6 +60,8 @@ interface Workspace {
 	evilWillyButtons: Folder & {
 		["Pathfinding"]: Part & { ClickDetector: ClickDetector };
 		["Omniscient"]: Part & { ClickDetector: ClickDetector };
+
+		["Body Tracking"]: Part & { ClickDetector: ClickDetector };
 		["Sight Tracking"]: Part & { ClickDetector: ClickDetector };
 		["Tracking"]: Part & { ClickDetector: ClickDetector };
 
