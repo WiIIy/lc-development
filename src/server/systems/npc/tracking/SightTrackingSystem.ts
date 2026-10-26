@@ -1,8 +1,6 @@
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
-import { Entity, Id, Name, pair, Tag, TagDiscriminator, Wildcard } from "@rbxts/jecs";
 import { Components } from "shared/components/components";
-import Make from "@rbxts/make";
 
 const NECK_C0 = new CFrame(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0);
 
@@ -30,11 +28,6 @@ export const SightTrackingSystem = {
 
 			// Clamp neck yaw so head doesn't snap backwards 180 degrees
 			const targetYaw = math.clamp(rawYaw, -math.pi / 3, math.pi / 3);
-
-			// --- Body Rotation ---
-			const flatLook = Vector3.zero.add(new Vector3(targetPos.X, selfPos.Y, targetPos.Z));
-			const targetOrientation = CFrame.lookAt(selfPos, flatLook).Rotation;
-			// rootPart.CFrame = currentCFrame.Rotation.Lerp(targetOrientation, lerpBodyAlpha).add(selfPos);
 
 			// --- Neck Rotation ---
 			// Re-applied targetYaw here so the head tracks the target ahead of the body lerp

@@ -170,11 +170,11 @@ export class Components {
 	static NeckJoint = component<Motor6D>();
 
 	static Tracking = world.entity(); //allows target setting behaviors
-	static BodyTracking = world.entity()
+	static BodyTracking = world.entity();
 	static TargetPlayer = component<Player>();
 
 	static SightTracking = world.entity(); //makes the head move
-	static Pathfinding = component<Entity>();
+	static Pathfinding = world.entity();
 	static TargetTransform = component<CFrame>();
 
 	static ShowPathfinding = world.entity();
