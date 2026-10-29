@@ -6,6 +6,7 @@ import {
 	TargetTransformTrackingSystem,
 } from "./tracking/TargetSettingSystem";
 import { BodyTrackingSystem } from "./tracking/BodyTrackingSystem";
+import { PathCleanupSystem, PathFollowSystem, PathRequestSystem, PathSetupSystem } from "./pathing/PathfindingSystem";
 
 scheduler.addSystems([
 	SightTrackingSystem,
@@ -15,5 +16,9 @@ scheduler.addSystems([
 
 	BodyTrackingSystem,
 
-	
+	PathSetupSystem,
+	PathRequestSystem,
+	PathFollowSystem,
+	PathCleanupSystem,
+
 ]);

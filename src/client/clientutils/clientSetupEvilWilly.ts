@@ -27,6 +27,7 @@ export function setupEvilWilly() {
 		Components.BodyTracking as unknown as Id<TagDiscriminator>,
 		evilWilly,
 	);
+	setupComponentToggle(buttons["Pathfinding"], Components.Pathfinding as unknown as Id<TagDiscriminator>, evilWilly);
 
 	// Workspace.evilWillyButtons.Pathfinding.ClickDetector.MouseClick.Connect(() => {
 	// 	RemoteEvents.addComponentToEntityReference.fire(evilWilly, Components.Path as unknown as Id<TagDiscriminator>);
@@ -43,7 +44,7 @@ function setupComponentToggle(
 	button.SetAttribute("On", false);
 
 	button.ClickDetector.MouseClick.Connect(() => {
-		print(button, component)
+		print(button, component);
 		const isOn = button.GetAttribute("On") as boolean;
 
 		RemoteEvents.addComponentToEntityReference.fire(entity, component, !isOn, button);

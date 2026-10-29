@@ -171,11 +171,15 @@ export class Components {
 
 	static Tracking = world.entity(); //allows target setting behaviors
 	static BodyTracking = world.entity();
+	static BodyAligner = component<AlignOrientation>();
+	static HeadLook = component<{ yaw: number; pitch: number }>();
 	static TargetPlayer = component<Player>();
 
 	static SightTracking = world.entity(); //makes the head move
 	static Pathfinding = world.entity();
 	static TargetTransform = component<CFrame>();
+
+	static PathState = component<PathState>();
 
 	static ShowPathfinding = world.entity();
 	static Highlighted = world.entity();

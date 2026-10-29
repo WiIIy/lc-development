@@ -18,8 +18,9 @@ export function setupEvilWilly() {
 	const evilWillyHrp = Workspace.EvilWilly.FindFirstChild("HumanoidRootPart") as BasePart;
 	const evilWillyNeckJoint = Workspace.EvilWilly.FindFirstChild("Torso")?.FindFirstChild("Neck") as Motor6D;
 	world.set(evilWillyEntity, Components.Transform, evilWillyHrp.CFrame);
-	world.set(evilWillyEntity, Components.Basepart, evilWillyHrp);
-	world.set(evilWillyEntity, Components.NeckJoint, evilWillyNeckJoint);
+	world.set(evilWillyEntity, Components.Basepart, evilWillyHrp); //needed for transform
+	world.set(evilWillyEntity, Components.NeckJoint, evilWillyNeckJoint); //needed for sight behaviors
+	world.set(evilWillyEntity, Components.Humanoid, Workspace.EvilWilly.FindFirstChildOfClass("Humanoid")!); //needed for pathfinding moveto
 	// world.add(evilWillyEntity, Components.Tracking);
 	print("setting ref evil willy, " + ref.get(Workspace.EvilWilly));
 
