@@ -50,7 +50,12 @@ export class ViewmodelController implements OnStart, OnRender {
     checkChild(child: Instance) {
     if (child.IsA("Accessory")) {
         const handle = child.FindFirstChild("Handle") as BasePart;
-        if (handle && (handle.FindFirstChild("HatAttachment") || handle.FindFirstChild("FaceFrontAttachment") || handle.FindFirstChild("HairAttachment"))) {
+        if (handle && (handle.FindFirstChild("HatAttachment") 
+            || handle.FindFirstChild("FaceFrontAttachment")
+        || handle.FindFirstChild("HairAttachment") 
+        || handle.FindFirstChild("BodyFrontAttachment") 
+        ||  handle.FindFirstChild("FaceCenterAttachment") 
+        || handle.FindFirstChild("HairAttachment"))) {
             print("Found accessory:", child.Name);
             child.Destroy()
             handle.LocalTransparencyModifier = 1;

@@ -3,7 +3,7 @@ import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { Character } from "@rbxts/wcs";
 import Components from "shared/components/components";
-import { Id, TagDiscriminator } from "@rbxts/jecs";
+import { Id, pair, TagDiscriminator } from "@rbxts/jecs";
 import { NpcMeleeBlock } from "shared/skills/npc/melee/npcBlock";
 import { NpcMeleeHeavy } from "shared/skills/npc/melee/npcHeavy";
 import { NpcMeleeLight } from "shared/skills/npc/melee/npcLight";
@@ -17,16 +17,27 @@ export function setupEvilWilly() {
 
 	const evilWillyHrp = Workspace.EvilWilly.FindFirstChild("HumanoidRootPart") as BasePart;
 	const evilWillyNeckJoint = Workspace.EvilWilly.FindFirstChild("Torso")?.FindFirstChild("Neck") as Motor6D;
+	Workspace.EvilWilly.AddTag("Enemy");
 	world.set(evilWillyEntity, Components.Transform, evilWillyHrp.CFrame);
 	world.set(evilWillyEntity, Components.Basepart, evilWillyHrp); //needed for transform
 	world.set(evilWillyEntity, Components.NeckJoint, evilWillyNeckJoint); //needed for sight behaviors
 	world.set(evilWillyEntity, Components.Humanoid, Workspace.EvilWilly.FindFirstChildOfClass("Humanoid")!); //needed for pathfinding moveto
+
+	const fistsEntity = world.entity();
+	//add fists entity
+	world.set(evilWillyEntity, pair(Components.CurrentlyEquipped, fistsEntity) as Id, "fists");
+	world.set(
+		evilWillyEntity,
+		Components.Animator,
+		Workspace.EvilWilly.FindFirstChild("Humanoid")?.FindFirstChild("Animator") as Animator,
+	);
 	// world.add(evilWillyEntity, Components.Tracking);
 	print("setting ref evil willy, " + ref.get(Workspace.EvilWilly));
 
-	const evilWillyWcs = new Character(Workspace.EvilWilly);
-	new NpcMeleeLight(evilWillyWcs);
-	new NpcMeleeHeavy(evilWillyWcs);
-	new NpcMeleeShove(evilWillyWcs);
-	new NpcMeleeBlock(evilWillyWcs);
+	//scrap wcs char. its too much to store on ecs
+	// const evilWillyWcs = new Character(Workspace.EvilWilly);
+	// new NpcMeleeLight(evilWillyWcs);
+	// new NpcMeleeHeavy(evilWillyWcs);
+	// new NpcMeleeShove(evilWillyWcs);
+	// new NpcMeleeBlock(evilWillyWcs);
 }

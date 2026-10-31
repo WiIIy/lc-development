@@ -3,7 +3,7 @@ import world from "shared/world";
 import { Components } from "shared/components/components";
 
 const NECK_C0 = new CFrame(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0);
-const HEAD_SMOOTH = 4;
+const HEAD_SMOOTH = 25;
 const MAX_YAW = math.pi / 3;
 const MAX_PITCH = math.pi / 4;
 

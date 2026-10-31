@@ -13,3 +13,11 @@ type PathState = {
 	lastProgressAt: number;
 	blockedConn?: RBXScriptConnection;
 };
+
+type NpcAnimController = {
+	model: Model;
+	root: BasePart;
+	walkTrack: AnimationTrack | undefined;
+	idleTrack: AnimationTrack | undefined;
+	moving: boolean;
+};

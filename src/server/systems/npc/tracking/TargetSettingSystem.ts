@@ -10,11 +10,6 @@ import { setDescendantsNetworkOwner } from "shared/utils/world/setDescendant";
 const trackerRemoved = world.query(pair(Components.Target, Wildcard)).without(Components.Tracking).cached();
 const targetRemoved = world.query(Components.TargetTransform).without(pair(Components.Target, Wildcard)).cached();
 
-const AGGRO_RANGE = 80; // acquire targets inside this. this will later be modified to a per NPC value
-const LEASH_RANGE = 120; // keep the current target until it's beyond this
-const SWITCH_RATIO = 0.7; // challenger must be within 70% of the current distance
-const RETARGET_INTERVAL = 0.25;
-
 const playerQuery = world.query(Components.Transform, Components.Player).cached();
 let timer = 0;
 
@@ -34,63 +29,94 @@ function setTarget(e: Entity, newTarget: Entity | undefined) {
     if (plr && model) setDescendantsNetworkOwner(model as Model, plr);
 }
 
-//this system removes the hard coded willy player thing
-// The approach:
-// Snapshot all player positions once per tick, not once per NPC.
-// Compare squared distances (a Dot instead of Magnitude, no sqrt).
-// Retarget on a short timer (about 4 times a second) instead of every frame.
-// Add hysteresis, so a challenger must be clearly closer before the NPC switches.
-// Add an aggro range and a larger leash range, so a target is dropped only when it is far away.
+const SIGHT_RANGE = 80;
+const LEASH_RANGE = 120;
+const FOV_COS = math.cos(math.rad(75)); // 150° total view cone
+const EYE_OFFSET = new Vector3(0, 1.5, 0);
+const MEMORY = 3; // seconds a lost target is remembered
+const SWITCH_RATIO = 0.7;
+const RETARGET_INTERVAL = 0.25;
+
+const lastSeen = new Map<Entity, number>(); // NPC entity -> os.clock() when target was last visible
+const params = new RaycastParams();
+params.FilterType = Enum.RaycastFilterType.Exclude;
+
+function canSee(eye: Vector3, forward: Vector3, targetPos: Vector3, dsq: number, omniscient: boolean): boolean {
+    if (dsq > SIGHT_RANGE * SIGHT_RANGE) return false;
+    const offset = targetPos.sub(eye);
+    if (!omniscient && forward.Dot(offset.Unit) < FOV_COS) return false;
+    // ray ends exactly at the target; players are filtered out, so any hit is a wall
+    return Workspace.Raycast(eye, offset, params) === undefined;
+}
+
 export const TargetSettingSystem = {
     name: "TargetSettingSystem",
     system: () => {
         timer += scheduler.getDeltaTime();
         if (timer < RETARGET_INTERVAL) return;
         timer = 0;
+        const now = os.clock();
 
-        // snapshot once per tick, skipping dead players
         const candidates: [Entity, Vector3][] = [];
+        const characters: Instance[] = [];
         for (const [pe, transform] of playerQuery) {
             const humanoid = world.get(pe, Components.Humanoid);
             if (humanoid && humanoid.Health <= 0) continue;
             candidates.push([pe, transform.Position]);
+            const model = world.get(pe, Components.Basepart)?.Parent;
+            if (model) characters.push(model);
         }
 
-        for (const [e, transform] of world.query( Components.Transform, Components.Tracking)) {
+        for (const [e, transform, root] of world.query(Components.Transform, Components.Basepart, Components.Tracking)) {
             const pos = transform.Position;
+            const eye = pos.add(EYE_OFFSET);
+            const forward = transform.LookVector;
+            const omniscient = world.has(e, Components.Omniscient);
 
-            // nearest candidate inside aggro range
+            params.FilterDescendantsInstances = [...characters, root.Parent!];
+
+            const current = world.target(e, Components.Target);
             let best: Entity | undefined;
-            let bestSq = AGGRO_RANGE * AGGRO_RANGE;
+            let bestSq = math.huge;
+            let currentSq = math.huge;
+            let currentVisible = false;
+
             for (const [pe, pPos] of candidates) {
                 const dsq = distSq(pPos, pos);
-                if (dsq < bestSq) {
+                if (pe !== current && dsq >= bestSq) continue; // can't beat the current best, skip the raycast
+
+                const visible = canSee(eye, forward, pPos, dsq, omniscient);
+                if (pe === current) {
+                    currentSq = dsq;
+                    currentVisible = visible;
+                }
+                if (visible && dsq < bestSq) {
                     best = pe;
                     bestSq = dsq;
                 }
             }
 
-            // current target's distance, if it's still valid
-            const current = world.target(e, Components.Target);
-            let currentSq = math.huge;
-            if (current !== undefined) {
-                const ct = candidates.find(([pe]) => pe === current);
-                if (ct) currentSq = distSq(ct[1], pos);
-            }
+            if (currentVisible) lastSeen.set(e, now);
 
-            if (currentSq <= LEASH_RANGE * LEASH_RANGE) {
-                // keep current unless a challenger is clearly closer
-                if (best !== undefined && best !== current && bestSq < currentSq * SWITCH_RATIO * SWITCH_RATIO) {
+            const holding =
+                current !== undefined &&
+                currentSq <= LEASH_RANGE * LEASH_RANGE &&
+                (currentVisible || now - (lastSeen.get(e) ?? 0) < MEMORY);
+
+            if (holding) {
+                const clearlyCloser = best !== undefined && bestSq < currentSq * SWITCH_RATIO * SWITCH_RATIO;
+                if (best !== undefined && best !== current && (!currentVisible || clearlyCloser)) {
                     setTarget(e, best);
+                    lastSeen.set(e, now);
                 }
             } else if (best !== current) {
-                setTarget(e, best); // lost or dead target: pick the nearest, or clear if none
+                setTarget(e, best); // nearest visible, or clear if nobody is visible
+                lastSeen.set(e, now);
             }
         }
     },
 };
 
-//not runnin
 export const TargetTransformTrackingSystem = {
 	name: "TargetTransformTrackingSystem",
 	system: () => {

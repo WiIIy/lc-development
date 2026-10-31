@@ -5,8 +5,7 @@ import { OnAdd, OnRemove } from "@rbxts/replecs/out/jecs";
 import { ref } from "@willy/jecs-utils";
 
 const DEADZONE = math.rad(15); // body ignores target within this angle
-const TURN_GAIN = 6; // rad/s of turn per rad of excess angle
-const MAX_TURN_SPEED = math.rad(240); // hard cap, rad/s
+const MAX_TURN_SPEED = math.rad(300); // hard cap, rad/s
 
 const yawOf = (cf: CFrame) => math.atan2(-cf.LookVector.X, -cf.LookVector.Z);
 
@@ -51,7 +50,7 @@ world.set(Components.BodyTracking, OnAdd, (e) => {
 	align.RigidityEnabled = false;
 	align.MaxTorque = math.huge;
 	align.MaxAngularVelocity = MAX_TURN_SPEED;
-	align.Responsiveness = 20;
+	align.Responsiveness = 180;
 	align.CFrame = root.CFrame.Rotation; // start from current facing
 	align.Parent = root;
 

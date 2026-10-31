@@ -146,6 +146,13 @@ export class Components {
 	static NextPathTime = component<number>(); // Throttles Pathfinding Service
 	static Omniscient = world.entity();
 
+	//Attacks
+	static NpcMeleeLight = world.entity();
+	static ExecuteAttack = component<string>();
+	static QueuedAttacks = component<{ queued: string[]; executeNext?: number }>();
+	static AttackOngoing = world.entity();
+	static MovesetDelay = world.entity();
+
 	//Following
 	static TimeSightLost = component<number>();
 	static Wandering = world.entity(); //indicates enemy that currently has wandering behaviors. actually its deprecated. delete this
