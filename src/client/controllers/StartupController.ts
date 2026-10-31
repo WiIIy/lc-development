@@ -18,6 +18,7 @@ import { showWorldDamageNumber } from "shared/utils/visual/showWorldDamageNumber
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { setupJabby } from "shared/systems/jabby";
 import { setupEvilWilly } from "client/clientutils/clientSetupEvilWilly";
+import assets from "shared/assets";
 
 @Controller({})
 export class StartUpController implements OnStart {
@@ -33,6 +34,12 @@ export class StartUpController implements OnStart {
 		// 2. Define Character Setup logic
 
 		setupEvilWilly();
+		const willow = Workspace.FindFirstChild("WillowsInPain");
+		const animator = willow!.FindFirstChild("Humanoid")?.FindFirstChild("Animator") as Animator;
+		const willowAnim = Make("Animation", { AnimationId: assets["anims/character/npc/movement/crosssarmidle.rbxm"] });
+		const track = animator.LoadAnimation(willowAnim);
+		track.Play();
+
 		UserInputService.MouseIconEnabled = false;
 
 		const setupCharacter = async (character: Model) => {

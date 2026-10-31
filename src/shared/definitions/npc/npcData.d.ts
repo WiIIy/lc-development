@@ -63,3 +63,15 @@ type NpcData = {
 };
 
 type StimulusType = "gunshot" | "noise" | "yell" | "death";
+
+type MoveData = {
+	damage: number;
+	bleedChance: number;
+	fractureChance: number;
+	range?: number; //defaults to the standard melee range (7 studs) when omitted
+};
+
+type MovesetData = {
+	combo: string[]; //move names, each must exist in `moves` AND in MoveCallbacks
+	weight: number; //relative chance of being picked
+};

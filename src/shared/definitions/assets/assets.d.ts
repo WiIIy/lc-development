@@ -65,6 +65,7 @@ interface Workspace {
 		["Sight Tracking"]: Part & { ClickDetector: ClickDetector };
 		["Tracking"]: Part & { ClickDetector: ClickDetector };
 
+		["Melee Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Light Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Heavy Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Parry Response"]: Part & { ClickDetector: ClickDetector };

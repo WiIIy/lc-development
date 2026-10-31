@@ -22,6 +22,7 @@ export function setupEvilWilly() {
 	world.set(evilWillyEntity, Components.Basepart, evilWillyHrp); //needed for transform
 	world.set(evilWillyEntity, Components.NeckJoint, evilWillyNeckJoint); //needed for sight behaviors
 	world.set(evilWillyEntity, Components.Humanoid, Workspace.EvilWilly.FindFirstChildOfClass("Humanoid")!); //needed for pathfinding moveto
+	world.set(evilWillyEntity, Components.Animator, Workspace.EvilWilly.FindFirstChildOfClass("Animator")!);
 
 	const fistsEntity = world.entity();
 	//add fists entity

@@ -147,7 +147,7 @@ export class Components {
 	static Omniscient = world.entity();
 
 	//Attacks
-	static NpcMeleeLight = world.entity();
+	static MeleeAttacks = world.entity();
 	static ExecuteAttack = component<string>();
 	static QueuedAttacks = component<{ queued: string[]; executeNext?: number }>();
 	static AttackOngoing = world.entity();

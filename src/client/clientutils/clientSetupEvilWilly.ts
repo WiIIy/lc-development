@@ -28,6 +28,11 @@ export function setupEvilWilly() {
 		evilWilly,
 	);
 	setupComponentToggle(buttons["Pathfinding"], Components.Pathfinding as unknown as Id<TagDiscriminator>, evilWilly);
+	setupComponentToggle(
+		buttons["Melee Attacks"],
+		Components.MeleeAttacks as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
 
 	// Workspace.evilWillyButtons.Pathfinding.ClickDetector.MouseClick.Connect(() => {
 	// 	RemoteEvents.addComponentToEntityReference.fire(evilWilly, Components.Path as unknown as Id<TagDiscriminator>);
