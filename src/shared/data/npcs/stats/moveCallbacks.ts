@@ -3,28 +3,31 @@ import { Entity } from "@rbxts/replecs/out/jecs";
 import world from "shared/world";
 import Components from "shared/components/components";
 import { getWeaponData } from "shared/utils/npc/attack/getWeaponData";
+import { registerMeleeHit } from "shared/utils/npc/attack/registerMeleeHit";
 
 //some moves attach a callback to an animation event
 export const MoveCallbacks = {
 	light: (weaponString: string, animator: Animator, e: Entity) => {
-		print("lightcallback running");
+		// print("lightcallback running");
 		const weaponData = getWeaponData(e);
 		const lightAnim = weaponData?.animations.light;
-		print(animator, lightAnim, weaponData);
+		// print(animator, lightAnim, weaponData);
 		const anim = Make("Animation", { AnimationId: lightAnim });
 		const track = animator.LoadAnimation(anim);
 		const connection = track.GetMarkerReachedSignal("hit").Connect(() => {
 			print("hit");
 			//hit registration and logging
+			registerMeleeHit(e, "light", animator, weaponData!);
 
 			//print if hit print if miss. the hits are using raycast
 			//if hit, roll for bleed/fracture chance
+			const targetEntity = world.target(e, Components.Target);
 
 			connection.Disconnect();
 		});
 		const trackConnection = track.Ended.Connect(() => {
 			if (world.has(e, Components.AttackOngoing)) {
-				print("removing attackOngoing");
+				// print("removing attackOngoing");
 				world.remove(e, Components.AttackOngoing);
 			}
 			trackConnection.Disconnect();
@@ -38,7 +41,7 @@ export const MoveCallbacks = {
 		const anim = Make("Animation", { AnimationId: heavyAnim });
 		const track = animator.LoadAnimation(anim);
 		const connection = track.GetMarkerReachedSignal("hit").Connect(() => {
-			print("hit");
+			registerMeleeHit(e, "heavy", animator, weaponData!);
 			//hit registration and logging
 
 			//print if hit print if miss. the hits are using raycast
@@ -46,9 +49,8 @@ export const MoveCallbacks = {
 			connection.Disconnect();
 		});
 		const trackConnection = track.Ended.Connect(() => {
-			print("ended")
 			if (world.has(e, Components.AttackOngoing)) {
-				print("removing attackOngoing");
+				// print("removing attackOngoing");
 				world.remove(e, Components.AttackOngoing);
 			}
 			trackConnection.Disconnect();

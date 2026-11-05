@@ -56,6 +56,7 @@ class StartUpService implements OnStart {
 			const playerEntity = ref(plr); //creates entity with reference to player instance, returns the entity, not a component ig? (components are entities but entities arent always components)
 			world.set(playerEntity, Name, plr.Name);
 			world.add(playerEntity, Replecs.networked as unknown as Id<TagDiscriminator>);
+			server.set_networked(playerEntity);
 			// world.set(playerEntity, Components.PlayerString, plr.Name);
 			// print("set player string");
 
@@ -127,6 +128,9 @@ class StartUpService implements OnStart {
 				});
 
 				print(world.get(playerEntity, Components.Blood));
+				task.delay(1, () => {
+					world.set(playerEntity, Components.Health, { current: 100, max: 100 });
+				});
 
 				//Unhandled Promise rejection:
 				// ReplicatedStorage.rbxts_include.node_modules.@rbxts.replecs.out.replecs.server:2040: attempt to compare number < table

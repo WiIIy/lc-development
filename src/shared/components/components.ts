@@ -153,6 +153,9 @@ export class Components {
 	static AttackOngoing = world.entity();
 	static MovesetDelay = world.entity();
 
+	static Parrying = world.entity();
+	static Melee = world.entity();
+
 	//Following
 	static TimeSightLost = component<number>();
 	static Wandering = world.entity(); //indicates enemy that currently has wandering behaviors. actually its deprecated. delete this

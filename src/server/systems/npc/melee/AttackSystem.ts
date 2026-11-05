@@ -5,7 +5,7 @@ import { Components } from "shared/components/components";
 import Make from "@rbxts/make";
 import { monitor } from "@willy/jecs-utils";
 import { MoveCallbacks } from "shared/data/npcs/stats/moveCallbacks";
-import { NpcWeaponsData } from "shared/data/npcs/weaponsData";
+import { NpcMeleeWeaponsData } from "shared/data/npcs/weaponsData";
 import { isTargetInRange } from "shared/utils/npc/attack/targetInRange";
 import { getWeaponData, sliceFrom } from "shared/utils/npc/attack/getWeaponData";
 import { pickMoveset } from "shared/utils/npc/attack/pickMoveset";
@@ -34,7 +34,7 @@ export const AttackSystem = {
 
 			print(combo, sliceFrom(combo, 1), combo[0]);
 			//3. execute first move of moveset
-			world.set(e, Components.QueuedAttacks, { queued: sliceFrom(combo, 1)}); //what's left of the combo
+			world.set(e, Components.QueuedAttacks, { queued: sliceFrom(combo, 1) }); //what's left of the combo
 			world.set(e, Components.ExecuteAttack, combo[0]);
 		}
 	},
@@ -42,26 +42,41 @@ export const AttackSystem = {
 
 //runs the requested move exactly once. A plain system instead of a monitor/OnAdd hook so it is easy to
 //order, and so removing ExecuteAttack never happens inside a hook.//runs the requested move exactly once
+//this executes every individual attack, this is also where npc determines if target is within range before performing the hit
+//if player is too far away the combo resets.
 export const AttackExecutionSystem = {
 	name: "AttackExecutionSystem",
 	system: () => {
-		for (const [e, move] of world.query(Components.ExecuteAttack)) {
+		for (const [e, move, transform, targetTransform] of world.query(
+			Components.ExecuteAttack,
+			Components.Transform,
+			Components.TargetTransform,
+		)) {
+			if (
+				transform === undefined ||
+				targetTransform === undefined ||
+				!isTargetInRange(transform.Position, targetTransform.Position)
+			) {
+				//target moved away (or is gone): cancel the rest of the combo.
+				//AttackOngoing hasn't been added yet, so there is nothing else to release.
+				world.remove(e, Components.QueuedAttacks); //its OnRemove hook starts MovesetDelay
+				continue;
+			}
+
 			world.add(e, Components.AttackOngoing);
+			print("executing move: ,", world.get(e, Components.ExecuteAttack));
 			world.remove(e, Components.ExecuteAttack); //cleanup so we are sure it only executes once
 
 			const animator = world.get(e, Components.Animator) as Animator | undefined;
 			const weaponString = world.get(e, pair(Components.CurrentlyEquipped, Wildcard));
 			const moveCallback = MoveCallbacks[move as unknown as keyof typeof MoveCallbacks];
 
-			print("execute");
 			if (animator === undefined || weaponString === undefined || moveCallback === undefined) {
 				//can't run the move: release the lock so the npc doesn't get stuck
 				warn(`AttackExecutionSystem: cannot execute move "${move}"`);
 				world.remove(e, Components.AttackOngoing);
 				continue;
 			}
-
-			print(moveCallback);
 			moveCallback(weaponString, animator, e);
 		}
 	},
@@ -82,8 +97,9 @@ export const QueuedAttackExecutionSystem = {
 				continue;
 			}
 			if (q.executeNext !== undefined && now < q.executeNext) continue;
-			print("executing", q.queued[0], " queue", sliceFrom(q.queued, 1));
+			// print("executing", q.queued[0], " queue", sliceFrom(q.queued, 1));
 
+			//queued attacks store sumn like [[1] = "light", [2] = "heavy"]
 			world.set(e, Components.QueuedAttacks, { queued: sliceFrom(q.queued, 1) }); //executeNext cleared until this move finishes
 			world.set(e, Components.ExecuteAttack, q.queued[0]);
 			world.add(e, Components.AttackOngoing);
@@ -93,7 +109,7 @@ export const QueuedAttackExecutionSystem = {
 
 //a move finished: if the combo continues, schedule the next move after moveDelay
 world.set(Components.AttackOngoing, OnRemove, (e) => {
-	print("attackOngoing removed");
+	// print("attackOngoing removed");
 	if (!world.contains(e)) return;
 	const queued = world.get(e, Components.QueuedAttacks);
 	if (queued === undefined) return; //combo was cancelled (e.g. NpcMeleeLight removed)

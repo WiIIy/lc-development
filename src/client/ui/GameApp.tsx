@@ -24,7 +24,7 @@ export function GameApp({ previewMode = false }: GameAppProps): Element {
 			{/* <ItemStatDisplay /> */}
 			{/* <DialogueOverlay /> */}
 			{/* <Antler /> */}
-			{/* <PlayerStats previewMode={previewMode} /> */}
+			<PlayerStats previewMode={previewMode} />
 			<Monologue />
 			<Crosshair />
 		</frame>

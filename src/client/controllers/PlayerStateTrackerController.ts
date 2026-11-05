@@ -5,6 +5,18 @@ import { MeleeHeavy } from "shared/skills/base/heavy";
 import { MeleeBlock } from "shared/skills/base/block";
 import { MeleeShove } from "shared/skills/base/shove";
 import { getCurrentWCS_Character } from "shared/utils/ecs/getCurrentWcsCharacter";
+import { observer, ref } from "@willy/jecs-utils";
+import Components from "shared/components/components";
+import {
+	currentStaminaAtom,
+	maxStaminaAtom,
+	currentHealthAtom,
+	maxHealthAtom,
+	currentBloodAtom,
+	maxBloodAtom,
+	activeStatusEffectsAtom,
+} from "client/clientAtoms";
+import world from "shared/world";
 
 export type MovementState = "idle" | "advancing" | "retreating" | "strafingleft" | "strafingright";
 export type EnvironmentState = "plainsight" | "hidden";
@@ -42,6 +54,53 @@ export class PlayerStateController implements OnStart, OnRender {
 		const player = Players.LocalPlayer;
 		if (player.Character) this.bindCharacter(player.Character);
 		player.CharacterAdded.Connect((char) => this.bindCharacter(char));
+
+		const playerObserver = observer(world.query(Components.Player), (e) => {
+			const player = world.get(e, Components.Player);
+			// print("AAAHA HDSDBSHDSBDHHS BDA", player, typeOf(player));
+
+			if (player === Players.LocalPlayer) {
+				ref.set(Players.LocalPlayer, e);
+			}
+		});
+
+		const staminaObserver = observer(world.query(Components.Stamina), (e) => {
+			if (e !== ref.find(Players.LocalPlayer)) return;
+
+			const currStam = world.get(e, Components.Stamina)?.current;
+			const maxStam = world.get(e, Components.Stamina)?.max;
+			if (currStam === undefined || maxStam === undefined) return;
+			currentStaminaAtom(currStam);
+			maxStaminaAtom(maxStam);
+		});
+
+		const healthObserver = observer(world.query(Components.Health), (e) => {
+			if (e !== ref.find(Players.LocalPlayer)) return;
+
+			const currHealth = world.get(e, Components.Health)?.current;
+			const maxHealth = world.get(e, Components.Health)?.max;
+			if (currHealth === undefined || maxHealth === undefined) return;
+			currentHealthAtom(currHealth);
+			maxHealthAtom(maxHealth);
+		});
+
+		const bloodObserver = observer(world.query(Components.Blood), (e) => {
+			if (e !== ref.find(Players.LocalPlayer)) return;
+
+			const currStam = world.get(e, Components.Blood)?.current;
+			const maxStam = world.get(e, Components.Blood)?.max;
+			if (currStam === undefined || maxStam === undefined) return;
+			currentBloodAtom(currStam);
+			maxBloodAtom(maxStam);
+		});
+
+		const activeStatusEffectsObserver = observer(world.query(Components.ActiveStatusEffects), (e) => {
+			if (e !== ref.find(Players.LocalPlayer)) return;
+
+			const statusEffects = world.get(e, Components.ActiveStatusEffects);
+			if (statusEffects === undefined) return;
+			activeStatusEffectsAtom(statusEffects || []);
+		});
 	}
 
 	onRender(dt: number): void {

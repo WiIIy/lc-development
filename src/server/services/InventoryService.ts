@@ -51,7 +51,7 @@ import { createEmptyItem } from "shared/utils/profile/createEmptyItem";
 import { setDescendantCollisionGroup } from "shared/utils/world/setDescendant";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { MeleeWeapon } from "shared/skills";
-import { Parry } from "shared/skills/parry";
+// import { Parry } from "shared/skills/parry";
 import { defaultDossierData } from "shared/data/profile/defaultDossierData";
 
 const PROFILE_STORE_NAME = "PlayerInventoryData";
@@ -294,7 +294,7 @@ export class InventoryService implements OnStart {
 			SKILL_REGISTRY.forEach((entry) => {
 				wcsCharacter?.GetSkillFromConstructor(entry.skill as never)?.Destroy(); //remove all previous skills
 			});
-			wcsCharacter?.GetSkillFromConstructor(Parry)?.Destroy(); //parry class has different animations depending on current item
+			// wcsCharacter?.GetSkillFromConstructor(Parry)?.Destroy(); //parry class has different animations depending on current item
 		}
 
 		//========== Manage equipping item ====================//
@@ -354,9 +354,9 @@ export class InventoryService implements OnStart {
 		}
 
 		//can parry only if holding item
-		if (!wcsCharacter.GetSkillFromConstructor(Parry)) {
-			new Parry(wcsCharacter!);
-		}
+		// if (!wcsCharacter.GetSkillFromConstructor(Parry)) {
+		// 	new Parry(wcsCharacter!);
+		// }
 
 		// eslint-disable-next-line prettier/prettier
 

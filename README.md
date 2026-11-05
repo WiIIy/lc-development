@@ -16,3 +16,7 @@ node_modules\@rbxts\jabby\jecs.ts
 ``` local jecs = TS.import(script, TS.getModule(script, "@rbxts", "jecs").jecs) ```
 to
 ``` local jecs = TS.import(script, TS.getModule(script, "@rbxts", "jecs").src.jecs) ```
+
+-------------
+notes
+- if react elements are straight up crashing the entire renderer, check for empty elements like <> </> in the code. that's usually the cause

@@ -17,8 +17,8 @@ export function Blindness(props: { eye: "Left" | "Right" | "Both" }): Element {
 					Image={"rbxassetid://127905506152272"}
 				></imagelabel>
 			)}
-			{props.eye === "Both" && (
-				<>
+			{/* {props.eye === "Both" && (
+				<> //REMOVE empty elements they will crash the game.
 					<imagelabel
 						Size={UDim2.fromScale(1, 1)}
 						BackgroundTransparency={1}
@@ -30,7 +30,7 @@ export function Blindness(props: { eye: "Left" | "Right" | "Both" }): Element {
 						Image={"rbxassetid://127905506152272"}
 					></imagelabel>
 				</>
-			)}
+			)} */}
 		</frame>
 	);
 }

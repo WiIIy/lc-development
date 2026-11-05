@@ -1,6 +1,7 @@
 import { Controller, OnRender, OnStart } from "@flamework/core";
 import { Entity, pair, Wildcard } from "@rbxts/jecs";
 import { Players, UserInputService, Workspace } from "@rbxts/services";
+import { isThirdPerson } from "client/clientAtoms";
 import { setDescendantLocalTransparency } from "shared/utils/world/setDescendant";
 
 export let localPlayerEntity: Entity | undefined;
@@ -37,6 +38,7 @@ export class ViewmodelController implements OnStart, OnRender {
 	}
 
 	onRender(dt: number): void {
+        if (isThirdPerson()) return;
         this.head.LocalTransparencyModifier = 1
         this.torso.LocalTransparencyModifier = 1
 		const mouseDelta = UserInputService.GetMouseDelta();

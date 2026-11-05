@@ -71,7 +71,7 @@ export enum Action {
 	DebugTracks = "DebugTracks", //T
 	DebugMenu = "DebugMenu", //~/`
 	DebugMenuAlt = "DebugMenuAlt", //`
-	DefaultCamera = "DefaultCamera", //P
+	ToggleCameraMode = "ToggleCameraMode", //P
 	LoadoutSelector = "LoadoutSelector", //L
 	HideViewmodel = "HideViewmodel", //H
 	SeeEnemyHidingSpots = "SeeEnemyHidingSpots", //N
@@ -86,7 +86,7 @@ export const KEYBINDS: Record<Action, (Enum.KeyCode | Enum.UserInputType)[]> = {
 	[Action.LightAttack]: [Enum.UserInputType.MouseButton1],
 	[Action.ShiftClick]: [Enum.UserInputType.MouseButton1, Enum.KeyCode.LeftShift],
 	[Action.HeavyAttack]: [Enum.UserInputType.MouseButton2],
-	[Action.Shove] : [Enum.KeyCode.Q],
+	[Action.Shove]: [Enum.KeyCode.Q],
 	[Action.Dash]: [Enum.KeyCode.LeftShift],
 	[Action.Parry]: [Enum.KeyCode.R],
 	[Action.Yell]: [Enum.KeyCode.V],
@@ -152,7 +152,7 @@ export const KEYBINDS: Record<Action, (Enum.KeyCode | Enum.UserInputType)[]> = {
 	[Action.DebugTracks]: [Enum.KeyCode.T],
 	[Action.DebugMenu]: [Enum.KeyCode.Tilde],
 	[Action.DebugMenuAlt]: [Enum.KeyCode.Backquote],
-	[Action.DefaultCamera]: [Enum.KeyCode.P],
+	[Action.ToggleCameraMode]: [Enum.KeyCode.P],
 	[Action.LoadoutSelector]: [Enum.KeyCode.L],
 	[Action.HideViewmodel]: [Enum.KeyCode.H],
 	[Action.SeeEnemyHidingSpots]: [Enum.KeyCode.N],

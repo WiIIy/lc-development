@@ -75,3 +75,40 @@ type MovesetData = {
 	combo: string[]; //move names, each must exist in `moves` AND in MoveCallbacks
 	weight: number; //relative chance of being picked
 };
+
+type BlockcastData = {
+	size: Vector3; //width (X), height (Y), depth (Z) of the swept block. Keep depth small, see note below
+	distance: number; //studs the block travels forward from the npc root
+	aimAtTarget?: boolean; //true: aim at the target (auto-aim). default: the direction the npc is facing
+};
+
+type MeleeMoveData = {
+	damage: number;
+	bleedChance: number;
+	fractureChance: number;
+	blockcast: BlockcastData;
+};
+
+type NpcMeleeWeapon<TMoveKeys extends string = string> = {
+	id: string;
+	moves: Record<TMoveKeys, NpcMoveData>;
+	movesets: NpcMovesetEntry<TMoveKeys>[];
+	moveDelay: number;
+	movesetDelay: number;
+	animations: Record<TMoveKeys, string>;
+};
+
+type NpcMovesetEntry<TMoveKeys extends string = string> = {
+	combo: TMoveKeys[];
+	weight: number;
+};
+
+type NpcMoveData = {
+	damage: number;
+	bleedChance: number;
+	fractureChance: number;
+	blockcast: {
+		size: Vector3;
+		distance: number;
+	};
+};

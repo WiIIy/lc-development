@@ -25,6 +25,12 @@ export function setupEvilWilly() {
 	world.set(evilWillyEntity, Components.Animator, Workspace.EvilWilly.FindFirstChildOfClass("Animator")!);
 
 	const fistsEntity = world.entity();
+	world.add(fistsEntity, Components.Melee);
+
+	//want it so it currentlyequipped can be exchanged with this and have gunbehaviors
+	// const pistolEntity = world.entity();
+	// world.add(pistolEntity, Components.Fireram);
+
 	//add fists entity
 	world.set(evilWillyEntity, pair(Components.CurrentlyEquipped, fistsEntity) as Id, "fists");
 	world.set(

@@ -1,18 +1,21 @@
 import assets from "shared/assets";
+import { defineNpcWeapon } from "shared/utils/npc/attack/defineNpcWeapon";
 
-export const NpcWeaponsData = {
-	fists: {
+export const NpcMeleeWeaponsData = {
+	fists: defineNpcWeapon({
 		id: "fists",
 		moves: {
 			light: {
 				damage: 10,
 				bleedChance: 0.07,
 				fractureChance: 0.07,
+				blockcast: { size: new Vector3(4, 5, 1), distance: 5 },
 			},
 			heavy: {
 				damage: 25,
 				bleedChance: 0.15,
 				fractureChance: 0.15,
+				blockcast: { size: new Vector3(5, 5, 1), distance: 5 },
 			},
 		},
 		movesets: [
@@ -28,5 +31,5 @@ export const NpcWeaponsData = {
 			light: assets["anims/character/npc/item/fists/npcpunchlight.rbxm"], //event: hit
 			heavy: assets["anims/character/npc/item/fists/npcpunchheavy.rbxm"], //event: hit
 		},
-	},
+	}),
 };

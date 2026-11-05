@@ -176,7 +176,7 @@ const ActionHandlers = {
 			UserInputService.MouseIconEnabled = getMouseIconEnabled();
 		}
 	},
-	[Action.DefaultCamera]: (char, input, active) => {
+	[Action.ToggleCameraMode]: (char, input, active) => {
 		if (!active) return; //only fires on inputbegan
 		print("?");
 		if (!isThirdPerson()) {
