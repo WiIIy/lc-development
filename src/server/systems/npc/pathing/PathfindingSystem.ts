@@ -4,7 +4,7 @@ import { Components } from "shared/components/components";
 
 const AGENT_PARAMS = { AgentRadius: 2, AgentHeight: 5, AgentCanJump: true };
 
-const WAYPOINT_REACHED = 3; // studs (XZ)
+const WAYPOINT_REACHED = 2.5; // studs (XZ)
 const STOP_DISTANCE = 6; // stop this close to the target
 const REPATH_INTERVAL = 0.5; // min seconds between computes
 const REPATH_MOVED = 6; // target must move this far to trigger a repath

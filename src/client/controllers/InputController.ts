@@ -19,7 +19,7 @@ import { HIGHLIGHTABLE_ITEMS } from "shared/data/items/highlightable";
 import { KEYBINDS, inputIsKey, Action } from "shared/data/profile/defaultKeybinds";
 import { INTERACTABLE_CHARACTERS } from "shared/data/world/npcs";
 import { antlerDebuggerDisplaying, debugMenuDisplaying, isAiming } from "shared/sharedAtoms";
-import { MeleeWeapon, Dash } from "shared/skills";
+import { Dash } from "shared/skills";
 import { Mark } from "shared/skills/mark";
 import { mouseRaycast } from "shared/utils/input/mouseRaycast";
 import { getCoverSpotsInRadius } from "shared/utils/npc/pathfinding/getCoverSpotInRadius";

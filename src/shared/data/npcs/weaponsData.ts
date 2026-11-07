@@ -9,13 +9,13 @@ export const NpcMeleeWeaponsData = {
 				damage: 10,
 				bleedChance: 0.07,
 				fractureChance: 0.07,
-				blockcast: { size: new Vector3(4, 5, 1), distance: 5 },
+				blockcast: { size: new Vector3(3, 4, 1), distance: 3 },
 			},
 			heavy: {
 				damage: 25,
 				bleedChance: 0.15,
 				fractureChance: 0.15,
-				blockcast: { size: new Vector3(5, 5, 1), distance: 5 },
+				blockcast: { size: new Vector3(3, 4, 1), distance: 3 },
 			},
 		},
 		movesets: [

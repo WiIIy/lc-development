@@ -50,7 +50,7 @@ import { giveCharacterAccessory } from "shared/utils/visual/giveCharacterAccesso
 import { createEmptyItem } from "shared/utils/profile/createEmptyItem";
 import { setDescendantCollisionGroup } from "shared/utils/world/setDescendant";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
-import { MeleeWeapon } from "shared/skills";
+// import { MeleeWeapon } from "shared/skills";
 // import { Parry } from "shared/skills/parry";
 import { defaultDossierData } from "shared/data/profile/defaultDossierData";
 
@@ -64,11 +64,11 @@ const SessionStart = new Map<Player, number>();
 
 //throwable is a skill
 //melee is a moveset
-const SKILL_REGISTRY = [
+// const SKILL_REGISTRY = [
 	// { items: ALL_THROWABLES, skill: Throw },
 	// { items: ALL_PISTOLS, skill: Pistol },
 	// { items: ALL_SMGS, skill: Smg },
-	{ items: ALL_MELEE_WEAPONS, skill: MeleeWeapon },
+	// { items: ALL_MELEE_WEAPONS, skill: MeleeWeapon },
 	// { items: ALL_RIFLES, skill: Rifle },
 	// { items: ALL_SNIPERS, skill: Sniper },
 	// { items: CHAINSAW, skill: Chainsaw },
@@ -79,7 +79,7 @@ const SKILL_REGISTRY = [
 	// { items: WALKMAN, skill: Walkman },
 	// { items: DRONE, skill: Drone },
 	// { items: ANTLER, skill: Antler },
-];
+// ];
 
 @Service({})
 export class InventoryService implements OnStart {
@@ -291,9 +291,9 @@ export class InventoryService implements OnStart {
 			world.remove(oldItemEntity, Components.ItemModel); //prevent flinging when re equipping
 			world.set(playerEntity, Components.AnimationQueue, []); //clear animations
 
-			SKILL_REGISTRY.forEach((entry) => {
-				wcsCharacter?.GetSkillFromConstructor(entry.skill as never)?.Destroy(); //remove all previous skills
-			});
+			// SKILL_REGISTRY.forEach((entry) => {
+			// 	wcsCharacter?.GetSkillFromConstructor(entry.skill as never)?.Destroy(); //remove all previous skills
+			// });
 			// wcsCharacter?.GetSkillFromConstructor(Parry)?.Destroy(); //parry class has different animations depending on current item
 		}
 
@@ -363,12 +363,13 @@ export class InventoryService implements OnStart {
 		// animation handling is handled in animation.ts by an observer
 
 		//assign skill depending on item type within skill registry
-		for (const entry of SKILL_REGISTRY) {
-			const shouldHaveSkill = (entry.items as readonly string[]).includes(currentSlotItem.name);
-			wcsCharacter.SkillAdded.Fire(entry.skill as never);
 
-			this.reconcileSkill(wcsCharacter, entry.skill, shouldHaveSkill, charAsModel);
-		}
+		// for (const entry of SKILL_REGISTRY) {
+		// 	const shouldHaveSkill = (entry.items as readonly string[]).includes(currentSlotItem.name);
+		// 	wcsCharacter.SkillAdded.Fire(entry.skill as never);
+
+		// 	this.reconcileSkill(wcsCharacter, entry.skill, shouldHaveSkill, charAsModel);
+		// }
 	}
 
 	/**this function only sends the inventorySync remote, updates just data, not repacking the whole item entity (for ammo displays)*/

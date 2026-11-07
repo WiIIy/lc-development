@@ -15,9 +15,9 @@ export const MoveCallbacks = {
 		const anim = Make("Animation", { AnimationId: lightAnim });
 		const track = animator.LoadAnimation(anim);
 		const connection = track.GetMarkerReachedSignal("hit").Connect(() => {
-			print("hit");
 			//hit registration and logging
-			registerMeleeHit(e, "light", animator, weaponData!);
+			const result = registerMeleeHit(e, "light", animator, weaponData!);
+			print("result", result);
 
 			//print if hit print if miss. the hits are using raycast
 			//if hit, roll for bleed/fracture chance
@@ -41,7 +41,8 @@ export const MoveCallbacks = {
 		const anim = Make("Animation", { AnimationId: heavyAnim });
 		const track = animator.LoadAnimation(anim);
 		const connection = track.GetMarkerReachedSignal("hit").Connect(() => {
-			registerMeleeHit(e, "heavy", animator, weaponData!);
+			const result = registerMeleeHit(e, "heavy", animator, weaponData!);
+			print("result", result);
 			//hit registration and logging
 
 			//print if hit print if miss. the hits are using raycast
