@@ -3,6 +3,7 @@ import { Entity, pair, Wildcard } from "@rbxts/jecs";
 import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { isThirdPerson } from "client/clientAtoms";
 import { setDescendantLocalTransparency } from "shared/utils/world/setDescendant";
+import { hideUnhideAccessories, registerAccessory } from "client/clientutils/hideUnhideAccessories";
 
 export let localPlayerEntity: Entity | undefined;
 const INVISIBLE_PARTS = new Set(["Head", "Left Arm", "Right Arm", "Torso"]);
@@ -32,13 +33,21 @@ export class ViewmodelController implements OnStart, OnRender {
         this.checkChild(child);
         });
 
+        for (const child of this.character.GetChildren()) this.checkChild(child);
+
+
         this.applyArmOffset(this.torso);
 
 		UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter;
+        task.delay(2,()=>{hideUnhideAccessories(true);print("A")});
 	}
 
 	onRender(dt: number): void {
-        if (isThirdPerson()) return;
+        if (isThirdPerson()) {
+            this.head.LocalTransparencyModifier = 0;
+            this.torso.LocalTransparencyModifier = 0;
+            return
+        };
         this.head.LocalTransparencyModifier = 1
         this.torso.LocalTransparencyModifier = 1
 		const mouseDelta = UserInputService.GetMouseDelta();
@@ -50,20 +59,19 @@ export class ViewmodelController implements OnStart, OnRender {
 	}
     
     checkChild(child: Instance) {
-    if (child.IsA("Accessory")) {
-        const handle = child.FindFirstChild("Handle") as BasePart;
-        if (handle && (handle.FindFirstChild("HatAttachment") 
-            || handle.FindFirstChild("FaceFrontAttachment")
-        || handle.FindFirstChild("HairAttachment") 
-        || handle.FindFirstChild("BodyFrontAttachment") 
-        ||  handle.FindFirstChild("FaceCenterAttachment") 
-        || handle.FindFirstChild("HairAttachment"))) {
-            print("Found accessory:", child.Name);
-            child.Destroy()
-            handle.LocalTransparencyModifier = 1;
-            setDescendantLocalTransparency(handle, 1);
-            }
-        }
+    if (!child.IsA("Accessory")) return;
+    const handle = child.FindFirstChild("Handle");
+    if (
+        handle &&
+        (handle.FindFirstChild("HatAttachment") ||
+            handle.FindFirstChild("FaceFrontAttachment") ||
+            handle.FindFirstChild("HairAttachment") ||
+            handle.FindFirstChild("BodyFrontAttachment") ||
+            handle.FindFirstChild("FaceCenterAttachment"))
+    ) {
+        print("Found accessory:", child.Name);
+        registerAccessory(child); //no Destroy, so it can come back in third person
+    }
     }
 
     applyArmOffset(torso: BasePart) {

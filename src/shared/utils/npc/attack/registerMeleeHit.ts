@@ -18,6 +18,7 @@ const DEBUG_HITBOX = true;
  */
 export function registerMeleeHit(e: Entity, moveName: string, animator: Animator, weaponData: NpcMeleeWeapon): boolean {
 	if (!world.contains(e)) return false;
+	print("register")
 
 	const moves = weaponData.moves;
 	const moveData = moves?.[moveName];
@@ -27,6 +28,7 @@ export function registerMeleeHit(e: Entity, moveName: string, animator: Animator
 
 	const npcModel = animator.FindFirstAncestorOfClass("Model");
 	const targetEntity = world.target(e, Components.Target);
+	if (!targetEntity) return false; //target lost
 
 	//aim: where the npc is facing by default, or straight at the target when aimAtTarget is set
 	const transform = world.get(e, Components.Transform) as CFrame;
@@ -52,6 +54,9 @@ export function registerMeleeHit(e: Entity, moveName: string, animator: Animator
 	params.FilterType = Enum.RaycastFilterType.Exclude;
 	params.FilterDescendantsInstances = [npcModel!]; //never hit ourselves
 
+	const targetHrp = world.get(targetEntity, Components.Basepart);
+	const targetModel = targetHrp?.Parent as Model;
+
 	const result = Workspace.Blockcast(castCFrame, size, forward.mul(distance + backOffset), params);
 
 	if (DEBUG_HITBOX) {
@@ -71,16 +76,17 @@ export function registerMeleeHit(e: Entity, moveName: string, animator: Animator
 	}
 
 	//only player characters are valid victims
-	const victimModel = result?.Instance.FindFirstAncestorOfClass("Model");
-	const victimPlayer = victimModel ? Players.GetPlayerFromCharacter(victimModel) : undefined;
-	const humanoid = victimModel?.FindFirstChildOfClass("Humanoid");
-	if (victimModel === undefined || victimPlayer === undefined || humanoid === undefined) {
+	// const victimModel = result?.Instance.FindFirstAncestorOfClass("Model");
+	const victimPlayer = targetModel ? Players.GetPlayerFromCharacter(targetModel) : undefined;
+	const humanoid = targetModel?.FindFirstChildOfClass("Humanoid");
+	print("model:", targetModel, "player", victimPlayer, "humanoid", humanoid)
+	if (targetModel === undefined || victimPlayer === undefined || humanoid === undefined) {
 		print(`[${moveName}] miss`);
 		return false;
 	}
 
 	//TODO(parry): check if the victim is parrying before damaging, stun the npc instead (see old processHit)
-	print(targetEntity);
+	// print(targetEntity);
 	const parrying = world.has(targetEntity!, Components.Parrying);
 	print("parrying:", parrying);
 
@@ -95,16 +101,16 @@ export function registerMeleeHit(e: Entity, moveName: string, animator: Animator
 		max: currHealth!.max,
 	});
 	humanoid.TakeDamage(moveData.damage);
-	print(`[${moveName}] hit ${victimModel.Name} for ${moveData.damage}`);
+	print(`[${moveName}] hit ${targetModel.Name} for ${moveData.damage}`);
 	//TODO(log): record attacker, victim, move and damage in the kill/damage log
 
 	if (math.random() < moveData.bleedChance) {
 		//TODO(components): apply Bleeding to the victim once the component exists
-		print(`[${moveName}] bleed rolled on ${victimModel.Name}`);
+		print(`[${moveName}] bleed rolled on ${targetModel.Name}`);
 	}
 	if (math.random() < moveData.fractureChance) {
 		//TODO(components): apply Fracture to the victim once the component exists
-		print(`[${moveName}] fracture rolled on ${victimModel.Name}`);
+		print(`[${moveName}] fracture rolled on ${targetModel.Name}`);
 	}
 	return true;
 }

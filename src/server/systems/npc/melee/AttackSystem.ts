@@ -32,7 +32,7 @@ export const AttackSystem = {
 			const combo = pickMoveset(weaponData.movesets);
 			if (combo === undefined || combo.size() === 0) continue;
 
-			print(combo, sliceFrom(combo, 1), combo[0]);
+			print("combo", combo[0], combo[1], combo[2]);
 			//3. execute first move of moveset
 			world.set(e, Components.QueuedAttacks, { queued: sliceFrom(combo, 1) }); //what's left of the combo
 			world.set(e, Components.ExecuteAttack, combo[0]);

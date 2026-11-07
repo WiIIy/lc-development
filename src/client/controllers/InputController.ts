@@ -28,7 +28,7 @@ import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { setDescendantLocalTransparency } from "shared/utils/world/setDescendant";
 import { generateDossier } from "client/clientutils/generateDossier";
 import { DoorInstance, toggleNormal, triggerSlightOpen } from "client/components/DoorComponent";
-import { hideUnhideParts } from "client/clientutils/hideUnhideParts";
+import { hideUnhideAccessories } from "client/clientutils/hideUnhideAccessories";
 import {
 	BaseInteractionHandlers,
 	GunInteractionHandlers,
@@ -194,7 +194,7 @@ const ActionHandlers = {
 
 			Workspace.CurrentCamera!.CameraSubject = hum;
 			Workspace.CurrentCamera!.CameraType = Enum.CameraType.Custom;
-			hideUnhideParts(Players.LocalPlayer.Character!, false);
+			hideUnhideAccessories(false);
 		} else {
 			//make it first person
 			isThirdPerson(false);
@@ -203,7 +203,7 @@ const ActionHandlers = {
 				ClientContext.ViewmodelController.camera = Workspace.CurrentCamera!;
 			}
 			Workspace.CurrentCamera!.CameraType = Enum.CameraType.Scriptable;
-			hideUnhideParts(Players.LocalPlayer.Character!, true);
+			hideUnhideAccessories(true);
 		}
 	},
 	[Action.LoadoutSelector]: (char, input, active) => {},

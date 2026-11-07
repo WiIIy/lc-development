@@ -12,7 +12,7 @@ const every_bind_ever: string[] = [
 	"N   - Accesory",
 	"T   - Get Tracks",
 	"~   - Debug Menu",
-	"F5  - Third Person",
+	"P  - Third Person",
 	"J   - Dossier Menu",
 	"L   - Loadout Selector",
 ];
