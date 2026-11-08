@@ -2,32 +2,45 @@ import { scheduler } from "shared/scheduler";
 import world from "shared/world";
 import { Components } from "shared/components/components";
 import { OnAdd, OnRemove } from "@rbxts/replecs/out/jecs";
+import { getLookPoint } from "../pathing/utils/lookPoint";
 
-const DEADZONE = math.rad(1); // body ignores target within this angle
-const TURN_RATE = 24; // exponential smoothing per second, higher = snappier
-const MAX_TURN_SPEED = math.rad(540); // hard cap, rad/s
-
-const yawOf = (cf: CFrame) => math.atan2(-cf.LookVector.X, -cf.LookVector.Z);
+const TURN_RATE = 24;
 const ROOT_C0 = new CFrame(0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0);
+const ROOT_C0_INV = ROOT_C0.Inverse();
 
-// wrap to [-pi, pi] so it never takes the long way around
-const wrapAngle = (a: number) => math.atan2(math.sin(a), math.cos(a));
+// move the joint's yaw onto the root: same visual facing, zero offset
+function release(root: BasePart, joint: Motor6D) {
+	const [, , yaw] = ROOT_C0_INV.mul(joint.C0).ToEulerAnglesXYZ();
+	if (math.abs(yaw) < 1e-3) return;
+	root.CFrame = root.CFrame.mul(CFrame.Angles(0, yaw, 0)); // flip yaw's sign here if your C0 sign is flipped
+	joint.C0 = ROOT_C0;
+}
 
 export const BodyTrackingSystem = {
 	name: "BodyTrackingSystem",
 	system: () => {
-		const dt = scheduler.getDeltaTime();
-		const alpha = 1 - math.exp(-TURN_RATE * dt); // same feel at any framerate
+		const alpha = 1 - math.exp(-TURN_RATE * scheduler.getDeltaTime());
 
-		for (const [e, root, joint, tt] of world
-			.query(Components.Basepart, Components.RootJoint, Components.TargetTransform)
+		for (const [e, root, joint] of world
+			.query(Components.Basepart, Components.RootJoint)
 			.with(Components.Tracking, Components.BodyTracking)) {
-			const Local = root.CFrame.VectorToObjectSpace(tt.Position.sub(root.Position));
+			const humanoid = world.get(e, Components.Humanoid);
+			const look = getLookPoint(e);
+
+			if (look === undefined) {
+				release(root, joint);
+				if (humanoid && !humanoid.AutoRotate) humanoid.AutoRotate = true; // walk facing is normal again
+				continue;
+			}
+
+			if (humanoid && humanoid.AutoRotate) humanoid.AutoRotate = false;
+
+			const Local = root.CFrame.VectorToObjectSpace(look.sub(root.Position));
 			const flat = new Vector3(Local.X, 0, Local.Z);
 			if (flat.Magnitude < 0.05) continue;
 
-			const yaw = math.atan2(-flat.X, -flat.Z); // relative to the root, so no wrap logic needed
-			const goal = ROOT_C0.mul(CFrame.Angles(0, 0, yaw)); // RootJoint's C0 basis is rotated like the neck's, so yaw is on Z. Flip the sign if it turns the wrong way
+			const yaw = math.atan2(-flat.X, -flat.Z);
+			const goal = ROOT_C0.mul(CFrame.Angles(0, 0, yaw));
 			joint.C0 = joint.C0.Lerp(goal, alpha);
 		}
 	},
@@ -39,6 +52,9 @@ world.set(Components.BodyTracking, OnAdd, (e) => {
 });
 
 world.set(Components.BodyTracking, OnRemove, (e) => {
+	const root = world.get(e, Components.Basepart);
+	const joint = world.get(e, Components.RootJoint);
+	if (root && joint) release(root, joint);
 	const humanoid = world.get(e, Components.Humanoid);
 	if (humanoid) humanoid.AutoRotate = true;
 });

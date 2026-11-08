@@ -201,7 +201,7 @@ export class Components {
 	static PathingMemory = world.entity(); // tag: enables memory behavior with defaults
 	static MemoryBehaviors = component<Partial<MemoryConfig>>(); // optional overrides, per enemy
 	static MemoryState = component<MemoryState>();
-	static LastSeen = component<{ pos: CFrame; time: number; target: Entity }>();
+	static LastSeen = component<{ pos: CFrame; time: number; target: Entity; visible: boolean }>();
 
 	static Merchant = component<{ merchantName: string; wares: [] }>();
 

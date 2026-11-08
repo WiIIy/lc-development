@@ -40,7 +40,7 @@
 		const model = world.get(e, Components.Basepart)?.Parent;
 		const t = world.get(newTarget, Components.Transform);
 
-		if (t) world.set(e, Components.LastSeen, { pos: t, time: os.clock(), target: newTarget });
+		if (t) world.set(e, Components.LastSeen, { pos: t, time: os.clock(), target: newTarget, visible: true });
 
 		if (plr && model) setDescendantsNetworkOwner(model as Model, undefined); //do NOT set it to client. its choppy and ugly
 	}
@@ -154,13 +154,13 @@
 				}
 
 				if (current === undefined) {
-					if (best !== undefined) setTarget(e, best);
+					if (best !== undefined) {setTarget(e, best)};
 					continue;
 				}
 
 				if (currentSight === "visible") {
 					const t = world.get(current, Components.Transform);
-					if (t) world.set(e, Components.LastSeen, { pos: t, time: now, target: current });
+					if (t) world.set(e, Components.LastSeen, { pos: t, time: now, target: current, visible: true });
 
 					const clearlyCloser = best !== undefined && best !== current && bestSq < currentSq * SWITCH_RATIO * SWITCH_RATIO;
 					if (clearlyCloser) setTarget(e, best!);
@@ -174,8 +174,11 @@
 				}
 				const seen = world.get(e, Components.LastSeen);
 				if (currentSight !== "gone" && seen !== undefined && seen.target === current && now - seen.time < LOSS_GRACE) {
-					continue; // debounce: LastSeen.time only updates while visible, so no extra state is needed
-				}
+					if (seen.visible) world.set(e, Components.LastSeen, { ...seen, visible: false });
+					continue;
+					}
+				 // debounce: LastSeen.time only updates while visible, so no extra state is needed
+				
 				loseTarget(e, currentSight!, current, now);
 			}
 		},
@@ -204,9 +207,9 @@
 
 			for (const [e] of targetRemoved) {
 				world.remove(e, Components.TargetTransform);
-				const neck = world.get(e, Components.NeckJoint) as Motor6D;
-			if (!neck){print("no neck component");return}
-				neck.C0 = new CFrame(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0);
+				// const neck = world.get(e, Components.NeckJoint) as Motor6D;
+				// if (!neck){print("no neck component");return}
+				// 	neck.C0 = new CFrame(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0);
 			}
 			
 		},

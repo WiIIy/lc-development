@@ -1,4 +1,4 @@
-import { PathfindingService } from "@rbxts/services";
+import { Debris, PathfindingService, Workspace } from "@rbxts/services";
 import world from "shared/world";
 import { Components } from "shared/components/components";
 import { resetPathState } from "./utils/resetPathState";
@@ -13,6 +13,8 @@ const REPATH_MOVED = 3; // target must move this far to trigger a repath
 const MOVETO_REFRESH = 6; // re-issue MoveTo before Humanoid's 8s timeout
 const STUCK_TIME = 1.5;
 const STUCK_DIST = 0.75;
+
+const showNpcWaypoints = true;
 
 const flat = (v: Vector3) => new Vector3(v.X, 0, v.Z);
 
@@ -63,6 +65,15 @@ function requestPath(state: PathState, from: Vector3, goal: Vector3) {
             state.waypoints = state.path.GetWaypoints();
             state.index = 1; // skip waypoint 0, it's the start
             state.issuedIndex = -1;
+
+            if (showNpcWaypoints){
+            for (const wp of state.waypoints) {
+            const p = new Instance("Part");
+            p.Anchored = true; p.CanCollide = false; p.Size = new Vector3(1, 1, 1);
+            p.Position = wp.Position; p.Color = Color3.fromRGB(0, 170, 255);
+            p.Parent = Workspace; Debris.AddItem(p, 5);
+            }
+}
         } else {
             state.waypoints = [];
             state.index = 0;
