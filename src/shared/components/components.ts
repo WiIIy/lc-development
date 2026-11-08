@@ -178,6 +178,7 @@ export class Components {
 	static LookAtPosition = component<Vector3>();
 	static OriginalNeckC0 = component<CFrame>();
 	static NeckJoint = component<Motor6D>();
+	static RootJoint = component<Motor6D>();
 
 	static Tracking = world.entity(); //allows target setting behaviors
 	static BodyTracking = world.entity();
@@ -193,6 +194,14 @@ export class Components {
 
 	static ShowPathfinding = world.entity();
 	static Highlighted = world.entity();
+
+	//memory
+	static TargetVisible = world.entity();
+	static PathGoal = component<{ position: Vector3; stopDistance: number; once?: boolean; expiresAt?: number }>();
+	static PathingMemory = world.entity(); // tag: enables memory behavior with defaults
+	static MemoryBehaviors = component<Partial<MemoryConfig>>(); // optional overrides, per enemy
+	static MemoryState = component<MemoryState>();
+	static LastSeen = component<{ pos: CFrame; time: number; target: Entity }>();
 
 	static Merchant = component<{ merchantName: string; wares: [] }>();
 

@@ -112,3 +112,16 @@ type NpcMoveData = {
 		distance: number;
 	};
 };
+
+type MemoryState = {
+	phase: "Approach" | "Turn" | "Scan" | "Walk";
+	lostAt: number;
+	phaseAt: number;
+	lastSeenPos: Vector3;
+	target: import("@rbxts/jecs").Entity;
+	snapshot?: Vector3;
+	heading?: Vector3;
+};
+
+// global types
+type MemoryConfig = { snapshotDelay: number; stopShort: number; maxWalk: number; maxScan: number };

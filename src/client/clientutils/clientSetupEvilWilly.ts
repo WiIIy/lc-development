@@ -1,16 +1,12 @@
 import { Workspace } from "@rbxts/services";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
-import { NpcMeleeBlock } from "../../shared/skills/npc/melee/npcBlock";
-import { Character } from "@rbxts/wcs";
-import { NpcMeleeLight } from "../../shared/skills/npc/melee/npcLight";
-import { NpcMeleeHeavy } from "../../shared/skills/npc/melee/npcHeavy";
-import { NpcMeleeShove } from "../../shared/skills/npc/melee/npcShove";
 import Components from "shared/components/components";
 import { RemoteEvents } from "client/network";
 import { Id, TagDiscriminator } from "@rbxts/jecs";
 
 export function setupEvilWilly() {
+	task.wait(2);
 	const evilWilly = Workspace.EvilWilly;
 	AnimationUtils.loadAnim(evilWilly, "stance", ANIMATION_IDS.actions.squared_up, 0, true);
 
@@ -31,6 +27,11 @@ export function setupEvilWilly() {
 	setupComponentToggle(
 		buttons["Melee Attacks"],
 		Components.MeleeAttacks as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
+	setupComponentToggle(
+		buttons["Pathing Memory"],
+		Components.PathingMemory as unknown as Id<TagDiscriminator>,
 		evilWilly,
 	);
 

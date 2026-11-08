@@ -27,8 +27,8 @@ export function setDescendantsNetworkOwner(instance: Instance, owner: Player | u
 	for (const descendant of instance.GetDescendants()) {
 		if (descendant.IsA("BasePart")) {
 			descendant.Anchored = false; //prevent "Network Ownership API cannot be called on Anchored parts or parts welded to Anchored parts."
-			descendant.CanCollide = true;
-			descendant.SetNetworkOwner(undefined);
+			// descendant.CanCollide = true;
+			descendant.SetNetworkOwner(owner);
 		}
 	}
 }

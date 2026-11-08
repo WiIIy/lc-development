@@ -6,24 +6,50 @@ import {
 	TargetTransformTrackingSystem,
 } from "./tracking/TargetSettingSystem";
 import { BodyTrackingSystem } from "./tracking/BodyTrackingSystem";
-import { PathCleanupSystem, PathFollowSystem, PathRequestSystem, PathSetupSystem } from "./pathing/PathfindingSystem";
-import { AttackExecutionSystem, AttackSystem, QueuedAttackExecutionSystem } from "./melee/AttackSystem";
-
-scheduler.addSystems([
-	SightTrackingSystem,
-	TargetSettingSystem,
-	TargetTransformTrackingSystem,
-	TargetTransformCleanupSystem,
-
-	BodyTrackingSystem,
-
-	PathSetupSystem,
-	PathRequestSystem,
-	PathFollowSystem,
+import {
 	PathCleanupSystem,
+	PathFollowSystem,
+	PathGoalClearSystem,
+	PathRequestSystem,
+	PathSetupSystem,
+	PursuitGoalSystem,
+} from "./pathing/PathfindingSystem";
+import { MemorySystem } from "./pathing/MemorySystem";
+import { AttackExecutionSystem, AttackSystem, QueuedAttackExecutionSystem } from "./melee/AttackSystem";
+import { Phases } from "@rbxts/planck-runservice";
+import { TransformSystem } from "../TransformSystem";
 
-	AttackSystem, //choose moveset
-	AttackExecutionSystem, //execute attack callback
-	QueuedAttackExecutionSystem, //execute the rest of the queue
+// 1) PreSimulation: write MoveTo / root CFrame before physics runs
+scheduler.addSystems(
+	[
+		PathSetupSystem,
+		PursuitGoalSystem,
+		MemorySystem,
+		PathRequestSystem,
+		PathFollowSystem,
+		PathGoalClearSystem,
+		PathCleanupSystem,
+	],
+	Phases.PreSimulation,
+);
 
-]);
+// 2) PostSimulation: read the settled world, then decide and apply visuals
+scheduler.addSystems(
+	[
+		TransformSystem, // must be first: everything below reads Transform
+		TargetSettingSystem,
+		TargetTransformTrackingSystem,
+		SightTrackingSystem, // neck C0
+		BodyTrackingSystem, // RootJoint C0
+	],
+	Phases.PostSimulation,
+);
+
+// 3) Update (Heartbeat): gameplay reactions
+scheduler.addSystems([AttackSystem, AttackExecutionSystem, QueuedAttackExecutionSystem], Phases.Update);
+
+// 4) PostUpdate: cleanup runs after everything in Update
+scheduler.addSystems([TargetTransformCleanupSystem], Phases.PostUpdate);
+
+//TargetSetting → TargetTransformTracking → PursuitGoal → Memory →
+// PathRequest → PathFollow → PathGoalClear → Attack systems → TargetTransformCleanup

@@ -17,10 +17,12 @@ export function setupEvilWilly() {
 
 	const evilWillyHrp = Workspace.EvilWilly.FindFirstChild("HumanoidRootPart") as BasePart;
 	const evilWillyNeckJoint = Workspace.EvilWilly.FindFirstChild("Torso")?.FindFirstChild("Neck") as Motor6D;
+	const evilWillyRootJoint = evilWillyHrp.FindFirstChild("RootJoint") as Motor6D;
 	Workspace.EvilWilly.AddTag("Enemy");
 	world.set(evilWillyEntity, Components.Transform, evilWillyHrp.CFrame);
 	world.set(evilWillyEntity, Components.Basepart, evilWillyHrp); //needed for transform
 	world.set(evilWillyEntity, Components.NeckJoint, evilWillyNeckJoint); //needed for sight behaviors
+	world.set(evilWillyEntity, Components.RootJoint, evilWillyRootJoint); //added for body turning behaviors
 	world.set(evilWillyEntity, Components.Humanoid, Workspace.EvilWilly.FindFirstChildOfClass("Humanoid")!); //needed for pathfinding moveto
 	world.set(evilWillyEntity, Components.Animator, Workspace.EvilWilly.FindFirstChildOfClass("Animator")!);
 

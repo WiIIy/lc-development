@@ -75,16 +75,16 @@ export class Dash extends Skill {
 	})
 	protected serverDash() {
 		this.ApplyCooldown(1);
-		const dashSounds = [
-			AUDIO_PATH.ActionSounds.Dash.dash1,
-			AUDIO_PATH.ActionSounds.Dash.dash2,
-			AUDIO_PATH.ActionSounds.Dash.dash3,
-		];
-		const randomSound = dashSounds[math.random(0, dashSounds.size() - 1)];
-		const randomSoundClone = randomSound.Clone();
+		// const dashSounds = [
+		// 	AUDIO_PATH.ActionSounds.Dash.dash1,
+		// 	AUDIO_PATH.ActionSounds.Dash.dash2,
+		// 	AUDIO_PATH.ActionSounds.Dash.dash3,
+		// ];
+		// const randomSound = dashSounds[math.random(0, dashSounds.size() - 1)];
+		// const randomSoundClone = randomSound.Clone();
 		const torso = this.Character.Instance.FindFirstChild("Torso") as BasePart;
-		randomSoundClone.Parent = torso;
-		randomSoundClone.Play();
+		// randomSoundClone.Parent = torso;
+		// randomSoundClone.Play();
 
 		// const dashTrail = ReplicatedStorage.CAAssets.effects.DashTrail;
 		// const trailClone = dashTrail.Clone();
