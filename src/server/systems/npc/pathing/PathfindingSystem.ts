@@ -1,7 +1,7 @@
 import { Debris, PathfindingService, Workspace } from "@rbxts/services";
 import world from "shared/world";
 import { Components } from "shared/components/components";
-import { resetPathState } from "./utils/resetPathState";
+import { resetPathState } from "../utils/resetPathState";
 import { pair, Wildcard } from "@rbxts/jecs";
 
 const AGENT_PARAMS = { AgentRadius: 2.5, AgentHeight: 5, AgentCanJump: true };
@@ -66,14 +66,14 @@ function requestPath(state: PathState, from: Vector3, goal: Vector3) {
             state.index = 1; // skip waypoint 0, it's the start
             state.issuedIndex = -1;
 
-            if (showNpcWaypoints){
-            for (const wp of state.waypoints) {
-            const p = new Instance("Part");
-            p.Anchored = true; p.CanCollide = false; p.Size = new Vector3(1, 1, 1);
-            p.Position = wp.Position; p.Color = Color3.fromRGB(0, 170, 255);
-            p.Parent = Workspace; Debris.AddItem(p, 5);
+            if (showNpcWaypoints) {
+                for (const wp of state.waypoints) {
+                    const p = new Instance("Part");
+                    p.Anchored = true; p.CanCollide = false; p.Size = new Vector3(0.1, 0.1, 0.1);
+                    p.Position = wp.Position; p.Color = Color3.fromRGB(0, 170, 255);
+                    p.Parent = Workspace; Debris.AddItem(p, 5);
+                }
             }
-}
         } else {
             state.waypoints = [];
             state.index = 0;
@@ -82,42 +82,42 @@ function requestPath(state: PathState, from: Vector3, goal: Vector3) {
 }
 
 export const PathRequestSystem = {
-	name: "PathRequestSystem",
-	system: () => {
-		const now = os.clock();
-		for (const [e, state, root, g] of world
-			.query(Components.PathState, Components.Basepart, Components.PathGoal)
-			.with(Components.Pathfinding)) {
-			if (state.computing) continue;
-			if (now - state.lastComputeAt < REPATH_INTERVAL) continue;
+    name: "PathRequestSystem",
+    system: () => {
+        const now = os.clock();
+        for (const [e, state, root, g] of world
+            .query(Components.PathState, Components.Basepart, Components.PathGoal)
+            .with(Components.Pathfinding)) {
+            if (state.computing) continue;
+            if (now - state.lastComputeAt < REPATH_INTERVAL) continue;
 
-			const goal = g.position;
-			const targetMoved = goal.sub(state.goal).Magnitude > REPATH_MOVED;
-			const idle = state.waypoints.size() === 0 && flat(goal.sub(root.Position)).Magnitude > g.stopDistance;
+            const goal = g.position;
+            const targetMoved = goal.sub(state.goal).Magnitude > REPATH_MOVED;
+            const idle = state.waypoints.size() === 0 && flat(goal.sub(root.Position)).Magnitude > g.stopDistance;
 
-			if (state.stale || targetMoved || idle) requestPath(state, root.Position, goal);
-		}
-	},
+            if (state.stale || targetMoved || idle) requestPath(state, root.Position, goal);
+        }
+    },
 };
 
 export const PathFollowSystem = {
-	name: "PathFollowSystem",
-	system: () => {
-		const now = os.clock();
-		for (const [e, state, humanoid, root, g] of world
-			.query(Components.PathState, Components.Humanoid, Components.Basepart, Components.PathGoal)
-			.with(Components.Pathfinding)) {
-			const pos = root.Position;
+    name: "PathFollowSystem",
+    system: () => {
+        const now = os.clock();
+        for (const [e, state, humanoid, root, g] of world
+            .query(Components.PathState, Components.Humanoid, Components.Basepart, Components.PathGoal)
+            .with(Components.Pathfinding)) {
+            const pos = root.Position;
 
-			if (flat(g.position.sub(pos)).Magnitude < g.stopDistance) {
-				if (state.waypoints.size() > 0) {
-					state.waypoints = [];
-					humanoid.MoveTo(pos);
-				}
-				if (g.once) world.remove(e, Components.PathGoal); // arrived, idle
-				continue;
-			}
-			
+            if (flat(g.position.sub(pos)).Magnitude < g.stopDistance) {
+                if (state.waypoints.size() > 0) {
+                    state.waypoints = [];
+                    humanoid.MoveTo(pos);
+                }
+                if (g.once) world.remove(e, Components.PathGoal); // arrived, idle
+                continue;
+            }
+
             const wp = state.waypoints[state.index];
             if (wp === undefined) continue; // nothing to follow (computing, or no path)
 
@@ -147,8 +147,8 @@ export const PathFollowSystem = {
                 state.stale = true;
                 state.lastProgressAt = now;
             }
-		}
-	},
+        }
+    },
 };
 
 // 4) Cleanup when the tag is removed
@@ -172,30 +172,30 @@ export const PathCleanupSystem = {
 };
 
 export const PathGoalClearSystem = {
-	name: "PathGoalClearSystem",
-	system: () => {
-		const now = os.clock();
-		for (const [e, g] of world.query(Components.PathGoal)) {
-			if (g.expiresAt !== undefined && now > g.expiresAt) world.remove(e, Components.PathGoal);
-		}
-		for (const [e, state] of noGoal) {
-			if (state.waypoints.size() === 0 && !state.computing) continue;
-			resetPathState(e);
-			const root = world.get(e, Components.Basepart);
-			const humanoid = world.get(e, Components.Humanoid);
-			if (root && humanoid) humanoid.MoveTo(root.Position);
-		}
-	},
+    name: "PathGoalClearSystem",
+    system: () => {
+        const now = os.clock();
+        for (const [e, g] of world.query(Components.PathGoal)) {
+            if (g.expiresAt !== undefined && now > g.expiresAt) world.remove(e, Components.PathGoal);
+        }
+        for (const [e, state] of noGoal) {
+            if (state.waypoints.size() === 0 && !state.computing) continue;
+            resetPathState(e);
+            const root = world.get(e, Components.Basepart);
+            const humanoid = world.get(e, Components.Humanoid);
+            if (root && humanoid) humanoid.MoveTo(root.Position);
+        }
+    },
 };
 
 export const PursuitGoalSystem = {
-	name: "PursuitGoalSystem",
-	system: () => {
-		for (const [e, tt] of world
-			.query(Components.TargetTransform)
-			.with(Components.Pathfinding, pair(Components.Target, Wildcard))
-			.without(Components.MemoryState)) {
-			world.set(e, Components.PathGoal, { position: tt.Position, stopDistance: 6 });
-		}
-	},
+    name: "PursuitGoalSystem",
+    system: () => {
+        for (const [e, tt] of world
+            .query(Components.TargetTransform)
+            .with(Components.Pathfinding, pair(Components.Target, Wildcard))
+            .without(Components.MemoryState)) {
+            world.set(e, Components.PathGoal, { position: tt.Position, stopDistance: 6 });
+        }
+    },
 };

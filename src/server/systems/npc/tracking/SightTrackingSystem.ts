@@ -1,7 +1,7 @@
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
 import { Components } from "shared/components/components";
-import { getLookPoint } from "../pathing/utils/lookPoint";
+import { getLookPoint } from "../utils/lookPoint";
 
 
 const NECK_C0 = new CFrame(0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 1, 0);

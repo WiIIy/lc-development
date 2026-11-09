@@ -64,6 +64,7 @@ interface Workspace {
 		["Body Tracking"]: Part & { ClickDetector: ClickDetector };
 		["Sight Tracking"]: Part & { ClickDetector: ClickDetector };
 		["Pathing Memory"]: Part & { ClickDetector: ClickDetector };
+		["Stop Facing Wall"]: Part & { ClickDetector: ClickDetector };
 		["Tracking"]: Part & { ClickDetector: ClickDetector };
 
 		["Melee Attacks"]: Part & { ClickDetector: ClickDetector };

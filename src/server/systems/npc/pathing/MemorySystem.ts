@@ -1,21 +1,19 @@
 import { Players, Workspace } from "@rbxts/services";
-import { Entity, OnAdd } from "@rbxts/jecs";
+import { Entity, OnAdd, OnRemove } from "@rbxts/jecs";
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
 import { Components } from "shared/components/components";
+import { flat, bodyFacing, turnBody, releaseBody } from "../utils/bodyTurn";
 
 export const MEMORY_STOP = 1.5;
 export const APPROACH_TIMEOUT = 15; // waiting for the snapshot, walking toward last seen
 const WALK_TIMEOUT = 12;
 const TURN_TIMEOUT = 0.8;
-const TURN_SPEED = 10; // lerp rate per second, settles in about 0.35s like the old tween
-const TURN_COS = math.cos(math.rad(8));
+const TURN_RATE = 10; // exponential approach rate per second, about 0.3s to settle from a 180
 const ARRIVE_PAD = 0.75;
 const MIN_WALK = 3;
 const MOVING_SPEED = 4; // studs/s: slower than this, the player's velocity says nothing about heading
 const SCAN_ANGLES = [0, 12.5, -12.5, 25, -25]; // center first so ties prefer straight
-
-const flat = (v: Vector3) => new Vector3(v.X, 0, v.Z);
 
 export const DEFAULT_MEMORY_CFG: MemoryConfig = { snapshotDelay: 0.5, stopShort: 2, maxWalk: 60, maxScan: 150 };
 
@@ -25,7 +23,7 @@ function getCfg(e: Entity): MemoryConfig {
 }
 
 function finish(e: Entity) {
-	world.remove(e, Components.MemoryState);
+	world.remove(e, Components.MemoryState); // OnRemove hook below hands the torso back to the HRP
 	world.remove(e, Components.PathGoal); // PathGoalClearSystem stops the walk
 }
 
@@ -53,18 +51,6 @@ function setGoal(e: Entity, position: Vector3, expiresAt: number) {
 	if (state) state.stale = true; // repath even if the new goal is close to the old one
 }
 
-// smooth body turn, returns true once facing dir
-function turnToward(root: BasePart, dir: Vector3, dt: number): boolean {
-    const cf = root.CFrame;
-    const p = cf.Position;
-    const goal = CFrame.lookAt(p, p.add(dir)).Rotation;
-
-    root.CFrame = cf.Rotation.Lerp(goal, math.clamp(TURN_SPEED * dt, 0, 1)).add(p);
-
-    const look = flat(root.CFrame.LookVector);
-    return look.Magnitude > 0.001 && look.Unit.Dot(dir) > TURN_COS;
-}
-
 export const MemorySystem = {
 	name: "MemorySystem",
 	system: () => {
@@ -83,6 +69,7 @@ export const MemorySystem = {
 			}
 			const cfg = getCfg(e);
 			const pos = transform.Position;
+			const joint = world.get(e, Components.RootJoint); // undefined = turn the HRP directly
 
 			// snapshot: sampled once. it becomes the goal, the npc assumes that's where the player went
 			if (mem.snapshot === undefined && now - mem.lostAt >= cfg.snapshotDelay) {
@@ -124,11 +111,11 @@ export const MemorySystem = {
 					}
 				}
 			} else if (mem.phase === "Turn") {
-				if (mem.heading === undefined) {
-					const look = flat(root.CFrame.LookVector);
-					mem.heading = look.Magnitude > 0.001 ? look.Unit : new Vector3(0, 0, -1);
-				}
-				const facing = turnToward(root, mem.heading, dt);
+				// no heading from the player: keep looking the way the npc already faces
+				if (mem.heading === undefined) mem.heading = bodyFacing(root, joint);
+
+				// twists the RootJoint (lerped), BodyTrackingSystem leaves it alone while phase is Turn
+				const facing = turnBody(root, joint, mem.heading, TURN_RATE, dt);
 				if (facing || now - mem.phaseAt > TURN_TIMEOUT) {
 					mem.phase = "Scan";
 					mem.phaseAt = now;
@@ -156,6 +143,8 @@ export const MemorySystem = {
 					continue;
 				}
 
+				// about to walk: fold the twist into the HRP (visually identical) so auto-rotate and the body agree
+				releaseBody(root, joint);
 				setGoal(e, dropToFloor(origin.add(bestDir.mul(walkLen))), now + WALK_TIMEOUT);
 				mem.phase = "Walk";
 				mem.phaseAt = now;
@@ -176,4 +165,11 @@ export const MemorySystem = {
 
 world.set(Components.PathingMemory, OnAdd, (e) => {
 	if (!world.has(e, Components.MemoryBehaviors)) world.set(e, Components.MemoryBehaviors, {});
+});
+
+// however MemoryState ends (finish, TargetSettingSystem reacquiring, capability removed),
+// don't leave the torso twisted relative to the HRP
+world.set(Components.MemoryState, OnRemove, (e) => {
+	const root = world.get(e, Components.Basepart);
+	if (root) releaseBody(root, world.get(e, Components.RootJoint));
 });

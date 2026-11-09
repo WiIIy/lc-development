@@ -18,6 +18,7 @@ import { MemorySystem } from "./pathing/MemorySystem";
 import { AttackExecutionSystem, AttackSystem, QueuedAttackExecutionSystem } from "./melee/AttackSystem";
 import { Phases } from "@rbxts/planck-runservice";
 import { TransformSystem } from "../TransformSystem";
+import { StopFacingWallsSystem } from "./pathing/StopFacingWallSystem";
 
 // 1) PreSimulation: write MoveTo / root CFrame before physics runs
 scheduler.addSystems(
@@ -46,7 +47,10 @@ scheduler.addSystems(
 );
 
 // 3) Update (Heartbeat): gameplay reactions
-scheduler.addSystems([AttackSystem, AttackExecutionSystem, QueuedAttackExecutionSystem], Phases.Update);
+scheduler.addSystems(
+	[AttackSystem, AttackExecutionSystem, QueuedAttackExecutionSystem, StopFacingWallsSystem],
+	Phases.Update,
+);
 
 // 4) PostUpdate: cleanup runs after everything in Update
 scheduler.addSystems([TargetTransformCleanupSystem], Phases.PostUpdate);

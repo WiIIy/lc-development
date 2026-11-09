@@ -203,6 +203,9 @@ export class Components {
 	static MemoryState = component<MemoryState>();
 	static LastSeen = component<{ pos: CFrame; time: number; target: Entity; visible: boolean }>();
 
+	static StopFacingWalls = world.entity();
+	static WallLook = component<{ nextScanAt: number; posing: boolean; goal?: Vector3 }>();
+
 	static Merchant = component<{ merchantName: string; wares: [] }>();
 
 	//perception system will use the stimulus and determine how its processed by each enemy. can trigger distraction from throwing cans
