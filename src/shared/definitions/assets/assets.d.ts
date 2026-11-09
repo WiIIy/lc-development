@@ -71,6 +71,8 @@ interface Workspace {
 		["Light Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Heavy Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Parry Response"]: Part & { ClickDetector: ClickDetector };
+
+		["Omniscient"]: Part & { ClickDetector: ClickDetector };
 	};
 
 	// Mirror: Model & {

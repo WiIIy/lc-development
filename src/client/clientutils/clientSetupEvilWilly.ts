@@ -40,6 +40,8 @@ export function setupEvilWilly() {
 		evilWilly,
 	);
 
+	setupComponentToggle(buttons["Omniscient"], Components.Omniscient as unknown as Id<TagDiscriminator>, evilWilly);
+
 	// Workspace.evilWillyButtons.Pathfinding.ClickDetector.MouseClick.Connect(() => {
 	// 	RemoteEvents.addComponentToEntityReference.fire(evilWilly, Components.Path as unknown as Id<TagDiscriminator>);
 	// });
@@ -85,49 +87,3 @@ function setupComponentToggle(
 //enemies will pick what to do depending on the state tracker to respond to what the player is doing
 
 //willy can only block for 1-4 seconds
-
-function evilWillyDetectPlayerAdvancingRetreating() {}
-
-function evilWillySetTarget(player: Player) {
-	//set pathfinding target
-}
-
-function evilWillyRetreat() {
-	//back off a few steps
-}
-
-function evilWillyKeepDistance(distance: number) {
-	//keep distance to a certain stud (willy will retreat and advance)
-}
-
-function evilWillyAdvance() {
-	//advance a few steps
-}
-
-function evilWillyKeepLos() {
-	//start keep los connection
-}
-
-function evilWillyBreakLos() {
-	//stop los connection
-}
-
-function evilWillyMeleeLight() {
-	//light attack here
-}
-
-function evilWillyMeleeHeavy() {
-	//heavy attack here
-}
-
-function evilWillyMeleeStartBlock() {
-	//block here
-}
-
-function evilWillyMeleeStopBlock() {
-	//block here
-}
-
-function evilWillyMeleeShove() {
-	//shove here
-}

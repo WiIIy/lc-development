@@ -84,6 +84,50 @@ function loseTarget(e: Entity, reason: LossReason, lost: Entity, now: number) {
 	print(reason)
 }
 
+function updateOmniscient(
+	e: Entity, transform: CFrame, root: BasePart,
+	candidates: [Entity, Vector3][], characters: Instance[], now: number,
+) {
+	const pos = transform.Position;
+	const current = world.target(e, Components.Target);
+
+	// nearest living player, no range, no FOV, no raycast
+	let best: Entity | undefined;
+	let bestSq = math.huge;
+	let currentSq = math.huge; // stays huge if current is dead/gone
+	for (const [pe, pPos] of candidates) {
+		const dsq = distSq(pPos, pos);
+		if (pe === current) currentSq = dsq;
+		if (dsq < bestSq) { best = pe; bestSq = dsq; }
+	}
+
+	if (best === undefined) {
+		// nobody alive: the only way an omniscient npc loses its target
+		if (current !== undefined) loseTarget(e, "gone", current, now);
+		return;
+	}
+
+	const keep = current !== undefined && currentSq !== math.huge;
+	const clearlyCloser = keep && best !== current && bestSq < currentSq * SWITCH_RATIO * SWITCH_RATIO;
+	if (!keep || clearlyCloser) setTarget(e, best);
+
+	// awareness is free, but *facing* needs real line of sight
+	const target = world.target(e, Components.Target)!;
+	const t = world.get(target, Components.Transform);
+	if (t === undefined) return;
+
+	params.FilterDescendantsInstances = [...characters, root.Parent!];
+	const eye = pos.add(EYE_OFFSET);
+	const visible = clearRay(eye, t.Position) || clearRay(eye, t.Position.add(UPPER_BODY));
+	world.set(e, Components.LastSeen, { pos: t, time: visible ? now : (world.get(e, Components.LastSeen)?.time ?? 0), target, visible });
+}
+
+
+const normalQuery = world.query(Components.Transform, Components.Basepart)
+	.with(Components.Tracking).without(Components.Omniscient).cached();
+const omniscientQuery = world.query(Components.Transform, Components.Basepart)
+	.with(Components.Tracking, Components.Omniscient).cached();
+
 
 const SIGHT_RANGE = 80;
 const FOV_COS = math.cos(math.rad(75));
@@ -97,11 +141,9 @@ type LossReason = Sight | "gone";
 const params = new RaycastParams();
 params.FilterType = Enum.RaycastFilterType.Exclude;
 
-function sight(eye: Vector3, forward: Vector3, targetPos: Vector3, dsq: number, omniscient: boolean): Sight {
+function sight(eye: Vector3, forward: Vector3, targetPos: Vector3, dsq: number): Sight {
 	if (dsq > SIGHT_RANGE * SIGHT_RANGE) return "range";
-	const offset = targetPos.sub(eye);
-	if (!omniscient && forward.Dot(offset.Unit) < FOV_COS) return "fov";
-	// center or upper body: a door frame clipping one ray shouldn't lose the player
+	if (forward.Dot(targetPos.sub(eye).Unit) < FOV_COS) return "fov";
 	return clearRay(eye, targetPos) || clearRay(eye, targetPos.add(UPPER_BODY)) ? "visible" : "wall";
 }
 
@@ -124,6 +166,10 @@ export const TargetSettingSystem = {
 			if (model) characters.push(model);
 		}
 
+		for (const [e, transform, root] of omniscientQuery) {
+			updateOmniscient(e, transform, root, candidates, characters, now);
+		}
+
 		for (const [e, transform, root] of world.query(Components.Transform, Components.Basepart, Components.Tracking)) {
 			const pos = transform.Position;
 			const eye = pos.add(EYE_OFFSET);
@@ -142,7 +188,7 @@ export const TargetSettingSystem = {
 				const dsq = distSq(pPos, pos);
 				if (pe !== current && dsq >= bestSq) continue;
 
-				const s = sight(eye, forward, pPos, dsq, omniscient);
+				const s = sight(eye, forward, pPos, dsq);
 				if (pe === current) {
 					currentSq = dsq;
 					currentSight = s;

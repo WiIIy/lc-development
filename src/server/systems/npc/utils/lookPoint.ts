@@ -9,6 +9,7 @@ import { Components } from "shared/components/components";
 //  4. otherwise                 -> undefined (face the walk direction)
 export function getLookPoint(e: Entity): Vector3 | undefined {
 	const seen = world.get(e, Components.LastSeen);
+	if (!seen?.visible) return undefined;
 
 	if (world.target(e, Components.Target) !== undefined) {
 		const tt = world.get(e, Components.TargetTransform);
