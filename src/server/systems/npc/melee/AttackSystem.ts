@@ -22,6 +22,7 @@ export const AttackSystem = {
 				Components.MovesetDelay,
 				Components.QueuedAttacks,
 				Components.ExecuteAttack,
+				Components.ParryTimeline,
 			)) {
 			//1. check if distance is close enough
 			if (!isTargetInRange(transform.Position, targetTransform.Position)) continue;

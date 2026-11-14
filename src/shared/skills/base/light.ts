@@ -4,6 +4,9 @@ import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { mouseRaycast } from "shared/utils/input/mouseRaycast";
 import assets from "shared/assets";
+import { Entity } from "@rbxts/jecs";
+import { ref } from "@willy/jecs-utils";
+import { announceThreat } from "shared/utils/npc/attack/predictiveParry";
 
 @SkillDecorator
 export class MeleeLight extends Skill {
@@ -12,9 +15,15 @@ export class MeleeLight extends Skill {
 		assets["anims/character/npc/takehit/ow2.rbxm"],
 		assets["anims/character/npc/takehit/ow3.rbxm"],
 	];
+	playerEntity: Entity | undefined;
 
 	protected OnStartClient(): void {
 		AnimationUtils.preloadAnimations(this.Player!.Character!, [ANIMATION_IDS.actions.light]);
+	}
+
+	protected OnStartServer(): void {
+		this.playerEntity = ref.find(this.Player!);
+		// print("plr", this.playerEntity);
 	}
 
 	meleeLight() {
@@ -51,5 +60,8 @@ export class MeleeLight extends Skill {
 	})
 	protected serverMeleeLight(): void {
 		this.ApplyCooldown(0.5);
+		if (this.playerEntity !== undefined) {
+			announceThreat(this.playerEntity, "light", 0.25);
+		}
 	}
 }

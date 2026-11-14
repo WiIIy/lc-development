@@ -70,7 +70,8 @@ interface Workspace {
 		["Melee Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Light Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Heavy Attacks"]: Part & { ClickDetector: ClickDetector };
-		["Parry Response"]: Part & { ClickDetector: ClickDetector };
+		["Random Parrying"]: Part & { ClickDetector: ClickDetector };
+		["Reactive Parrying"]: Part & { ClickDetector: ClickDetector };
 
 		["Omniscient"]: Part & { ClickDetector: ClickDetector };
 	};

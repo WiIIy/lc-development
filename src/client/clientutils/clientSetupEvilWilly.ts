@@ -39,6 +39,17 @@ export function setupEvilWilly() {
 		Components.StopFacingWalls as unknown as Id<TagDiscriminator>,
 		evilWilly,
 	);
+	setupComponentToggle(
+		buttons["Random Parrying"],
+		Components.RandomParrying as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
+
+	setupComponentToggle(
+		buttons["Reactive Parrying"],
+		Components.PredictiveParrying as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
 
 	setupComponentToggle(buttons["Omniscient"], Components.Omniscient as unknown as Id<TagDiscriminator>, evilWilly);
 

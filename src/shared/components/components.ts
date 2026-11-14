@@ -114,7 +114,6 @@ export class Components {
 	static ChangeEnemyState = component<EnemyState>(); //if set enemies will change state, component gets deleted
 	static FireCooldown = component<{ nextFireTime: number }>();
 
-	static CanParry = world.entity();
 	static CanShove = world.entity();
 	static RadioConnected = world.entity();
 	static CanSurrender = world.entity();
@@ -157,21 +156,20 @@ export class Components {
 	static Melee = world.entity();
 
 	//Following
-	static TimeSightLost = component<number>();
-	static Wandering = world.entity(); //indicates enemy that currently has wandering behaviors. actually its deprecated. delete this
-	static ArrivedAtTarget = world.entity();
+	// static TimeSightLost = component<number>();
+	// static Wandering = world.entity(); //indicates enemy that currently has wandering behaviors. actually its deprecated. delete this
+	// static ArrivedAtTarget = world.entity();
 
 	//Wandering
-	static WanderDestination = component<{ name: string; position: Vector3 }>(); //if enemy has this it means theyre approaching the destination
-	static CurrentWanderPoint = component<string>();
-	static LastSeenPosition = component<Vector3>();
-	static LossOfSightData = component<{ lossTime: number; initialPos: Vector3; sampleCaptured: boolean }>();
-	static BlindPursuitDirection = component<Vector3>();
-	// Add these to Components
-	static SearchDelayTimer = component<number>(); // Timestamp when search movement should start
-	static PostSearchWaitTimer = component<number>(); // Timestamp when waiting ends and NPC becomes fully idle
-	static SetToSearch = world.entity();
-	static SittingTimer = component<number>();
+	// static WanderDestination = component<{ name: string; position: Vector3 }>(); //if enemy has this it means theyre approaching the destination
+	// static CurrentWanderPoint = component<string>();
+	// static LastSeenPosition = component<Vector3>();
+	// static LossOfSightData = component<{ lossTime: number; initialPos: Vector3; sampleCaptured: boolean }>();
+	// static BlindPursuitDirection = component<Vector3>();
+	// static SearchDelayTimer = component<number>(); // Timestamp when search movement should start
+	// static PostSearchWaitTimer = component<number>(); // Timestamp when waiting ends and NPC becomes fully idle
+	// static SetToSearch = world.entity();
+	// static SittingTimer = component<number>();
 
 	// Looking behaviors
 	static LookAtTarget = component<Entity>();
@@ -205,6 +203,18 @@ export class Components {
 
 	static StopFacingWalls = world.entity();
 	static WallLook = component<{ nextScanAt: number; posing: boolean; goal?: Vector3 }>();
+
+	//parrying
+	static RandomParrying = world.entity(); //strategy tag: roll once per incoming attack (swarm/easy enemies)
+	static PredictiveParrying = world.entity(); //strategy tag: reserved for the predictive system
+	static ParryConfig = component<Partial<ParryProfile>>(); //per-entity override of the parry profile
+	static IncomingThreat = component<Threat>();
+	static ParryTimeline = component<ParryTimeline>(); //exists from decision until recovery ends; doubles as "busy parrying"
+	static ParryCooldown = component<number>(); //timestamp when the next parry attempt is allowed
+	static AttackTrack = component<AnimationTrack>(); //the swing currently playing, so a parry can stop it
+	static AttackHistory = component<AttackRecord[]>(); //on the attacker, ring buffer for predictive later
+	static ParryStackable = world.entity();
+	static ParryStreak = component<number>();
 
 	static Merchant = component<{ merchantName: string; wares: [] }>();
 

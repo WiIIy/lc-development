@@ -19,6 +19,8 @@ import { AttackExecutionSystem, AttackSystem, QueuedAttackExecutionSystem } from
 import { Phases } from "@rbxts/planck-runservice";
 import { TransformSystem } from "../TransformSystem";
 import { StopFacingWallsSystem } from "./pathing/StopFacingWallSystem";
+import { ParryHousekeepingSystem, RandomParrySystem, ParryExecutionSystem } from "./melee/ParrySystem";
+import { PredictiveParryHousekeepingSystem, PredictiveParrySystem } from "./melee/PredictiveParrySystem";
 
 // 1) PreSimulation: write MoveTo / root CFrame before physics runs
 scheduler.addSystems(
@@ -48,7 +50,19 @@ scheduler.addSystems(
 
 // 3) Update (Heartbeat): gameplay reactions
 scheduler.addSystems(
-	[AttackSystem, AttackExecutionSystem, QueuedAttackExecutionSystem, StopFacingWallsSystem],
+	[
+		AttackSystem,
+		AttackExecutionSystem,
+		QueuedAttackExecutionSystem,
+		StopFacingWallsSystem,
+
+		//parrying
+		PredictiveParryHousekeepingSystem,
+		PredictiveParrySystem,
+		ParryHousekeepingSystem, // expires stale threats and cooldowns
+		RandomParrySystem, // decides: writes ParryTimeline
+		ParryExecutionSystem, // opens/closes the window, cancels the combo
+	],
 	Phases.Update,
 );
 
