@@ -72,6 +72,8 @@ interface Workspace {
 		["Heavy Attacks"]: Part & { ClickDetector: ClickDetector };
 		["Random Parrying"]: Part & { ClickDetector: ClickDetector };
 		["Reactive Parrying"]: Part & { ClickDetector: ClickDetector };
+		["Track Action State"]: Part & { ClickDetector: ClickDetector };
+		["Track Relative State"]: Part & { ClickDetector: ClickDetector };
 
 		["Omniscient"]: Part & { ClickDetector: ClickDetector };
 	};

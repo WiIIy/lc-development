@@ -6,6 +6,7 @@ import Components from "shared/components/components";
 import { ref } from "@willy/jecs-utils";
 import { Entity } from "@rbxts/jecs";
 import world from "shared/world";
+import { clearPlayerAction, setPlayerAction } from "shared/utils/npc/attack/setPlayerAction";
 
 @SkillDecorator
 export class MeleeBlock extends Skill {
@@ -33,7 +34,9 @@ export class MeleeBlock extends Skill {
 		Destination: "Server",
 	})
 	protected serverMeleeBlockStart(): void {
+		if (this.playerEntity === undefined) return;
 		world.add(this.playerEntity!, Components.Parrying);
+		setPlayerAction(this.playerEntity, "parrying");
 	}
 
 	@Message({
@@ -41,8 +44,8 @@ export class MeleeBlock extends Skill {
 		Destination: "Server",
 	})
 	protected serverMeleeBlockEnd(): void {
-		if (world.has(this.playerEntity!, Components.Parrying)) {
-			world.remove(this.playerEntity!, Components.Parrying);
-		}
+		if (this.playerEntity === undefined) return;
+		world.remove(this.playerEntity!, Components.Parrying);
+		clearPlayerAction(this.playerEntity, "parrying");
 	}
 }

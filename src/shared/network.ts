@@ -72,6 +72,8 @@ interface ClientToServerEvents {
 		add: boolean,
 		part: BasePart,
 	): void; //add true = add component, add false = remove component
+
+	updatePlayerBehavior(newState: PlayerBehaviorState): void;
 }
 
 interface ServerToClientEvents {

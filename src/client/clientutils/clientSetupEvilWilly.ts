@@ -53,6 +53,18 @@ export function setupEvilWilly() {
 
 	setupComponentToggle(buttons["Omniscient"], Components.Omniscient as unknown as Id<TagDiscriminator>, evilWilly);
 
+	setupComponentToggle(
+		buttons["Track Action State"],
+		Components.TrackTargetActionState as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
+
+	setupComponentToggle(
+		buttons["Track Relative State"],
+		Components.TrackTargetRelativeState as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
+
 	// Workspace.evilWillyButtons.Pathfinding.ClickDetector.MouseClick.Connect(() => {
 	// 	RemoteEvents.addComponentToEntityReference.fire(evilWilly, Components.Path as unknown as Id<TagDiscriminator>);
 	// });

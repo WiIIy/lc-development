@@ -192,3 +192,12 @@ type AttackRecord = {
 	startedAt: number;
 	hitAt: number;
 };
+
+type RelativeMotion = "advancing" | "retreating" | "strafingright" | "strafingleft" | "still";
+type TargetRelativeState = {
+	motion: RelativeMotion;
+	distance: number; // studs, flat (XZ)
+	approachSpeed: number; // studs/s, + = the player moves toward the npc, - = away
+	sideSpeed: number; // studs/s, + = toward the npc's right, - = toward its left (the npc's point of view)
+	closureSpeed: number; // studs/s, + = the gap is shrinking (counts both bodies' motion)
+};

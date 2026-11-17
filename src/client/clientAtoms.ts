@@ -29,6 +29,14 @@ export const custom_color_mid = atom<Color3>(new Color3(0.5, 0.5, 0.5));
 export const custom_color_mid_light = atom<Color3>(new Color3(0.75, 0.75, 0.75));
 export const custom_color_light = atom<Color3>(new Color3(1, 1, 1));
 
+export const playerActionAtom = atom<PlayerBehaviorState>({
+	movementState: "idle",
+	environmentState: "plainsight",
+	bodyState: "standing",
+	speedState: "walking",
+	actionState: "idle",
+});
+
 //npc state
 export const updateNpcUiState = atom<NpcData>({
 	entity: "100",

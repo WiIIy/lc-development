@@ -35,6 +35,7 @@ function setTarget(e: Entity, newTarget: Entity) {
 	// reacquired: cancel any memory behavior, pursuit will write a fresh PathGoal
 	world.remove(e, Components.MemoryState);
 	world.remove(e, Components.PathGoal);
+	world.remove(e, Components.TargetState);
 
 	const plr = world.get(newTarget, Components.Player);
 	const model = world.get(e, Components.Basepart)?.Parent;

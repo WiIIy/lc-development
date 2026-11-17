@@ -6,6 +6,8 @@ import { MeleeBlock } from "shared/skills/base/block";
 import { MeleeShove } from "shared/skills/base/shove";
 import { getCurrentWCS_Character } from "shared/utils/ecs/getCurrentWcsCharacter";
 import { observer, ref } from "@willy/jecs-utils";
+import { subscribe } from "@rbxts/charm";
+
 import Components from "shared/components/components";
 import {
 	currentStaminaAtom,
@@ -15,25 +17,14 @@ import {
 	currentBloodAtom,
 	maxBloodAtom,
 	activeStatusEffectsAtom,
+	playerActionAtom,
 } from "client/clientAtoms";
 import world from "shared/world";
+import { ClientContext } from "shared/ClientContext";
+import { RemoteEvents } from "client/network";
 
-export type MovementState = "idle" | "advancing" | "retreating" | "strafingleft" | "strafingright";
-export type EnvironmentState = "plainsight" | "hidden";
-export type BodyState = "crouching" | "standing";
-export type SpeedState = "walking" | "sprinting" | "dashing";
-export type ActionState = "idle" | "meleelight" | "meleeheavy" | "melee";
-
-interface StateMap {
-	movementState: MovementState;
-	environmentState: EnvironmentState;
-	bodyState: BodyState;
-	speedState: SpeedState;
-	actionState: ActionState;
-}
-
-type StateKey = keyof StateMap;
-type StateListener<K extends StateKey> = (newState: StateMap[K], oldState: StateMap[K]) => void;
+type StateKey = keyof PlayerBehaviorState;
+type StateListener<K extends StateKey> = (newState: PlayerBehaviorState[K], oldState: PlayerBehaviorState[K]) => void;
 
 // Tweak to taste.
 const MOVE_DEADZONE = 0.1; // MoveDirection magnitude under this counts as standing still
@@ -50,6 +41,10 @@ export class PlayerStateController implements OnStart, OnRender {
 	private humanoid?: Humanoid;
 	private listeners = new Map<StateKey, Set<(n: never, o: never) => void>>();
 
+	constructor() {
+		ClientContext.PlayerStateTrackerController = this;
+	}
+
 	onStart(): void {
 		const player = Players.LocalPlayer;
 		if (player.Character) this.bindCharacter(player.Character);
@@ -57,7 +52,6 @@ export class PlayerStateController implements OnStart, OnRender {
 
 		const playerObserver = observer(world.query(Components.Player), (e) => {
 			const player = world.get(e, Components.Player);
-			// print("AAAHA HDSDBSHDSBDHHS BDA", player, typeOf(player));
 
 			if (player === Players.LocalPlayer) {
 				ref.set(Players.LocalPlayer, e);
@@ -101,11 +95,15 @@ export class PlayerStateController implements OnStart, OnRender {
 			if (statusEffects === undefined) return;
 			activeStatusEffectsAtom(statusEffects || []);
 		});
+
+		subscribe(playerActionAtom, (now, prev) => {
+			print("wah");
+			RemoteEvents.updatePlayerBehavior(now);
+		});
 	}
 
 	onRender(dt: number): void {
 		this.updateMovementState();
-		this.updateActionState();
 		// TODO: bodyState (crouch), speedState (sprint/dash), environmentState (hidden)
 	}
 
@@ -113,22 +111,27 @@ export class PlayerStateController implements OnStart, OnRender {
 
 	setMovementState(state: MovementState) {
 		this.set("movementState", state);
+		this.updateAtomField("movementState", state);
 	}
 
 	setEnvironmentState(state: EnvironmentState) {
 		this.set("environmentState", state);
+		this.updateAtomField("environmentState", state);
 	}
 
 	setBodyState(state: BodyState) {
 		this.set("bodyState", state);
+		this.updateAtomField("bodyState", state);
 	}
 
 	setSpeedState(state: SpeedState) {
 		this.set("speedState", state);
+		this.updateAtomField("speedState", state);
 	}
 
 	setActionState(state: ActionState) {
 		this.set("actionState", state);
+		this.updateAtomField("actionState", state);
 	}
 
 	// ---------- Getters / helpers ----------
@@ -155,15 +158,29 @@ export class PlayerStateController implements OnStart, OnRender {
 
 	// ---------- Internals ----------
 
-	private set<K extends StateKey>(key: K, value: StateMap[K]) {
-		const old = this[key] as StateMap[K];
+	private set<K extends StateKey>(key: K, value: PlayerBehaviorState[K]) {
+		const old = this[key] as PlayerBehaviorState[K];
 		if (old === value) return;
-		(this as unknown as StateMap)[key] = value;
+		(this as unknown as PlayerBehaviorState)[key] = value;
 
 		const set = this.listeners.get(key);
 		if (set) {
 			for (const fn of set) (fn as unknown as StateListener<K>)(value, old);
 		}
+	}
+
+	/** Helper to keep atom updates dry across all property setters */
+	private updateAtomField<K extends StateKey>(key: K, value: PlayerBehaviorState[K]) {
+		const prev = playerActionAtom();
+		if (prev[key] === value) return; // Prevent redundant atom updates if value is unchanged
+
+		playerActionAtom({
+			actionState: key === "actionState" ? (value as ActionState) : prev.actionState,
+			bodyState: key === "bodyState" ? (value as BodyState) : prev.bodyState,
+			movementState: key === "movementState" ? (value as MovementState) : prev.movementState,
+			environmentState: key === "environmentState" ? (value as EnvironmentState) : prev.environmentState,
+			speedState: key === "speedState" ? (value as SpeedState) : prev.speedState,
+		});
 	}
 
 	private bindCharacter(char: Model) {
@@ -189,8 +206,6 @@ export class PlayerStateController implements OnStart, OnRender {
 			return;
 		}
 
-		// Compare input direction against where the player is *looking* (camera),
-		// not where the character model is facing.
 		const look = this.flatten(cam.CFrame.LookVector);
 		const right = this.flatten(cam.CFrame.RightVector);
 		const dir = this.flatten(moveDir);
@@ -198,33 +213,12 @@ export class PlayerStateController implements OnStart, OnRender {
 		const forward = dir.Dot(look);
 		const side = dir.Dot(right);
 
-		// Forward/back wins on diagonals (W+A is still "advancing").
 		if (forward >= FORWARD_THRESHOLD) {
-			this.setMovementState("advancing");
+			this.setMovementState("movingforward");
 		} else if (forward <= -FORWARD_THRESHOLD) {
-			this.setMovementState("retreating");
+			this.setMovementState("movingbackward");
 		} else {
 			this.setMovementState(side > 0 ? "strafingright" : "strafingleft");
 		}
-	}
-
-	private updateActionState() {
-		const wcsChar = getCurrentWCS_Character();
-		if (!wcsChar) return;
-
-		// Polls the WCS skills' active state so this stays in sync no matter
-		// what triggered them (input, AI, server, etc).
-		const heavy = wcsChar.GetSkillFromConstructor(MeleeHeavy)?.GetState().IsActive;
-		if (heavy) return this.setActionState("meleeheavy");
-
-		const light = wcsChar.GetSkillFromConstructor(MeleeLight)?.GetState().IsActive;
-		if (light) return this.setActionState("meleelight");
-
-		// Generic "melee": other melee-category skills (block / shove).
-		const block = wcsChar.GetSkillFromConstructor(MeleeBlock)?.GetState().IsActive;
-		const shove = wcsChar.GetSkillFromConstructor(MeleeShove)?.GetState().IsActive;
-		if (block || shove) return this.setActionState("melee");
-
-		this.setActionState("idle");
 	}
 }

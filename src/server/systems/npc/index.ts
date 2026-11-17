@@ -21,6 +21,8 @@ import { TransformSystem } from "../TransformSystem";
 import { StopFacingWallsSystem } from "./pathing/StopFacingWallSystem";
 import { ParryHousekeepingSystem, RandomParrySystem, ParryExecutionSystem } from "./melee/ParrySystem";
 import { PredictiveParryHousekeepingSystem, PredictiveParrySystem } from "./melee/PredictiveParrySystem";
+import { TargetStateCleanupSystem, TargetStateTrackingSystem } from "./tracking/TargetStateTrackingSystem";
+import { TargetRelativeStateCleanupSystem, TargetRelativeStateSystem } from "./tracking/TargetRelativeStateSystem";
 
 // 1) PreSimulation: write MoveTo / root CFrame before physics runs
 scheduler.addSystems(
@@ -62,6 +64,11 @@ scheduler.addSystems(
 		ParryHousekeepingSystem, // expires stale threats and cooldowns
 		RandomParrySystem, // decides: writes ParryTimeline
 		ParryExecutionSystem, // opens/closes the window, cancels the combo
+
+		TargetStateTrackingSystem,
+		TargetStateCleanupSystem,
+		TargetRelativeStateSystem, //detects if player is strafing toward/backward relative to npc
+		TargetRelativeStateCleanupSystem,
 	],
 	Phases.Update,
 );

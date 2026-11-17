@@ -102,6 +102,14 @@ class StartUpService implements OnStart {
 				world.set(playerEntity, Components.Humanoid, charR6.Humanoid);
 				world.set(playerEntity, Components.Basepart, charR6.HumanoidRootPart);
 
+				world.set(playerEntity, Components.PlayerBehavior, {
+					movementState: "idle",
+					environmentState: "plainsight",
+					bodyState: "standing",
+					speedState: "walking",
+					actionState: "idle",
+				});
+
 				// const eats = world.entity();
 				// const apple = world.entity();
 				// world.add(playerEntity, pair(eats, apple));
@@ -189,6 +197,7 @@ class StartUpService implements OnStart {
 				humanoid.Died.Once(() => {
 					wcsCharacter.Destroy();
 					ragdollCharacter(charR6);
+					world.remove(playerEntity, Components.Parrying);
 				});
 
 				// charR6.Humanoid.Seated.Connect((isSeated, seat) => {

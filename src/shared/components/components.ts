@@ -213,8 +213,17 @@ export class Components {
 	static ParryCooldown = component<number>(); //timestamp when the next parry attempt is allowed
 	static AttackTrack = component<AnimationTrack>(); //the swing currently playing, so a parry can stop it
 	static AttackHistory = component<AttackRecord[]>(); //on the attacker, ring buffer for predictive later
+
 	static ParryStackable = world.entity();
 	static ParryStreak = component<number>();
+
+	//state tracking
+	static PlayerBehavior = component<PlayerBehaviorState>();
+	static TrackTargetActionState = world.entity(); // tag: npc mirrors its target's behavior state
+	static TargetState = component<PlayerBehaviorState>(); // npc's copy of its target's PlayerBehavior
+	static ActionToken = component<number>(); // bumped on every action so stale timed resets can tell they are stale
+	static TrackTargetRelativeState = world.entity(); // tag
+	static TargetRelativeState = component<TargetRelativeState>();
 
 	static Merchant = component<{ merchantName: string; wares: [] }>();
 

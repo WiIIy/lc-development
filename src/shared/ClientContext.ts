@@ -17,6 +17,15 @@ export interface IMirrorController {
 	destroyMirror: () => void;
 }
 
+export interface IPlayerStateTrackerController {
+	setActionState(state: ActionState): void;
+	movementState: MovementState;
+	environmentState: EnvironmentState;
+	bodyState: BodyState;
+	speedState: SpeedState;
+	actionState: ActionState;
+}
+
 export interface IUIController {
 	entityDetailsRoot: BillboardGui;
 }
@@ -26,5 +35,6 @@ export const ClientContext = {
 	ViewmodelController: undefined as IViewmodelController | undefined,
 	MirrorController: undefined as IMirrorController | undefined,
 	UIController: undefined as IUIController | undefined,
+	PlayerStateTrackerController: undefined as IPlayerStateTrackerController | undefined,
 	// PlayerStateTrackerController: undefined as I
 };

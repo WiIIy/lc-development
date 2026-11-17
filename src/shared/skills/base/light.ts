@@ -4,9 +4,12 @@ import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { mouseRaycast } from "shared/utils/input/mouseRaycast";
 import assets from "shared/assets";
-import { Entity } from "@rbxts/jecs";
+import { Component, Entity } from "@rbxts/jecs";
 import { ref } from "@willy/jecs-utils";
+import world from "shared/world";
 import { announceThreat } from "shared/utils/npc/attack/predictiveParry";
+import Components from "shared/components/components";
+import { setPlayerAction } from "shared/utils/npc/attack/setPlayerAction";
 
 @SkillDecorator
 export class MeleeLight extends Skill {
@@ -27,7 +30,8 @@ export class MeleeLight extends Skill {
 	}
 
 	meleeLight() {
-		AnimationUtils.loadAnim(this.Player!.Character! as Model, "light", ANIMATION_IDS.actions.light);
+		const track = AnimationUtils.loadAnim(this.Player!.Character! as Model, "light", ANIMATION_IDS.actions.light);
+
 		const hit = mouseRaycast(10);
 		if (hit !== undefined && hit.Instance !== undefined) {
 			if (
@@ -60,8 +64,8 @@ export class MeleeLight extends Skill {
 	})
 	protected serverMeleeLight(): void {
 		this.ApplyCooldown(0.5);
-		if (this.playerEntity !== undefined) {
-			announceThreat(this.playerEntity, "light", 0.25);
-		}
+		if (this.playerEntity === undefined) return;
+		setPlayerAction(this.playerEntity, "meleelight", 0.5); // tune to the light animation's length
+		announceThreat(this.playerEntity, "light", 0.25);
 	}
 }

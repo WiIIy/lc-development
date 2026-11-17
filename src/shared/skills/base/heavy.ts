@@ -5,6 +5,9 @@ import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { ref } from "@willy/jecs-utils";
 import { Entity } from "@rbxts/jecs";
 import { announceThreat } from "shared/utils/npc/attack/predictiveParry";
+import world from "shared/world";
+import Components from "shared/components/components";
+import { setPlayerAction } from "shared/utils/npc/attack/setPlayerAction";
 
 @SkillDecorator
 export class MeleeHeavy extends Skill {
@@ -20,7 +23,7 @@ export class MeleeHeavy extends Skill {
 
 	meleeHeavy() {
 		print("yeah the dude heavied");
-		AnimationUtils.loadAnim(this.Player!.Character! as Model, "light", ANIMATION_IDS.actions.heavy);
+		const track = AnimationUtils.loadAnim(this.Player!.Character! as Model, "light", ANIMATION_IDS.actions.heavy);
 		this.serverMeleeHeavy();
 	}
 
@@ -29,9 +32,9 @@ export class MeleeHeavy extends Skill {
 		Destination: "Server",
 	})
 	protected serverMeleeHeavy(): void {
-		print("dude heavied");
-		if (this.playerEntity !== undefined) {
-			announceThreat(this.playerEntity, "light", 0.25);
-		}
+		this.ApplyCooldown(0.7);
+		if (this.playerEntity === undefined) return;
+		setPlayerAction(this.playerEntity, "meleeheavy", 0.7); // tune to the heavy animation's length
+		announceThreat(this.playerEntity, "heavy", 0.25); // set the second number to your heavy's hit-marker time
 	}
 }
