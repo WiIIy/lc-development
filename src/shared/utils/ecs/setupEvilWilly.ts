@@ -1,3 +1,5 @@
+//src/shared/utils/ecs/setupEvilWilly.ts
+
 import { Workspace } from "@rbxts/services";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";

@@ -1,3 +1,5 @@
+//src/shared/data/npcs/stats/moveCallbacks.ts
+
 import Make from "@rbxts/make";
 import { Entity } from "@rbxts/replecs/out/jecs";
 import world from "shared/world";

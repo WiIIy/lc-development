@@ -1,5 +1,6 @@
-// -> next to your attack systems (melee/ParrySystem.ts)
-//
+//src/server/systems/npc/melee/ParrySystem.ts
+
+
 // RANDOM parrying: an npc that HAS A TARGET rolls every rollInterval seconds while idle.
 //   RandomParrySystem -> ParryTimeline -> ParryExecutionSystem
 // It never looks at what the player is doing.

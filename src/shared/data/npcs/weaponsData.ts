@@ -1,3 +1,6 @@
+//src/shared/data/npcs/stats/weaponsData.ts
+//what weaponsdata currently is
+
 import assets from "shared/assets";
 import { defineNpcWeapon } from "shared/utils/npc/attack/defineNpcWeapon";
 

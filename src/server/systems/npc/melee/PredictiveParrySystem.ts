@@ -1,5 +1,5 @@
-// -> next to ParrySystem.ts (melee/PredictiveParrySystem.ts)
-//
+//src/server/systems/npc/melee/PredictiveParrySystem.ts
+
 // PREDICTIVE parrying: the npc reacts to the swings of whoever it is targeting.
 //   announceThreat (attacker's swing starts) -> IncomingThreat on the npc
 //   -> PredictiveParrySystem (decides once per swing) -> ParryTimeline -> ParryExecutionSystem (in ParrySystem.ts)
@@ -27,6 +27,7 @@ import {
 	scheduleParry,
 } from "shared/utils/npc/attack/parryUtils";
 import { planParryWindow } from "shared/utils/npc/attack/predictiveParry";
+
 
 const THREAT_GRACE = 0.25; // keep a threat around this long past its hit time
 

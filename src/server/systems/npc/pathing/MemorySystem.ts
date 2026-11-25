@@ -1,3 +1,5 @@
+//src/server/systems/npc/pathing/MemorySystem.ts
+
 import { Players, Workspace } from "@rbxts/services";
 import { Entity, OnAdd, OnRemove } from "@rbxts/jecs";
 import { scheduler } from "shared/scheduler";

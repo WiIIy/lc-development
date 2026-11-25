@@ -1,3 +1,5 @@
+//src/shared/utils/npc/attack/registerMeleeHit.ts
+
 import Make from "@rbxts/make";
 import { Entity } from "@rbxts/jecs";
 import world from "shared/world";

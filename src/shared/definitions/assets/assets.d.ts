@@ -74,6 +74,7 @@ interface Workspace {
 		["Reactive Parrying"]: Part & { ClickDetector: ClickDetector };
 		["Track Action State"]: Part & { ClickDetector: ClickDetector };
 		["Track Relative State"]: Part & { ClickDetector: ClickDetector };
+		["Test Reactive"]: Part & { ClickDetector: ClickDetector };
 
 		["Omniscient"]: Part & { ClickDetector: ClickDetector };
 	};

@@ -1,3 +1,5 @@
+//src/server/systems/npc/pathing/StopFacingWallSystem.ts
+
 import { Entity, OnAdd, OnRemove } from "@rbxts/jecs";
 import { Players, Workspace } from "@rbxts/services";
 import { scheduler } from "shared/scheduler";

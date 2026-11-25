@@ -1,3 +1,5 @@
+//src/server/systems/npc/melee/AttackSystem.ts
+
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
 import { Entity, Id, Name, OnRemove, pair, Tag, TagDiscriminator, Wildcard } from "@rbxts/jecs";

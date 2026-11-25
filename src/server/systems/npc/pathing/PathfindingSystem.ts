@@ -1,3 +1,5 @@
+//src/server/systems/npc/pathing/PathfindingSystem.ts
+
 import { Debris, PathfindingService, Workspace } from "@rbxts/services";
 import world from "shared/world";
 import { Components } from "shared/components/components";
@@ -194,7 +196,7 @@ export const PursuitGoalSystem = {
         for (const [e, tt] of world
             .query(Components.TargetTransform)
             .with(Components.Pathfinding, pair(Components.Target, Wildcard))
-            .without(Components.MemoryState)) {
+            .without(Components.MemoryState, Components.CloseQuarters)) {
             world.set(e, Components.PathGoal, { position: tt.Position, stopDistance: 6 });
         }
     },

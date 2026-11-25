@@ -1,5 +1,5 @@
-// -> next to TargetStateTrackingSystem (tracking/TargetRelativeStateSystem.ts)
-//
+//src/server/systems/npc/tracking/TargetRelativeStateSystem.ts
+
 // Enabled by Components.TrackTargetRelativeState (tag).
 // Describes how the TARGETED player moves relative to THIS npc, so the npc can tell whether the player is coming
 // for it. Uses Transform (positions) and Basepart (velocity) of both the npc and the player. Orientation is ignored.

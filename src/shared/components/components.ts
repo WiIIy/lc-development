@@ -1,3 +1,6 @@
+//src/shared/components/components.ts
+//this file is a mess. Im thinking of separating it but I don't know how to do it yet.
+
 import { CharacterRigR6 } from "@rbxts/promise-character";
 import Replecs from "@rbxts/replecs";
 
@@ -224,6 +227,9 @@ export class Components {
 	static ActionToken = component<number>(); // bumped on every action so stale timed resets can tell they are stale
 	static TrackTargetRelativeState = world.entity(); // tag
 	static TargetRelativeState = component<TargetRelativeState>();
+
+	static TestReactive = world.entity(); // tag: this test behavior
+	static CloseQuarters = world.entity(); // tag: a close-quarters behavior currently owns this npc's movement
 
 	static Merchant = component<{ merchantName: string; wares: [] }>();
 

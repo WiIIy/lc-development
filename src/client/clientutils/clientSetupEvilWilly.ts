@@ -1,3 +1,5 @@
+//src/client/clientutils/clientSetupEvilWilly.ts
+
 import { Workspace } from "@rbxts/services";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
@@ -62,6 +64,12 @@ export function setupEvilWilly() {
 	setupComponentToggle(
 		buttons["Track Relative State"],
 		Components.TrackTargetRelativeState as unknown as Id<TagDiscriminator>,
+		evilWilly,
+	);
+
+	setupComponentToggle(
+		buttons["Test Reactive"],
+		Components.TestReactive as unknown as Id<TagDiscriminator>,
 		evilWilly,
 	);
 

@@ -1,3 +1,5 @@
+//src/server/systems/npc/tracking/SightTrackingSystem.ts
+
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
 import { Components } from "shared/components/components";

@@ -23,6 +23,7 @@ import { ParryHousekeepingSystem, RandomParrySystem, ParryExecutionSystem } from
 import { PredictiveParryHousekeepingSystem, PredictiveParrySystem } from "./melee/PredictiveParrySystem";
 import { TargetStateCleanupSystem, TargetStateTrackingSystem } from "./tracking/TargetStateTrackingSystem";
 import { TargetRelativeStateCleanupSystem, TargetRelativeStateSystem } from "./tracking/TargetRelativeStateSystem";
+import { TestReactiveCleanupSystem, TestReactiveSystem } from "./melee/TestReactiveSystem";
 
 // 1) PreSimulation: write MoveTo / root CFrame before physics runs
 scheduler.addSystems(
@@ -34,6 +35,7 @@ scheduler.addSystems(
 		PathFollowSystem,
 		PathGoalClearSystem,
 		PathCleanupSystem,
+		TestReactiveSystem,
 	],
 	Phases.PreSimulation,
 );
@@ -74,7 +76,7 @@ scheduler.addSystems(
 );
 
 // 4) PostUpdate: cleanup runs after everything in Update
-scheduler.addSystems([TargetTransformCleanupSystem], Phases.PostUpdate);
+scheduler.addSystems([TargetTransformCleanupSystem, TestReactiveCleanupSystem], Phases.PostUpdate);
 
 //TargetSetting → TargetTransformTracking → PursuitGoal → Memory →
 // PathRequest → PathFollow → PathGoalClear → Attack systems → TargetTransformCleanup
