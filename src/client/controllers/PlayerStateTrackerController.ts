@@ -97,7 +97,7 @@ export class PlayerStateController implements OnStart, OnRender {
 		});
 
 		subscribe(playerActionAtom, (now, prev) => {
-			print("wah");
+			// print("wah");
 			RemoteEvents.updatePlayerBehavior(now);
 		});
 	}

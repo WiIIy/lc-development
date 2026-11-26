@@ -67,11 +67,7 @@ export function setupEvilWilly() {
 		evilWilly,
 	);
 
-	setupComponentToggle(
-		buttons["Test Reactive"],
-		Components.TestReactive as unknown as Id<TagDiscriminator>,
-		evilWilly,
-	);
+	setupComponentToggle(buttons["Test Reactive"], Components.Reactive as unknown as Id<TagDiscriminator>, evilWilly);
 
 	// Workspace.evilWillyButtons.Pathfinding.ClickDetector.MouseClick.Connect(() => {
 	// 	RemoteEvents.addComponentToEntityReference.fire(evilWilly, Components.Path as unknown as Id<TagDiscriminator>);

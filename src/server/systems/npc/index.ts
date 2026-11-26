@@ -16,15 +16,17 @@ import {
 	PursuitGoalSystem,
 } from "./pathing/PathfindingSystem";
 import { MemorySystem } from "./pathing/MemorySystem";
-import { AttackExecutionSystem, AttackSystem, QueuedAttackExecutionSystem } from "./melee/AttackSystem";
+// import { AttackExecutionSystem, AttackSystem, QueuedAttackExecutionSystem } from "./melee/AttackSystem";
 import { Phases } from "@rbxts/planck-runservice";
 import { TransformSystem } from "../TransformSystem";
 import { StopFacingWallsSystem } from "./pathing/StopFacingWallSystem";
-import { ParryHousekeepingSystem, RandomParrySystem, ParryExecutionSystem } from "./melee/ParrySystem";
-import { PredictiveParryHousekeepingSystem, PredictiveParrySystem } from "./melee/PredictiveParrySystem";
+// import { ParryHousekeepingSystem, RandomParrySystem, ParryExecutionSystem } from "./melee/ParrySystem";
+// import { PredictiveParryHousekeepingSystem, PredictiveParrySystem } from "./melee/PredictiveParrySystem";
 import { TargetStateCleanupSystem, TargetStateTrackingSystem } from "./tracking/TargetStateTrackingSystem";
 import { TargetRelativeStateCleanupSystem, TargetRelativeStateSystem } from "./tracking/TargetRelativeStateSystem";
 import { TestReactiveCleanupSystem, TestReactiveSystem } from "./melee/TestReactiveSystem";
+import { ReactiveMovementSystem } from "./behavior";
+import { NpcBehaviorSystems } from "./behavior";
 
 // 1) PreSimulation: write MoveTo / root CFrame before physics runs
 scheduler.addSystems(
@@ -36,7 +38,8 @@ scheduler.addSystems(
 		PathFollowSystem,
 		PathGoalClearSystem,
 		PathCleanupSystem,
-		TestReactiveSystem,
+		// TestReactiveSystem,
+		ReactiveMovementSystem,
 	],
 	Phases.PreSimulation,
 );
@@ -56,22 +59,23 @@ scheduler.addSystems(
 // 3) Update (Heartbeat): gameplay reactions
 scheduler.addSystems(
 	[
-		AttackSystem,
-		AttackExecutionSystem,
-		QueuedAttackExecutionSystem,
-		StopFacingWallsSystem,
+		// AttackSystem,
+		// AttackExecutionSystem,
+		// QueuedAttackExecutionSystem,
 
 		//parrying
-		PredictiveParryHousekeepingSystem,
-		PredictiveParrySystem,
-		ParryHousekeepingSystem, // expires stale threats and cooldowns
-		RandomParrySystem, // decides: writes ParryTimeline
-		ParryExecutionSystem, // opens/closes the window, cancels the combo
+		// PredictiveParryHousekeepingSystem,
+		// PredictiveParrySystem,
+		// ParryHousekeepingSystem, // expires stale threats and cooldowns
+		// RandomParrySystem, // decides: writes ParryTimeline
+		// ParryExecutionSystem, // opens/closes the window, cancels the combo
 
 		TargetStateTrackingSystem,
 		TargetStateCleanupSystem,
 		TargetRelativeStateSystem, //detects if player is strafing toward/backward relative to npc
 		TargetRelativeStateCleanupSystem,
+		...NpcBehaviorSystems,
+		StopFacingWallsSystem,
 	],
 	Phases.Update,
 );

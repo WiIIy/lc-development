@@ -4,6 +4,7 @@ local assets = {
 	["anims/character/npc/item/fists/fistsblock.rbxm"] = "rbxassetid://88774151333681",
 	["anims/character/npc/item/fists/fistsheavy.rbxm"] = "rbxassetid://126503219405843",
 	["anims/character/npc/item/fists/fistslight.rbxm"] = "rbxassetid://131797068039740",
+	["anims/character/npc/item/fists/fistsshove.rbxm"] = "rbxassetid://113087915036695",
 	["anims/character/npc/movement/crosssarmidle.rbxm"] = "rbxassetid://125778479487842",
 	["anims/character/npc/movement/idleloop.rbxm"] = "rbxassetid://127730152081326",
 	["anims/character/npc/movement/walkingloop.rbxm"] = "rbxassetid://107200438525296",

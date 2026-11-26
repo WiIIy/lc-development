@@ -10,7 +10,9 @@ export function getWeaponData(e: Entity): NpcMeleeWeapon | undefined {
 		print("no weapon data");
 		return undefined;
 	};
-	return NpcMeleeWeaponsData[weaponString as unknown as keyof typeof NpcMeleeWeaponsData];
+	return NpcMeleeWeaponsData[weaponString as unknown as keyof typeof NpcMeleeWeaponsData] as unknown as
+		| NpcMeleeWeapon
+		| undefined;
 }
 
 export function sliceFrom(list: string[], start: number): string[] {

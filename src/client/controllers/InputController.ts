@@ -1,33 +1,12 @@
-import {
-	ContextActionService,
-	Players,
-	ReplicatedStorage,
-	RunService,
-	TweenService,
-	UserInputService,
-	Workspace,
-} from "@rbxts/services";
+//src/client/controllers/InputController.ts
+import { Players, UserInputService, Workspace } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
-// import { Crouch } from "shared/skills/crouch";
 import { ClientContext } from "shared/ClientContext";
 import { pointedItem, isDragging, pointedInstance, isThirdPerson, hideViewmodel } from "client/clientAtoms";
-import { RemoteEvents } from "client/network";
-import { DossierStore } from "client/ui/stores/DossierStore";
-import { InventoryStore } from "client/ui/stores/InventoryStore";
-import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
-import { HIGHLIGHTABLE_ITEMS } from "shared/data/items/highlightable";
 import { KEYBINDS, inputIsKey, Action } from "shared/data/profile/defaultKeybinds";
-import { INTERACTABLE_CHARACTERS } from "shared/data/world/npcs";
 import { antlerDebuggerDisplaying, debugMenuDisplaying, isAiming } from "shared/sharedAtoms";
-import { Dash } from "shared/skills";
-import { Mark } from "shared/skills/mark";
-import { mouseRaycast } from "shared/utils/input/mouseRaycast";
 import { getCoverSpotsInRadius } from "shared/utils/npc/pathfinding/getCoverSpotInRadius";
-import { sayMonologue } from "shared/utils/ui/sayMonologue";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
-import { setDescendantLocalTransparency } from "shared/utils/world/setDescendant";
-import { generateDossier } from "client/clientutils/generateDossier";
-import { DoorInstance, toggleNormal, triggerSlightOpen } from "client/components/DoorComponent";
 import { hideUnhideAccessories } from "client/clientutils/hideUnhideAccessories";
 import {
 	BaseInteractionHandlers,
@@ -230,7 +209,7 @@ const ActionHandlers = {
 
 		getCoverSpotsInRadius(Players.LocalPlayer, undefined);
 	},
-} as Record<Action, (char: Character, input: InputObject, active: boolean) => void>;;
+} as Record<Action, (char: Character, input: InputObject, active: boolean) => void>;
 
 // ----------------- Input Listener -----------------
 function handleInput(input: InputObject, gameProcessed: boolean, isInputBegan: boolean) {

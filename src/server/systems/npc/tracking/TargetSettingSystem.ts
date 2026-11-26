@@ -55,11 +55,6 @@ function loseTarget(e: Entity, reason: LossReason, lost: Entity, now: number) {
 	const model = world.get(e, Components.Basepart)?.Parent;
 	if (model) setDescendantsNetworkOwner(model as Model, undefined);
 
-	// drop combos. order matters: QueuedAttacks first so AttackOngoing's OnRemove hook doesn't re-add it
-	world.remove(e, Components.ExecuteAttack);
-	world.remove(e, Components.QueuedAttacks);
-	world.remove(e, Components.AttackOngoing);
-
 	resetPathState(e); // ditch the old path
 
 	const seen = world.get(e, Components.LastSeen);

@@ -4,6 +4,7 @@ declare const assets: {
 	"anims/character/npc/item/fists/fistsblock.rbxm": string
 	"anims/character/npc/item/fists/fistsheavy.rbxm": string
 	"anims/character/npc/item/fists/fistslight.rbxm": string
+	"anims/character/npc/item/fists/fistsshove.rbxm": string
 	"anims/character/npc/movement/crosssarmidle.rbxm": string
 	"anims/character/npc/movement/idleloop.rbxm": string
 	"anims/character/npc/movement/walkingloop.rbxm": string

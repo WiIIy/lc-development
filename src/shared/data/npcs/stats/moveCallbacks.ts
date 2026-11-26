@@ -1,89 +1,44 @@
-//src/shared/data/npcs/stats/moveCallbacks.ts
-
-import Make from "@rbxts/make";
-import { Entity } from "@rbxts/replecs/out/jecs";
+// Universal: a callback knows nothing about a specific weapon, it gets the numbers passed in.
+// Animation loading and cleanup live in ActionExecutionSystem, once, for every move.
+// New move: add data + animation to the weapon, and ONE line here if the name is new.
+import { Entity } from "@rbxts/jecs";
 import world from "shared/world";
-import Components from "shared/components";
-import { getWeaponData } from "shared/utils/npc/attack/getWeaponData";
+import { Components } from "shared/components";
 import { registerMeleeHit } from "shared/utils/npc/attack/registerMeleeHit";
-import { announceSwing } from "shared/utils/npc/attack/predictiveParry";
+import { meleeCast } from "shared/utils/npc/attack/meleeCast";
 
-//some moves attach a callback to an animation event
-export const MoveCallbacks = {
-	light: (weaponString: string, animator: Animator, e: Entity) => {
-		// print("lightcallback running");
-		const weaponData = getWeaponData(e);
-		const lightAnim = weaponData?.animations.light;
-		// print(animator, lightAnim, weaponData);
-		const anim = Make("Animation", { AnimationId: lightAnim });
-		const track = animator.LoadAnimation(anim);
-		world.set(e, Components.AttackTrack, track); // NEW: lets cancelAttack() stop the swing
-		const connection = track.GetMarkerReachedSignal("hit").Connect(() => {
-			connection.Disconnect(); // moved to the top
-			if (!world.has(e, Components.AttackOngoing)) return;
-			const result = registerMeleeHit(e, "light", animator, weaponData!);
-			print("result", result);
+export type MoveContext = { entity: Entity; moveName: string; weapon: NpcWeapon };
+export type MoveCallback = { marker: string; run: (context: MoveContext) => void };
 
-			//print if hit print if miss. the hits are using raycast
-			//if hit, roll for bleed/fracture chance
-			// const targetEntity = world.target(e, Components.Target); removed cause parry check is in registermeleehit
-		});
-		const trackConnection = track.Ended.Connect(() => {
-			if (world.has(e, Components.AttackOngoing)) {
-				// print("removing attackOngoing");
-				world.remove(e, Components.AttackOngoing);
-			}
-			trackConnection.Disconnect();
-		});
-		track.Play();
-		if (weaponData !== undefined) announceSwing(e, "light", weaponData); // "heavy" in the heavy callback
+const meleeStrike: MoveCallback = {
+	marker: "hit",
+	run: ({ entity, moveName, weapon }) => {
+		const move = weapon.moves[moveName];
+		if (move === undefined) {
+			warn(`[meleeStrike] weapon "${weapon.id}" has no data for move "${moveName}"`);
+			return;
+		}
+		print(`[${moveName}] ${registerMeleeHit(entity, moveName, move)}`);
 	},
-	heavy: (weaponString: string, animator: Animator, e: Entity) => {
-		print("heavycallback running");
-		const weaponData = getWeaponData(e);
-		const heavyAnim = weaponData?.animations.heavy;
-		const anim = Make("Animation", { AnimationId: heavyAnim });
-		const track = animator.LoadAnimation(anim);
-		world.set(e, Components.AttackTrack, track); // NEW: lets cancelAttack() stop the swing
-		const connection = track.GetMarkerReachedSignal("hit").Connect(() => {
-			connection.Disconnect(); // moved to the top
-			if (!world.has(e, Components.AttackOngoing)) return;
+};
 
-			const result = registerMeleeHit(e, "heavy", animator, weaponData!);
-			print("result", result);
-			//hit registration and logging
+const shoveStrike: MoveCallback = {
+	marker: "hit",
+	run: ({ entity, weapon }) => {
+		const shove = weapon.shoveBehavior;
+		if (shove === undefined) return;
+		const contact = meleeCast(entity, shove.blockcast);
+		if (contact === undefined) return;
 
-			//print if hit print if miss. the hits are using raycast
-			//if hit, roll for bleed/fracture chance
-		});
-		const trackConnection = track.Ended.Connect(() => {
-			if (world.has(e, Components.AttackOngoing)) {
-				// print("removing attackOngoing");
-				world.remove(e, Components.AttackOngoing);
-			}
-			trackConnection.Disconnect();
-		});
-		track.Play();
-		if (weaponData !== undefined) announceSwing(e, "light", weaponData); // "heavy" in the heavy callback
+		// breaks a parry and stuns. A player's WCS parry skill must also stop when this tag is removed
+		world.remove(contact.target, Components.Parrying);
+		const now = os.clock();
+		world.set(contact.target, Components.Stunned, { startTime: now, endTime: now + shove.stunTime });
 	},
-	knifethrow: (weaponString: string, animator: Animator, e: Entity) => {
-		const anim = Make("Animation", { AnimationId: "placeholder" });
-		const track = animator.LoadAnimation(anim);
-		const connection = track.GetMarkerReachedSignal("throw").Connect(() => {
-			//hit registration and logging
-			print("hit");
-			//print if hit print if miss. the hits are using raycast
-			//if hit, roll for bleed/fracture chance
+};
 
-			connection.Disconnect();
-		});
-
-		const trackConnection = track.Ended.Connect(() => {
-			if (world.get(e, Components.AttackOngoing)) {
-				world.remove(e, Components.AttackOngoing);
-				world.remove(e, Components.AttackOngoing);
-			}
-			trackConnection.Disconnect();
-		});
-	},
+export const MoveCallbacks: { [name: string]: MoveCallback } = {
+	light: meleeStrike,
+	heavy: meleeStrike,
+	shove: shoveStrike,
 };

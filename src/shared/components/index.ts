@@ -8,6 +8,7 @@ import { ItemComponents } from "./items";
 import { AIComponents } from "./npc";
 import { CombatComponents } from "./npccombat";
 import { setSerdes } from "shared/utils/ecs/componentUtil";
+import { NpcBehaviorComponents } from "./npcbehavior";
 
 export const Components = {
 	...CoreComponents,
@@ -15,6 +16,7 @@ export const Components = {
 	...ItemComponents,
 	...AIComponents,
 	...CombatComponents,
+	...NpcBehaviorComponents,
 };
 
 for (const [key, value] of pairs(Components)) {

@@ -27,14 +27,15 @@ export const NpcMeleeWeaponsData = {
 		],
 		moveDelay: 0.3, //pause between moves not sure how to implement yet
 		movesetDelay: 0.5, //pause between movesets
-		parry: { reactionTime: 0.15 },
 		//range? consistent. 7 studs
 		//if player is out of range for current attack for >2sec, override moveset and select another move? for basic melee behaviors probably not. probably another tag for this specific move timeout behavior
 		//dashing tag for enemies who dash but later
 		animations: {
-			light: assets["anims/character/npc/item/fists/fistslight.rbxm"], //event: hit
-			heavy: assets["anims/character/npc/item/fists/fistsheavy.rbxm"], //event: hit
+			moves: {
+				light: assets["anims/character/npc/item/fists/fistslight.rbxm"], //event: hit
+				heavy: assets["anims/character/npc/item/fists/fistsheavy.rbxm"], //event: hit
+				// shove: assets["anims/character/npc/item/fists/fistsshove.rbxm"], 
+			},
 		},
-		blockAnim: assets["anims/character/npc/item/fists/fistsblock.rbxm"],
 	}),
 };
