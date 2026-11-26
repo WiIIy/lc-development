@@ -6,7 +6,7 @@
 import { pair } from "@rbxts/jecs";
 import { Entity } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { getParryProfile } from "./parryUtils";
 
 const HISTORY_CAP = 12;
@@ -35,7 +35,7 @@ export function announceThreat(attacker: Entity, moveName: string, windup: numbe
 	for (const [npc, transform] of world
 		.query(Components.Transform)
 		.with(pair(Components.Target, attacker), Components.PredictiveParrying)) {
-			print("DOES THIS RUN AT ALL??,",npc)
+		print("DOES THIS RUN AT ALL??,", npc)
 		const profile = getParryProfile(npc);
 		const toNpc = transform.Position.sub(attackerPos);
 		const dist = toNpc.Magnitude;

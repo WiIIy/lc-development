@@ -186,3 +186,7 @@ get child entity
 
 get parent entity
 ```world.get(npcEntity, ChildOf) //returns Knife, ChildOf is a built in component imported from the jecs module```
+
+setting hooks
+```world.set(PrintOnAdd, OnAdd, (e)=>{print("hello, I was added to  entity, ", e)})```
+```world.set(PrintOnRemove, OnRemove, (e)=>{print("goodbye, I was removed to  entity,", e)})```

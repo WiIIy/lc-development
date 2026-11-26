@@ -5,7 +5,7 @@ import ProfileStore, { Profile } from "@rbxts/profile-store";
 import { RemoteEvents } from "server/network";
 import { ref } from "@willy/jecs-utils";
 import world from "shared/world";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { Entity, Id, Name, pair, TagDiscriminator, Wildcard } from "@rbxts/jecs";
 import none from "shared/movesets/none";
 import { Character, Skill } from "@rbxts/wcs";
@@ -65,20 +65,20 @@ const SessionStart = new Map<Player, number>();
 //throwable is a skill
 //melee is a moveset
 // const SKILL_REGISTRY = [
-	// { items: ALL_THROWABLES, skill: Throw },
-	// { items: ALL_PISTOLS, skill: Pistol },
-	// { items: ALL_SMGS, skill: Smg },
-	// { items: ALL_MELEE_WEAPONS, skill: MeleeWeapon },
-	// { items: ALL_RIFLES, skill: Rifle },
-	// { items: ALL_SNIPERS, skill: Sniper },
-	// { items: CHAINSAW, skill: Chainsaw },
-	// { items: MOLOTOV, skill: Molotov },
-	// { items: FLASHLIGHT, skill: Flashlight },
-	// { items: JERRYCAN, skill: Jerrycan },
-	// { items: LIGHTER, skill: Lighter },
-	// { items: WALKMAN, skill: Walkman },
-	// { items: DRONE, skill: Drone },
-	// { items: ANTLER, skill: Antler },
+// { items: ALL_THROWABLES, skill: Throw },
+// { items: ALL_PISTOLS, skill: Pistol },
+// { items: ALL_SMGS, skill: Smg },
+// { items: ALL_MELEE_WEAPONS, skill: MeleeWeapon },
+// { items: ALL_RIFLES, skill: Rifle },
+// { items: ALL_SNIPERS, skill: Sniper },
+// { items: CHAINSAW, skill: Chainsaw },
+// { items: MOLOTOV, skill: Molotov },
+// { items: FLASHLIGHT, skill: Flashlight },
+// { items: JERRYCAN, skill: Jerrycan },
+// { items: LIGHTER, skill: Lighter },
+// { items: WALKMAN, skill: Walkman },
+// { items: DRONE, skill: Drone },
+// { items: ANTLER, skill: Antler },
 // ];
 
 @Service({})

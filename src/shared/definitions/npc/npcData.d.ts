@@ -201,3 +201,13 @@ type TargetRelativeState = {
 	sideSpeed: number; // studs/s, + = toward the npc's right, - = toward its left (the npc's point of view)
 	closureSpeed: number; // studs/s, + = the gap is shrinking (counts both bodies' motion)
 };
+
+type StimulusChannel = "visual" | "auditory";
+// //kill me
+type Stimulus = {
+	stimulusType: StimulusType;
+	channel: StimulusChannel;
+	position: Vector3;
+	strength: number;
+	sender?: Player;
+};

@@ -1,5 +1,5 @@
 import { Entity } from "@rbxts/jecs";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import world from "shared/world";
 
 export function resetPathState(e: Entity) {

@@ -1,5 +1,5 @@
 import { observer } from "@willy/jecs-utils";
-import Components from "../components/components";
+import Components from "shared/components";
 import world from "../world";
 import Make from "@rbxts/make";
 import { RunService } from "@rbxts/services";

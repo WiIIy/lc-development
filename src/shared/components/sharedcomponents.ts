@@ -1,7 +1,7 @@
 import Replecs from "@rbxts/replecs";
 import { Name } from "@rbxts/jecs";
 import world from "../world";
-import Components from "./components";
+import Components from "shared/components";
 
 // Create a table with all your components
 const shared_components = {

@@ -3,7 +3,7 @@
 import Make from "@rbxts/make";
 import { Entity } from "@rbxts/replecs/out/jecs";
 import world from "shared/world";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { getWeaponData } from "shared/utils/npc/attack/getWeaponData";
 import { registerMeleeHit } from "shared/utils/npc/attack/registerMeleeHit";
 import { announceSwing } from "shared/utils/npc/attack/predictiveParry";

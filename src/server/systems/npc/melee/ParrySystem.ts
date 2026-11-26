@@ -13,7 +13,6 @@
 
 import { Entity, OnAdd, OnRemove, pair, Wildcard } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
 import {
 	DEBUG_PARRY,
 	cancelAttack,
@@ -26,6 +25,7 @@ import {
 	startRandomParry,
 	stopParryPose,
 } from "shared/utils/npc/attack/parryUtils";
+import { Components } from "shared/components";
 
 const DIAGNOSTIC_INTERVAL = 2; // seconds between "why isn't it parrying" prints
 let lastDiagnostic = 0;

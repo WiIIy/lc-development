@@ -3,7 +3,7 @@
 import Make from "@rbxts/make";
 import { Entity } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 
 const Workspace = game.GetService("Workspace");
 const Players = game.GetService("Players");
@@ -102,7 +102,7 @@ export function registerMeleeHit(
 	const health = world.get(targetEntity, Components.Health);
 	if (health !== undefined) {
 		world.set(targetEntity, Components.Health, {
-			current : math.max(0, health.current - moveData.damage),
+			current: math.max(0, health.current - moveData.damage),
 			max: health.max,
 		});
 	}

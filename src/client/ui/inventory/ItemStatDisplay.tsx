@@ -1,6 +1,6 @@
 import React, { Element, useEffect, useState } from "@rbxts/react";
 import world from "shared/world";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { ALL_FIREARMS, CHAINSAW } from "shared/data/items/all";
 import { FIREARM_SETTINGS } from "shared/data/items/stats/gunStats";
 import { InventoryStore } from "../stores/InventoryStore";

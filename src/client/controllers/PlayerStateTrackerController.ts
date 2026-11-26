@@ -8,7 +8,7 @@ import { getCurrentWCS_Character } from "shared/utils/ecs/getCurrentWcsCharacter
 import { observer, ref } from "@willy/jecs-utils";
 import { subscribe } from "@rbxts/charm";
 
-import Components from "shared/components/components";
+import Components from "shared/components";
 import {
 	currentStaminaAtom,
 	maxStaminaAtom,

@@ -2,7 +2,7 @@
 
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { OnAdd, OnRemove } from "@rbxts/replecs/out/jecs";
 import { getLookPoint } from "../utils/lookPoint";
 

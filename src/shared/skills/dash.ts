@@ -1,7 +1,7 @@
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
 import { CollectionService, ReplicatedStorage, RunService, Workspace } from "@rbxts/services";
 import world from "shared/world";
-import { Components } from "../components/components";
+import { Components } from "shared/components";
 import { ref } from "@willy/jecs-utils";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AUDIO_PATH } from "shared/data/paths";

@@ -1,5 +1,5 @@
 import { Entity, Id, TagDiscriminator, Wildcard, pair } from "@rbxts/jecs";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { NpcMeleeWeaponsData } from "shared/data/npcs/weaponsData";
 import world from "shared/world";
 

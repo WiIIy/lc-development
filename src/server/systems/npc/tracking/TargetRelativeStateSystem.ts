@@ -24,7 +24,7 @@
 import { pair, Wildcard } from "@rbxts/jecs";
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 
 const SMOOTH_TIME = 0.12; // seconds. Higher = steadier labels, slower reactions
 const MIN_DISTANCE = 0.5; // closer than this the npc-to-player axis is meaningless

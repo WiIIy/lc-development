@@ -3,7 +3,7 @@ import Make from "@rbxts/make";
 import { Entity } from "@rbxts/jecs";
 import { PathfindingService, Players, RunService, TweenService, Workspace } from "@rbxts/services";
 import { Character, Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import world from "shared/world";
 import { ref } from "@willy/jecs-utils";
 import { getCoverSpotsInRadius } from "shared/utils/npc/pathfinding/getCoverSpotInRadius";
@@ -613,17 +613,17 @@ export class BaseEnemySkill extends Skill {
 		Type: "Event",
 		Destination: "Server",
 	})
-	clientExecuteServerCode() {}
+	clientExecuteServerCode() { }
 
 	@Message({
 		Type: "Event",
 		Destination: "Client",
 	})
-	serverExecuteClientCode() {}
+	serverExecuteClientCode() { }
 
-	protected OnConstructServer(): void {}
+	protected OnConstructServer(): void { }
 
-	protected OnConstructClient(): void {}
+	protected OnConstructClient(): void { }
 
 	//-------- DEBUG MOVEMENT BEHAVIORS ---------//
 	// THE FOLLOWER

@@ -2,7 +2,7 @@
 import { OnStart, Service } from "@flamework/core";
 import world from "shared/world";
 import { Players, RunService, Workspace } from "@rbxts/services";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { Entity, Id, Name, OnRemove, pair, Tag, TagDiscriminator, Wildcard } from "@rbxts/jecs";
 import Replecs from "@rbxts/replecs";
 import { promiseR6 } from "@rbxts/promise-character";
@@ -45,7 +45,7 @@ interface AnimateScript extends LocalScript {
 
 @Service({})
 class StartUpService implements OnStart {
-	constructor(private readonly inventoryService: InventoryService) {}
+	constructor(private readonly inventoryService: InventoryService) { }
 
 	onStart() {
 		setupJabby();

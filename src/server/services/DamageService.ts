@@ -1,5 +1,5 @@
 // import world from "shared/world";
-// import Components from "shared/components/components";
+// import Components from "shared/components";
 // import { Service, OnStart } from "@flamework/core";
 // import { Players } from "@rbxts/services";
 // import { ref } from "@willy/jecs-utils";

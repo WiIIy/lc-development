@@ -2,7 +2,7 @@ import { Skill, SkillDecorator } from "@rbxts/wcs";
 import { Debris, RunService, Workspace } from "@rbxts/services";
 import { ref } from "@willy/jecs-utils";
 import world from "shared/world";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { BaseEnemySkill } from "./baseEnemySkill";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { FIREARM_SETTINGS, FirearmBehavior, FirearmCaster } from "shared/data/items/stats/gunStats";

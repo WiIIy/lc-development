@@ -2,7 +2,7 @@
 
 import { pair, Wildcard } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 
 // every field of PlayerBehaviorState. If you add a field to that type, add it here too.
 const STATE_KEYS = ["movementState", "environmentState", "bodyState", "speedState", "actionState"] as const;

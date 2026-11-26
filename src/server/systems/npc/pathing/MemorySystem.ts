@@ -4,7 +4,7 @@ import { Players, Workspace } from "@rbxts/services";
 import { Entity, OnAdd, OnRemove } from "@rbxts/jecs";
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { flat, bodyFacing, turnBody, releaseBody } from "../utils/bodyTurn";
 
 export const MEMORY_STOP = 1.5;

@@ -2,7 +2,7 @@
 
 import { OnAdd, OnRemove, pair, Wildcard } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 
 const CQC_ENTER = 8; // studs: inside this the test behavior takes over movement
 const CQC_EXIT = 10; // studs: beyond this it hands movement back to pathfinding (hysteresis so it doesn't flap)

@@ -3,7 +3,7 @@
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
 import { Entity, Id, Name, OnRemove, pair, Tag, TagDiscriminator, Wildcard } from "@rbxts/jecs";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import Make from "@rbxts/make";
 import { monitor } from "@willy/jecs-utils";
 import { MoveCallbacks } from "shared/data/npcs/stats/moveCallbacks";

@@ -5,7 +5,7 @@ import Make from "@rbxts/make";
 import { promiseR6 } from "@rbxts/promise-character";
 import { CollectionService, Players, RunService, StarterGui, UserInputService, Workspace } from "@rbxts/services";
 import { Entity, pair, Wildcard } from "@rbxts/jecs";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { Character, Skill, SkillConstructor } from "@rbxts/wcs";
 import world from "shared/world";
 import { TextChatService } from "@rbxts/services";
@@ -22,7 +22,7 @@ import assets from "shared/assets";
 
 @Controller({})
 export class StartUpController implements OnStart {
-	constructor(private readonly dialogueController: DialogueController) {}
+	constructor(private readonly dialogueController: DialogueController) { }
 
 	onStart(): void {
 		setupJabby();

@@ -4,7 +4,7 @@ import { Entity, OnAdd, OnRemove } from "@rbxts/jecs";
 import { Players, Workspace } from "@rbxts/services";
 import { scheduler } from "shared/scheduler";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { releaseBody, turnBody, bodyFacing } from "../utils/bodyTurn";
 
 const RAY_COUNT = 8;

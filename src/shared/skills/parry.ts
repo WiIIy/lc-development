@@ -1,7 +1,7 @@
 // import { Workspace, ReplicatedStorage } from "@rbxts/services";
 // import { HoldableSkill, Message, Skill, SkillDecorator } from "@rbxts/wcs";
 // import { Entity, pair, Wildcard } from "@rbxts/jecs";
-// import Components from "shared/components/components";
+// import Components from "shared/components";
 // import world from "shared/world";
 // import { ref } from "@willy/jecs-utils";
 // import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";

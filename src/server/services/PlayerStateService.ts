@@ -6,11 +6,11 @@ import { RemoteEvents } from "server/network";
 import { ref } from "@willy/jecs-utils";
 import world from "shared/world";
 import { Component, Id, TagDiscriminator } from "@rbxts/jecs";
-import Components from "shared/components/components";
+import Components from "shared/components";
 
 @Service({})
 export class PlayerStateTrackerService implements OnStart {
-	constructor() {}
+	constructor() { }
 
 	onStart(): void {
 		RemoteEvents.updatePlayerBehavior.connect((player, behavior) => {

@@ -4,7 +4,7 @@
 
 import { Entity } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { getWeaponData } from "shared/utils/npc/attack/getWeaponData";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { DEFAULT_PARRY_PROFILE } from "./parryConfig";

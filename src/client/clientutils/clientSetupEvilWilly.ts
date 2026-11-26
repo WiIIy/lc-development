@@ -3,7 +3,7 @@
 import { Workspace } from "@rbxts/services";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { RemoteEvents } from "client/network";
 import { Id, TagDiscriminator } from "@rbxts/jecs";
 

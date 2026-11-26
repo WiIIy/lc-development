@@ -1,5 +1,5 @@
 import { ref } from "@willy/jecs-utils";
-import Components from "../../components/components";
+import Components from "shared/components";
 import world from "../../world";
 import { pair, Wildcard } from "@rbxts/jecs";
 

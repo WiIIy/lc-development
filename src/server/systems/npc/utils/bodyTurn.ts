@@ -1,6 +1,6 @@
 import { Entity } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 
 // R6 RootJoint rest C0 (same convention BodyTrackingSystem uses).
 // Rotating C0 by CFrame.Angles(0, 0, yaw) twists the torso about the HRP's up axis; +yaw = turn left.

@@ -4,7 +4,7 @@ import { useAtom } from "@rbxts/react-charm";
 import { pointedInstance, pointedItem } from "client/clientAtoms";
 import world from "shared/world";
 import { pair, Wildcard } from "@rbxts/jecs";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { HIGHLIGHTABLE_ITEMS } from "shared/data/items/highlightable";
 import { Action } from "shared/data/profile/defaultKeybinds";
 import { isAiming, isDroneFocusing, droneDeployed, isHoldingThrow } from "shared/sharedAtoms";

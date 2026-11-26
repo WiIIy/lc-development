@@ -6,7 +6,7 @@ import { ref } from "@willy/jecs-utils";
 import { Entity } from "@rbxts/jecs";
 import { announceThreat } from "shared/utils/npc/attack/predictiveParry";
 import world from "shared/world";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { setPlayerAction } from "shared/utils/npc/attack/setPlayerAction";
 
 @SkillDecorator

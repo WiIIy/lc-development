@@ -18,7 +18,7 @@
 
 import { OnRemove } from "@rbxts/jecs";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import {
 	debugParry,
 	fmt,

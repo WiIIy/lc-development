@@ -1,7 +1,7 @@
 import Make from "@rbxts/make";
 import { PathfindingService, Players, RunService, TweenService, Workspace } from "@rbxts/services";
 import { Character, Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import world from "shared/world";
 
 const FUTILE_ASSETS = {

@@ -4,7 +4,7 @@ import { Workspace } from "@rbxts/services";
 import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
 import { AnimationUtils } from "shared/utils/visual/animationUtil";
 import { Character } from "@rbxts/wcs";
-import Components from "shared/components/components";
+import Components from "shared/components";
 import { Id, pair, TagDiscriminator } from "@rbxts/jecs";
 import { NpcMeleeBlock } from "shared/skills/npc/melee/npcBlock";
 import { NpcMeleeHeavy } from "shared/skills/npc/melee/npcHeavy";

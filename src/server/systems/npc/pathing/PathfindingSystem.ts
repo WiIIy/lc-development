@@ -2,7 +2,7 @@
 
 import { Debris, PathfindingService, Workspace } from "@rbxts/services";
 import world from "shared/world";
-import { Components } from "shared/components/components";
+import { Components } from "shared/components";
 import { resetPathState } from "../utils/resetPathState";
 import { pair, Wildcard } from "@rbxts/jecs";
 

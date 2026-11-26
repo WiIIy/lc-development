@@ -4,7 +4,6 @@ import Log from "@rbxts/log";
 import Replecs from "@rbxts/replecs";
 import Net, { Route } from "@rbxts/yetanothernet";
 import { t } from "t";
-import { StimulusChannel } from "./components/components";
 import { SkillConstructor } from "@rbxts/wcs";
 import { Entity, Id, TagDiscriminator } from "@rbxts/jecs";
 

@@ -9,7 +9,7 @@
 
 import { Entity } from "@rbxts/jecs";
 import world from "shared/world";
-import Components from "shared/components/components";
+import Components from "shared/components";
 
 /** sets actionState, keeping every other PlayerBehavior field.
  *  duration given: the action ends by itself after that many seconds (swings, shoves).
