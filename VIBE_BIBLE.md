@@ -9,6 +9,8 @@ Principles/Design:
 - A player who is attacking is marked by an Attacking component. This Attacking component gets removed once the animation is over
 - NPC behavior handled purely by ECS
 - MoveCallbacks have to be universal (move "heavy" can be used on multiple weapons, will call the same callback while passing different values, and should function as normal)
+- NPCs and players use the same CurrentlyEquipped component
+- d.ts global type files do not need "exports", no imports are allowed either except for a specific type import such as ```typeof import("../../data/npcs/enemyTypes").ENEMY_TYPES[number]; ```
 
 NPC Attacks:
 Npcs can perform a few types of moves
@@ -182,7 +184,7 @@ get component value if available
 ```world.get(npcEntity, Name) //prints Knife```
 
 get child entity
-```world.target(npcEntity, CurrentlyEquipped) //returns Knife```
+```world.target(npcEntity, CurrentlyEquipped) //returns Knife entity```
 
 get parent entity
 ```world.get(npcEntity, ChildOf) //returns Knife, ChildOf is a built in component imported from the jecs module```

@@ -1,3 +1,4 @@
+//src/shared/components/index.ts
 import { Entity, Name } from "@rbxts/jecs";
 import { HttpService } from "@rbxts/services";
 import world from "../world";

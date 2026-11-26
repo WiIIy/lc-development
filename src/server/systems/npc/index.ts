@@ -1,3 +1,4 @@
+//src/server/systems/npc/index.ts
 import { scheduler } from "shared/scheduler";
 import { SightTrackingSystem } from "./tracking/SightTrackingSystem";
 import {

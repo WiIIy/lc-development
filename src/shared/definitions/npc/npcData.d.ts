@@ -1,3 +1,4 @@
+//src/shared/definitions/npc/npcData.ts
 type EnemyType = typeof import("../../data/npcs/enemyTypes").ENEMY_TYPES[number];
 
 type WorldEntityData = {
