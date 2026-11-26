@@ -1,3 +1,4 @@
+//src/server/systems/npc/behavior/chooseReactiveResponse.ts
 // Pure choice logic: "given this situation, what does the npc do". No state is written here.
 import { Entity } from "@rbxts/jecs";
 import {

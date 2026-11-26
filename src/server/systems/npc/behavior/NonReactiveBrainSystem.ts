@@ -1,3 +1,4 @@
+//src/server/systems/npc/behavior/NonReactiveBrainSystem.ts
 // NON-REACTIVE (default): picks a weighted moveset and walks through it.
 // Reads nothing about what the target is doing. Parry and shove are ordinary combo steps.
 import { pair, Wildcard } from "@rbxts/jecs";
@@ -7,6 +8,7 @@ import { OUT_OF_RANGE_OVERRIDE } from "shared/data/npcs/stats/combatDefaults";
 import { getNpcWeapon } from "shared/utils/npc/attack/getNpcWeapon";
 import { actionRange, flatDistance, isCapable, isFree, pickWeighted } from "shared/utils/npc/attack/combatRules";
 
+const stunned = world.query(Components.ComboState).with(Components.Stunned).cached();
 const becameReactive = world.query(Components.ComboState).with(Components.Reactive).cached();
 const combatOff = world.query(Components.ComboState).without(Components.MeleeAttacks).cached();
 const lostTarget = world.query(Components.ComboState).without(pair(Components.Target, Wildcard)).cached();
@@ -36,6 +38,7 @@ export const NonReactiveBrainSystem = {
 	name: "NonReactiveBrainSystem",
 	system: () => {
 		const now = os.clock();
+		for (const [e] of stunned) world.remove(e, Components.ComboState); // a stagger breaks the combo
 		for (const [e] of becameReactive) world.remove(e, Components.ComboState);
 		for (const [e] of combatOff) world.remove(e, Components.ComboState);
 		for (const [e] of lostTarget) world.remove(e, Components.ComboState);

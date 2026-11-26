@@ -1,4 +1,5 @@
 //prime server-side testing ground file
+//src/server/services/StartupService.ts
 import { OnStart, Service } from "@flamework/core";
 import world from "shared/world";
 import { Players, RunService, Workspace } from "@rbxts/services";

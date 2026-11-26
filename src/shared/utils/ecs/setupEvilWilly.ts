@@ -27,6 +27,7 @@ export function setupEvilWilly() {
 	world.set(evilWillyEntity, Components.RootJoint, evilWillyRootJoint); //added for body turning behaviors
 	world.set(evilWillyEntity, Components.Humanoid, Workspace.EvilWilly.FindFirstChildOfClass("Humanoid")!); //needed for pathfinding moveto
 	world.set(evilWillyEntity, Components.Animator, Workspace.EvilWilly.FindFirstChildOfClass("Animator")!);
+	world.set(evilWillyEntity, Components.Health, { current: 100, max: 100 });
 
 	const fistsEntity = world.entity();
 	world.add(fistsEntity, Components.Melee);

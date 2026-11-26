@@ -1,3 +1,4 @@
+//src/server/systems/npc/behavior/ActionExecutionSystem.ts
 // The ONLY code that plays combat animations. It does not know or care which brain asked.
 import { Entity, OnRemove, pair, Wildcard } from "@rbxts/jecs";
 import world from "shared/world";
@@ -74,7 +75,7 @@ export function endAction(e: Entity): void {
 function finishAction(e: Entity, active: ActiveAction, now: number) {
 	const weapon = getNpcWeapon(e);
 	let lock = weapon?.moveDelay ?? 0;
-	// a caught parry never gets here (resolveNpcParry ends it), so reaching the end means it caught nothing
+	// a caught parry never gets here (playerCombat removes it), so reaching the end means it caught nothing
 	if (active.action === "parry") lock += weapon?.parryBehavior?.recovery ?? 0;
 	endAction(e);
 	world.set(e, Components.ActionLockedUntil, now + lock);
@@ -119,7 +120,7 @@ function startAction(e: Entity, weapon: NpcWeapon, action: string, now: number):
 			}),
 			track.DidLoop.Connect(() => {
 				if (!isCurrent(e, token)) return;
-				warn(`[ActionExecution] "${action}" animation is looping. Turn Looped off and re-export it`);
+				// warn(`[ActionExecution] "${action}" animation is looping. Turn Looped off and re-export it`);
 				finishAction(e, world.get(e, Components.Attacking)!, os.clock());
 			}),
 			track.Ended.Connect(() => {
@@ -144,17 +145,6 @@ function startAction(e: Entity, weapon: NpcWeapon, action: string, now: number):
 		if (state !== undefined) state.streak = 0; // any other action breaks the streak. The timeout stays
 		track.Play();
 	}
-	return true;
-}
-
-/** call from the player's hit code when it lands on an npc. true = parried, skip the damage */
-export function resolveNpcParry(defender: Entity, attacker: Entity, stunTime: number): boolean {
-	const active = world.get(defender, Components.Attacking);
-	if (active?.action !== "parry" || !world.has(defender, Components.Parrying)) return false;
-	endAction(defender);
-	world.remove(defender, Components.ActionLockedUntil); // success skips recovery
-	const now = os.clock();
-	world.set(attacker, Components.Stunned, { startTime: now, endTime: now + stunTime });
 	return true;
 }
 
@@ -185,9 +175,6 @@ export const ActionLifecycleSystem = {
 	system: () => {
 		const now = os.clock();
 
-		for (const [e, stun] of world.query(Components.Stunned)) {
-			if (now >= stun.endTime) world.remove(e, Components.Stunned);
-		}
 		for (const [e, tracks] of trackCache) {
 			if (world.contains(e)) continue;
 			for (const [, track] of tracks) track.Destroy();

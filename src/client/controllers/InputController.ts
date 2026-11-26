@@ -214,7 +214,14 @@ const ActionHandlers = {
 // ----------------- Input Listener -----------------
 function handleInput(input: InputObject, gameProcessed: boolean, isInputBegan: boolean) {
 	// print(input.KeyCode, input.UserInputState, input.UserInputType)
+	if (!isInputBegan) {
+		const held = getCurrentWCS_Character();
+		if (held && KEYBINDS[Action.Parry]?.some((key) => inputIsKey(input, key))) {
+			BaseInteractionHandlers[Action.Parry]!(held, input, false);
+		}
+	}
 	if (gameProcessed) return;
+
 	// print("no proc")
 
 	const character = getCurrentWCS_Character();

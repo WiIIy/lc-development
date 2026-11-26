@@ -251,7 +251,6 @@
 // 	static Fracture = component<{ startTime: number; severity: number; limb: string }>();
 // 	static Burning = component<{ dps: number; endTime: number }>();
 // 	static Sepsis = component<{ dps: number; endTime: number }>();
-// 	static Stunned = component<{ startTime: number; endTime: number }>();
 
 // 	//Stun tags
 // 	static Cough = world.entity();

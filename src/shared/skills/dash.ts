@@ -146,10 +146,10 @@ export class Dash extends Skill {
 
 		if (enemyEntity !== undefined) {
 			const now = tick();
-			world.set(enemyEntity, Components.Stunned, {
-				startTime: now,
-				endTime: now + 3,
-			});
+			// world.set(enemyEntity, Components.Stunned, {
+			// 	startTime: now,
+			// 	endTime: now + 3,
+			// });
 		}
 
 		// 2. Play Knocked Down Animation

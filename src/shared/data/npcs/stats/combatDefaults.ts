@@ -15,10 +15,13 @@ export const DECISION_INTERVAL: [number, number] = [0.4, 0.8]; // re-roll pace w
 export const MAX_RESPONSE_WEIGHT = 10;
 export const DEFAULT_RESPONSE_WEIGHT = 5;
 
-/** TODO: paste your two default animation ids. Empty = a clear warning, and the action is refused. */
+export const DEFAULT_DISABLE_PARRY_LENGTH = 2; // how long an npc shove stops a player parrying
+
 export const DEFAULT_COMBAT_ANIMATIONS = {
 	parry: assets["anims/character/npc/item/fists/fistsblock.rbxm"],
 	shove: assets["anims/character/npc/item/fists/fistsshove.rbxm"],
+	// TODO: placeholder, there is no stagger asset yet. ow1 is a flinch
+	stagger: assets["anims/character/npc/takehit/ow1.rbxm"],
 };
 
 /** pool used by every reactive npc when no weapon rule claims the roll. "weaponMove" = any move of the weapon */

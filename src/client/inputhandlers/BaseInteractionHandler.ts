@@ -1,3 +1,4 @@
+//src/client/inputhandlers/BaseInteractionHandler.ts
 import { Players, ContextActionService, Workspace } from "@rbxts/services";
 import { Character } from "@rbxts/wcs";
 import { pointedItem, isDragging } from "client/clientAtoms";
@@ -14,8 +15,6 @@ import { MeleeHeavy } from "shared/skills/base/heavy";
 import { getCurrentWCS_Character } from "shared/utils/ecs/getCurrentWcsCharacter";
 import { mouseRaycast } from "shared/utils/input/mouseRaycast";
 import { sayMonologue } from "shared/utils/ui/sayMonologue";
-import { AnimationUtils } from "shared/utils/visual/animationUtil";
-import { setDescendantLocalTransparency } from "shared/utils/world/setDescendant";
 import { MeleeBlock } from "shared/skills/base/block";
 import { MeleeShove } from "shared/skills/base/shove";
 

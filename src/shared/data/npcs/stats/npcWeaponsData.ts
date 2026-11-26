@@ -14,7 +14,8 @@ const fistAnimations = {
 		heavy: assets["anims/character/npc/item/fists/fistsheavy.rbxm"], // event: hit
 	},
 	parry: assets["anims/character/npc/item/fists/fistsblock.rbxm"],
-	// shove: omitted, uses the default
+	shove: assets["anims/character/npc/item/fists/fistsshove.rbxm"], // event: hit
+	// stagger: omitted, uses the default
 };
 
 export const NpcMeleeWeaponsData = {
@@ -25,20 +26,13 @@ export const NpcMeleeWeaponsData = {
 		movesets: [
 			{ combo: ["light", "light", "heavy"], weight: 5 },
 			{ combo: ["heavy", "heavy"], weight: 3 },
-			{ combo: ["parry"] },
+			{ combo: ["parry"], weight: 3 },
 			{ combo: ["shove"] },
 		],
 		moveDelay: 0.3,
 		movesetDelay: 0.5,
-		parryBehavior: {
-			reactionTime: 0.15,
-			minLength: 0.8,
-			maxLength: 0.9,
-			stacking: false,
-			timeout: 6,
-			recovery: 0.4,
-		},
-		shoveBehavior: { reactionTime: 0.15, stunTime: 1, blockcast: FIST_BOX },
+		parryBehavior: { reactionTime: 0.15, minLength: 0.8, maxLength: 2, stacking: true, timeout: 3 },
+		shoveBehavior: { reactionTime: 0.15, disableParryLength: 2, blockcast: FIST_BOX },
 		reactive: {
 			rules: [
 				// listed first so it wins ties against the movement rules below
@@ -67,7 +61,9 @@ export const NpcMeleeWeaponsData = {
 		moveDelay: 0.3,
 		movesetDelay: 0.5,
 		reactive: {
-			rules: [{ when: ["any", "any"], responses: [{ movement: "advance", actions: ["heavy", "light"], weight: 10 }] }],
+			rules: [
+				{ when: ["any", "any"], responses: [{ movement: "advance", actions: ["heavy", "light"], weight: 10 }] },
+			],
 		},
 		animations: fistAnimations,
 	}),

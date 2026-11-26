@@ -1,71 +1,64 @@
+//src/shared/skills/base/light.ts
 import { Message, Skill, SkillDecorator } from "@rbxts/wcs";
-import { t } from "@rbxts/t";
-import { AnimationUtils } from "shared/utils/visual/animationUtil";
-import { ANIMATION_IDS } from "shared/data/assetid/animationIDs";
-import { mouseRaycast } from "shared/utils/input/mouseRaycast";
-import assets from "shared/assets";
-import { Component, Entity } from "@rbxts/jecs";
 import { ref } from "@willy/jecs-utils";
-import world from "shared/world";
-import { announceThreat } from "shared/utils/npc/attack/predictiveParry";
-import Components from "shared/components";
+import assets from "shared/assets";
+import { beginPlayerAttack, endPlayerAttack, resolvePlayerHit } from "shared/utils/combat/playerCombat";
+import { playSwing, preloadWeapon } from "shared/utils/combat/playerAnimations";
 import { setPlayerAction } from "shared/utils/npc/attack/setPlayerAction";
+
+const FLINCH_ANIMATIONS = [
+	assets["anims/character/npc/takehit/ow1.rbxm"],
+	assets["anims/character/npc/takehit/ow2.rbxm"],
+	assets["anims/character/npc/takehit/ow3.rbxm"],
+];
 
 @SkillDecorator
 export class MeleeLight extends Skill {
-	enemyFlinchAnims = [
-		assets["anims/character/npc/takehit/ow1.rbxm"],
-		assets["anims/character/npc/takehit/ow2.rbxm"],
-		assets["anims/character/npc/takehit/ow3.rbxm"],
-	];
-	playerEntity: Entity | undefined;
-
-	protected OnStartClient(): void {
-		AnimationUtils.preloadAnimations(this.Player!.Character!, [ANIMATION_IDS.actions.light]);
-	}
-
-	protected OnStartServer(): void {
-		this.playerEntity = ref.find(this.Player!);
-		// print("plr", this.playerEntity);
+	protected OnConstructClient(): void {
+		const character = this.Player?.Character;
+		if (character !== undefined) task.defer(() => preloadWeapon(character));
 	}
 
 	meleeLight() {
-		const track = AnimationUtils.loadAnim(this.Player!.Character! as Model, "light", ANIMATION_IDS.actions.light);
-
-		const hit = mouseRaycast(10);
-		if (hit !== undefined && hit.Instance !== undefined) {
-			if (
-				hit.Instance.Parent !== undefined &&
-				hit.Instance.Parent.IsA("Model") &&
-				hit.Instance.Parent.FindFirstChild("Humanoid") //otherwise it tries to load anims every model even without animators
-			) {
-				AnimationUtils.randomizeAnim(hit.Instance.Parent, "ow1", this.enemyFlinchAnims, 0.15);
-			}
-
-			if (
-				hit.Instance.Parent?.Parent !== undefined &&
-				hit.Instance.Parent.Parent.IsA("Model") &&
-				hit.Instance.Parent.Parent.FindFirstChild("Humanoid")
-			) {
-				AnimationUtils.randomizeAnim(hit.Instance.Parent.Parent, "ow1", this.enemyFlinchAnims, 0.15);
-			}
-			// print(hit.Instance.Parent);
-			// print(assets["anims/character/npc/takehit/ow1.rbxm"]);
-			// print(assets["anims/character/npc/takehit/ow1.rbxm"]);
-			// task.wait(0.2);
-		}
-
-		this.serverMeleeLight();
+		const character = this.Player?.Character;
+		if (character === undefined) return;
+		playSwing(
+			character,
+			"light",
+			() => this.serverLightStart(),
+			() => this.serverLightHit(),
+			() => this.serverLightFinish(),
+		);
 	}
 
-	@Message({
-		Type: "Event",
-		Destination: "Server",
-	})
-	protected serverMeleeLight(): void {
-		this.ApplyCooldown(0.5);
-		if (this.playerEntity === undefined) return;
-		setPlayerAction(this.playerEntity, "meleelight", 0.5); // tune to the light animation's length
-		announceThreat(this.playerEntity, "light", 0.25);
+	private getPlayerEntity() {
+		// looked up when needed: it may not exist yet when the skill is constructed
+		const entity = this.Player !== undefined ? ref.find(this.Player) : undefined;
+		if (entity === undefined) warn("[MeleeLight] no ECS entity for this player");
+		return entity;
+	}
+
+	@Message({ Type: "Event", Destination: "Server" })
+	protected serverLightStart(): void {
+		const playerEntity = this.getPlayerEntity();
+		if (playerEntity === undefined) return;
+		const weapon = beginPlayerAttack(playerEntity, "light");
+		if (weapon === undefined) return;
+		this.ApplyCooldown(weapon.light.cooldown);
+		setPlayerAction(playerEntity, "meleelight", weapon.light.cooldown); // npcs tracking action state read this
+	}
+
+	@Message({ Type: "Event", Destination: "Server" })
+	protected serverLightHit(): void {
+		const playerEntity = this.getPlayerEntity();
+		const character = this.Player?.Character;
+		if (playerEntity === undefined || character === undefined) return;
+		resolvePlayerHit(playerEntity, character, "light", FLINCH_ANIMATIONS);
+	}
+
+	@Message({ Type: "Event", Destination: "Server" })
+	protected serverLightFinish(): void {
+		const playerEntity = this.getPlayerEntity();
+		if (playerEntity !== undefined) endPlayerAttack(playerEntity, "light");
 	}
 }

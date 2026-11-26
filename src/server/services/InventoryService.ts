@@ -1,3 +1,4 @@
+//src/server/services/InventoryService.ts
 /* eslint-disable roblox-ts/lua-truthiness */
 import { Service, OnStart } from "@flamework/core";
 import { Players, ReplicatedStorage, Teams, Workspace } from "@rbxts/services";
@@ -61,6 +62,9 @@ export const DataStore = ProfileStore.New(PROFILE_STORE_NAME, defaultProfileData
 
 export const Profiles = new Map<Player, Profile<ProfileData> | undefined>();
 const SessionStart = new Map<Player, number>();
+
+const FISTS_ID = "fists"; // must match the key in PlayerMeleeWeaponStats
+const fistsEntities = new Set<Entity>(); // placeholder entities we own, so we can clean them up
 
 //throwable is a skill
 //melee is a moveset
@@ -284,12 +288,9 @@ export class InventoryService implements OnStart {
 		const wcsCharacter = world.get(playerEntity, Components.WCSCharacter);
 		const oldItemEntity = world.target(playerEntity, Components.CurrentlyEquipped);
 
-		// print(wcsCharacter, oldItemEntity)
 		if (oldItemEntity !== undefined) {
-			// print("WIPED OLD RELATIONSHIP", world.target(playerEntity, Components.CurrentlyEquipped));
-			world.remove(playerEntity, pair(Components.CurrentlyEquipped, oldItemEntity)); //item entity persists.relationship is severed
-			world.remove(oldItemEntity, Components.ItemModel); //prevent flinging when re equipping
-			world.set(playerEntity, Components.AnimationQueue, []); //clear animations
+			this.clearEquipped(playerEntity);
+			world.set(playerEntity, Components.AnimationQueue, []);
 
 			// SKILL_REGISTRY.forEach((entry) => {
 			// 	wcsCharacter?.GetSkillFromConstructor(entry.skill as never)?.Destroy(); //remove all previous skills
@@ -304,7 +305,8 @@ export class InventoryService implements OnStart {
 		if (inventory === undefined) return;
 
 		if (currentSlotItem.name === undefined || currentSlotItem.name === EMPTY_ITEM_NAME) {
-			//ignored if slot is empty
+			// empty slot = bare hands
+			this.equipFists(playerEntity);
 			return;
 		}
 
@@ -930,6 +932,29 @@ export class InventoryService implements OnStart {
 		// }
 	}
 
+	/** Removes whatever is in CurrentlyEquipped. Placeholder fists entities are deleted, real item entities persist. */
+	private clearEquipped(playerEntity: Entity) {
+		const oldItemEntity = world.target(playerEntity, Components.CurrentlyEquipped);
+		if (oldItemEntity === undefined) return;
+
+		world.remove(playerEntity, pair(Components.CurrentlyEquipped, oldItemEntity)); // sever the relationship first
+
+		if (fistsEntities.has(oldItemEntity)) {
+			fistsEntities.delete(oldItemEntity);
+			world.delete(oldItemEntity);
+		} else {
+			world.remove(oldItemEntity, Components.ItemModel); //prevent flinging when re-equipping
+		}
+	}
+
+	/** Puts a fresh fists entity into CurrentlyEquipped. Used whenever the current hotbar slot is empty. */
+	private equipFists(playerEntity: Entity) {
+		const fistsEntity = world.entity();
+		world.set(fistsEntity, Name, FISTS_ID);
+		fistsEntities.add(fistsEntity);
+		world.set(playerEntity, pair(Components.CurrentlyEquipped, fistsEntity) as unknown as Entity<string>, FISTS_ID);
+	}
+
 	private equipProp(player: Player, playerEntity: Entity, propName: string) {
 		const propEntity = world.entity(); // Create ECS Entity for the Prop
 		world.set(propEntity, Name, propName); //Props are items not stored in the inventory
@@ -939,11 +964,7 @@ export class InventoryService implements OnStart {
 		world.set(playerEntity, Components.CarriedProp, propEntity);
 
 		// Clear existing currently equipped item (safeguard)
-		const oldItemEntity = world.target(playerEntity, Components.CurrentlyEquipped);
-		if (oldItemEntity !== undefined) {
-			world.remove(playerEntity, pair(Components.CurrentlyEquipped, oldItemEntity));
-			world.remove(oldItemEntity, Components.ItemModel);
-		}
+		this.clearEquipped(playerEntity);
 
 		// 4. Assign model and equip (similar to regular items)
 		const assetModel = ItemAssets[propName];

@@ -10,11 +10,9 @@ import Components from "shared/components";
 
 @Service({})
 export class PlayerStateTrackerService implements OnStart {
-	constructor() { }
-
 	onStart(): void {
 		RemoteEvents.updatePlayerBehavior.connect((player, behavior) => {
-			print("updated", behavior);
+			// print("updated", behavior);
 			const playerEntity = ref.get(player);
 			if (!playerEntity) {
 				print("no player entity associated with state change");

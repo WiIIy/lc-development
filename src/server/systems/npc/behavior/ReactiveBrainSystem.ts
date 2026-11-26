@@ -1,3 +1,4 @@
+//src/server/systems/npc/behavior/ReactiveBrainSystem.ts
 // REACTIVE: watches the target, decides one response, executes it immediately. No combos, no queue.
 // Decisions are rolled on a situation change, after an action, or every DECISION_INTERVAL.
 // Never per frame: that would turn a 30% chance into a certainty within a few frames.

@@ -9,7 +9,7 @@ type Definition<K extends string> = {
 	parryBehavior?: ParryBehavior;
 	shoveBehavior?: ShoveBehavior;
 	reactive?: ReactiveBehavior<NoInfer<K> | BuiltInAction>;
-	animations: { moves: Record<NoInfer<K>, string>; parry?: string; shove?: string };
+	animations: { moves: Record<NoInfer<K>, string>; parry?: string; shove?: string; stagger?: string };
 };
 
 const RESERVED = ["idle", "parry", "shove", "weaponMove", "any"];

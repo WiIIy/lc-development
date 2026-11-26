@@ -1,3 +1,4 @@
+//src/server/systems/npc/behavior/index.ts
 import { ActionExecutionSystem, ActionLifecycleSystem } from "./ActionExecutionSystem";
 import { NonReactiveBrainSystem } from "./NonReactiveBrainSystem";
 import { ReactiveBrainSystem } from "./ReactiveBrainSystem";

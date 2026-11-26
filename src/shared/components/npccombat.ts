@@ -33,7 +33,6 @@ export const CombatComponents = {
 	Fracture: component<{ startTime: number; severity: number; limb: string }>(),
 	Burning: component<{ dps: number; endTime: number }>(),
 	Sepsis: component<{ dps: number; endTime: number }>(),
-	Stunned: component<{ startTime: number; endTime: number }>(),
 
 	//Stun tags
 	Cough: world.entity(),

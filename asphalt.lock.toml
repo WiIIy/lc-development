@@ -2,6 +2,9 @@
 # It is not intended for manual editing.
 version = 2
 
+[inputs.assets.053efd1a0f426bb34439903013be302bc0a2f07c85594f2c2c9ea731142bdcec]
+asset_id = 129710927546848
+
 [inputs.assets.0905776db9c1e3a1f71b32aec2a8d0c57b529570856fda004bbdaf876d2612ca]
 asset_id = 107508997449829
 
@@ -34,6 +37,3 @@ asset_id = 127730152081326
 
 [inputs.assets.c4765c364374a520c526caab29ae6bd863487c6bd1e807db6341c0ddd3a035b3]
 asset_id = 125778479487842
-
-[inputs.assets.dc75cf8d200548c8c5a104e0cf2edf4e8d48e554120b7497fede9b5191dd56cc]
-asset_id = 113087915036695

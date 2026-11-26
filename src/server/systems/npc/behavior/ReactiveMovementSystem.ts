@@ -61,7 +61,6 @@ export const ReactiveMovementSystem = {
 				movement = "still";
 			}
 
-			// eslint-disable-next-line prefer-const
 			let [forwardAmount, rightAmount] = DIRECTIONS[movement];
 			if (forwardAmount > 0 && distance <= MIN_GAP) forwardAmount = 0;
 
@@ -72,7 +71,9 @@ export const ReactiveMovementSystem = {
 			const right = forward.Cross(Vector3.yAxis);
 			const direction = forward.mul(forwardAmount).add(right.mul(rightAmount));
 
-			humanoid.MoveTo(direction.Magnitude < 0.01 ? position : position.add(direction.Unit.mul(STEP)));
+			humanoid.MoveTo(
+				direction.Magnitude < 0.01 ? position : position.add(direction.Unit.mul(STEP)),
+			);
 		}
 	},
 };

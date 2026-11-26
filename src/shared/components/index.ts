@@ -9,6 +9,7 @@ import { AIComponents } from "./npc";
 import { CombatComponents } from "./npccombat";
 import { setSerdes } from "shared/utils/ecs/componentUtil";
 import { NpcBehaviorComponents } from "./npcbehavior";
+import { CombatStateComponents } from "./combatstate";
 
 export const Components = {
 	...CoreComponents,
@@ -17,6 +18,7 @@ export const Components = {
 	...AIComponents,
 	...CombatComponents,
 	...NpcBehaviorComponents,
+	...CombatStateComponents,
 };
 
 for (const [key, value] of pairs(Components)) {

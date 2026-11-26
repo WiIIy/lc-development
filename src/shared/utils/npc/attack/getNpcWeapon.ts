@@ -1,7 +1,7 @@
 import { Entity, pair } from "@rbxts/jecs";
 import world from "shared/world";
 import { Components } from "shared/components";
-import { NpcMeleeWeaponsData } from "shared/data/npcs/stats/weaponsData";
+import { NpcMeleeWeaponsData } from "shared/data/npcs/stats/npcWeaponsData";
 
 // add future tables (firearms...) here
 const registry = new Map<string, NpcWeapon>();

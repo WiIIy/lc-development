@@ -57,7 +57,7 @@ type ParryBehavior = {
 
 type ShoveBehavior = {
 	reactionTime: number; // reactive only: how long the target's parry must be seen
-	stunTime: number;
+	disableParryLength?: number; // npc shoves never stun players. Omitted = 2
 	blockcast: { size: Vector3; distance: number };
 	range?: number;
 };
@@ -80,6 +80,7 @@ type NpcWeapon = {
 		moves: { [name: string]: string };
 		parry?: string; // optional override of the default
 		shove?: string; // optional override of the default
+		stagger?: string; // optional, played while stunned
 	};
 };
 

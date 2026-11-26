@@ -27,6 +27,8 @@ import { TargetRelativeStateCleanupSystem, TargetRelativeStateSystem } from "./t
 import { TestReactiveCleanupSystem, TestReactiveSystem } from "./melee/TestReactiveSystem";
 import { ReactiveMovementSystem } from "./behavior";
 import { NpcBehaviorSystems } from "./behavior";
+import { StunSystem } from "../combat/StunSystem";
+import { PlayerCombatSystem } from "../combat/PlayerCombatSystem";
 
 // 1) PreSimulation: write MoveTo / root CFrame before physics runs
 scheduler.addSystems(
@@ -74,6 +76,9 @@ scheduler.addSystems(
 		TargetStateCleanupSystem,
 		TargetRelativeStateSystem, //detects if player is strafing toward/backward relative to npc
 		TargetRelativeStateCleanupSystem,
+
+		StunSystem,
+		PlayerCombatSystem,
 		...NpcBehaviorSystems,
 		StopFacingWallsSystem,
 	],
